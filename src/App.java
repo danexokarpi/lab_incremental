@@ -1,9 +1,11 @@
+import  java.util.ArrayList;
+import java.util.Scanner;
 public class App {
     // IDEIA É, ENTREGAR A LISTA DE NOMES DE CARTAS, DAI PARA CADA TURNO DE JOGADOR
     // A GENTE TIRA O NOME DE DENTRO DA LISTA E A LISTA DE ESCOLHA DEVOLVE O NOME DA CARTA ESCOLHIDA
     // ACHO QUE ASSIM DA CERTO SEM TRABALHO
     // :)
-    public int escolher(int quantidadeDecisoes){
+    public int escolher(int quantidadeDecisoes, List listaOpcoes){
         return 0;
     }
 
