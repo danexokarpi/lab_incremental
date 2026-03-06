@@ -4,38 +4,36 @@ public class Inimigo {
     public int escudo;
     public int vida;
 
-    public Inimigo (String nome, int vidaMaxima, int escudo){
+    public Inimigo(String nome, int vidaMaxima, int escudo) {
         this.nome = nome;
         this.vidaMaxima = vidaMaxima;
         this.escudo = escudo;
         this.vida = vidaMaxima;
     }
 
-    public void receberDano (int dano){
+    public void receberDano(int dano) {
         int dano_verdadeiro = escudo - dano;
-        if (dano_verdadeiro < 0){
+        if (dano_verdadeiro < 0) {
             vida -= Math.abs(dano_verdadeiro);
             escudo = 0;
-        }else if(dano_verdadeiro == 0){
+        } else if (dano_verdadeiro == 0) {
             escudo = 0;
-        }else{
+        } else {
             escudo = dano_verdadeiro;
         }
-        
+
     }
-    
-    public void ganharEscudo (int escudoRecebido){
+
+    public void receberEscudo(int escudoRecebido) {
         escudo += escudoRecebido;
     }
 
-
-
-    public boolean estaVivo(){
-        if (vida <= 0){
+    public boolean estaVivo() {
+        if (vida <= 0) {
             return true;
         } else {
             return false;
         }
     }
 }
-    
+

@@ -3,14 +3,17 @@ public class CartaEscudo {
     public int custo;
     public int escudo;
 
-    public CartaEscudo (String nome, int custo, int escudo){
+    public CartaEscudo(String nome, int custo, int escudo) {
         this.nome = nome;
         this.custo = custo;
         this.escudo = escudo;
     }
 
-    public void usar (Heroi heroi){
-        heroi.ganharEscudo(escudo);
+    public int usar(Inimigo inimigo, int energiaDisponivel) {
+        if (energiaDisponivel < custo) {
+            return 1;
+        }
+        inimigo.receberEscudo(escudo);
+        return 0;
     }
-
 }

@@ -52,13 +52,15 @@ public class App {
                 int escolhaPlayer = leEscolhaPlayer(scan);
                 switch (escolhaPlayer) {
                     case 1:
-                        // CartaDano
+                        espadaSuprema.usar(inimigo, energia);
+                        energia -= espadaSuprema.custo;
                         break;
                     case 2:
-                        // CartaEscudo
+                        escudoSupremo.usar(inimigo, energia);
+                        energia -= escudoSupremo.custo;
                         break;
                     case 3:
-                        // EncerrarTurno
+                        emTurno = false;
                         break;
 
                     default:
