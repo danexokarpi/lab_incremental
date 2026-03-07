@@ -14,14 +14,14 @@ public class Inimigo {
     }
 
     public void receberDano(int dano) {
-        int dano_verdadeiro = escudo - dano;
-        if (dano_verdadeiro < 0) {
-            vida -= Math.abs(dano_verdadeiro);
+        int danoVerdadeiro = escudo - dano;
+        if (danoVerdadeiro < 0) {
+            vida -= Math.abs(danoVerdadeiro);
             escudo = 0;
-        } else if (dano_verdadeiro == 0) {
+        } else if (danoVerdadeiro == 0) {
             escudo = 0;
         } else {
-            escudo = dano_verdadeiro;
+            escudo = danoVerdadeiro;
         }
 
     }
@@ -32,9 +32,9 @@ public class Inimigo {
 
     public boolean estaVivo() {
         if (vida <= 0) {
-            return true;
-        } else {
             return false;
+        } else {
+            return true;
         }
     }
 }

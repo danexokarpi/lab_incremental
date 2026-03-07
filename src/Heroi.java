@@ -31,9 +31,9 @@ public class Heroi {
 
     public boolean estaVivo(){
         if (vida <= 0){
-            return true;
-        } else {
             return false;
+        } else {
+            return true;
         }
     }
 

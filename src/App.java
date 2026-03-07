@@ -18,7 +18,7 @@ public class App {
         System.out.println("=-=\n" +
                 heroi.nome + " (" + heroi.vida + '/' + heroi.vidaMaxima + ") (" + heroi.escudo + " de escudo)\n" +
                 "vs\n" +
-                inimigo.nome + " (" + inimigo.vida + '/' + inimigo.vidaMaxima + ")\n" +
+                inimigo.nome + " (" + inimigo.vida + '/' + inimigo.vidaMaxima + ") (" + inimigo.escudo + " de escudo)\n" +
                 "\n" +
                 energia + '/' + energiaMaxima + " de Energia disponível\n" +
                 "1 - Usar" + cartaDano.nome + "\n" +
@@ -33,18 +33,18 @@ public class App {
         return escolhaPlayer;
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         Scanner scan = new Scanner(System.in);
 
         Heroi heroi = new Heroi("Capitão Cabra", 10, 0);
-        Inimigo inimigo = new Inimigo("Gosma", 10, 10, 2);
+        Inimigo inimigo = new Inimigo("Gosma", 10, 0, 2);
         CartaDano espadaSuprema = new CartaDano("Espadada Suprema", 1, 3);
         CartaEscudo escudoSupremo = new CartaEscudo("Escudo Supremo", 1, 3);
 
         int energia, energiaMaxima = 3;
 
-        while (heroi.estaVivo() || inimigo.estaVivo()) {
+        while (heroi.estaVivo() && inimigo.estaVivo()) {
             heroi.escudo = 0;
             energia = energiaMaxima;
             boolean emTurno = true;
@@ -69,6 +69,9 @@ public class App {
                     default:
                         // comando inválido
                         break;
+                }
+                if (!inimigo.estaVivo()){
+                    break;
                 }
 
             }
