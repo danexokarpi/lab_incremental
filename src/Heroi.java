@@ -1,8 +1,8 @@
 public class Heroi {
-    public String nome;
-    public int vidaMaxima;
-    public int escudo;
-    public int vida;
+    private String nome;
+    private int vidaMaxima;
+    private int escudo;
+    private int vida;
     
 
     public Heroi (String nome, int vidaMaxima, int escudo){
@@ -12,6 +12,7 @@ public class Heroi {
         this.vida = vidaMaxima;
     }
 
+    // Sistema de dano verdadeiro, basicamente reduz o escudo do dano e aplica o dano absoluto na vida do heroi caso o escudo for menor
     public void receberDano (int dano){
         int dano_verdadeiro = escudo - dano;
         if (dano_verdadeiro < 0){
@@ -29,6 +30,10 @@ public class Heroi {
         escudo += escudoRecebido;
     }
 
+    public void setEscudo (int escudoDefinido) {
+        escudo = escudoDefinido;
+    }
+
     public boolean estaVivo(){
         if (vida <= 0){
             return false;
@@ -37,15 +42,22 @@ public class Heroi {
         }
     }
 
-    /* 
-    public boolean temEnergia(){
-        if (energia <= 0){
-            return true;
-        } else {
-            return false;
-        }
+    public String getNome() {
+        return nome;
     }
-    */
+
+    public int getVidaMaxima() {
+        return vidaMaxima;
+    }
+
+    public int getEscudo() {
+        return escudo;
+    }
+
+    public int getVida() {
+        return vida;
+    }
+
 }
 
     

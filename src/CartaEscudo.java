@@ -1,7 +1,7 @@
 public class CartaEscudo {
-    public String nome;
-    public int custo;
-    public int escudo;
+    private String nome;
+    private int custo;
+    private int escudo;
 
     public CartaEscudo(String nome, int custo, int escudo) {
         this.nome = nome;
@@ -9,12 +9,24 @@ public class CartaEscudo {
         this.escudo = escudo;
     }
 
-    
-    public boolean usar(Heroi heroi, int energiaDisponivel) {
+    public boolean usarSePossivel(Heroi heroi, int energiaDisponivel) {
         if (energiaDisponivel < custo) {
             return false;
         }
         heroi.receberEscudo(escudo);
         return true;
     }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public int getCusto () {
+        return custo;
+    }
+
+    public int getEscudo() {
+        return escudo;
+    }
+
 }

@@ -1,7 +1,7 @@
 public class CartaDano {
-    public String nome;
-    public int custo;
-    public int dano;
+    private String nome;
+    private int custo;
+    private int dano;
 
     public CartaDano(String nome, int custo, int dano) {
         this.nome = nome;
@@ -9,12 +9,24 @@ public class CartaDano {
         this.dano = dano;
     }
 
-    public boolean usar(Inimigo inimigo, int energiaDisponivel) {
+    public boolean usarSePossivel(Inimigo inimigo, int energiaDisponivel) {
         if (energiaDisponivel < custo) {
             return false;
         }
         inimigo.receberDano(dano);
         return true;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public int getCusto () {
+        return custo;
+    }
+
+    public int getDano() {
+        return dano;
     }
 
 }

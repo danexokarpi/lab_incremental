@@ -15,14 +15,14 @@ public class App {
     public static void printaMenu(Heroi heroi, Inimigo inimigo, CartaDano cartaDano, CartaEscudo cartaEscudo,
             int energia,
             int energiaMaxima) {
-        System.out.println("=-=\n" +
-                heroi.nome + " (" + heroi.vida + '/' + heroi.vidaMaxima + ") (" + heroi.escudo + " de escudo)\n" +
+        System.out.println("\n=-=\n" +
+                heroi.getNome() + " (" + heroi.getVida() + '/' + heroi.getVidaMaxima() + ") (" + heroi.getEscudo() + " de escudo)\n" +
                 "vs\n" +
-                inimigo.nome + " (" + inimigo.vida + '/' + inimigo.vidaMaxima + ") (" + inimigo.escudo + " de escudo)\n" +
+                inimigo.getNome() + " (" + inimigo.getvida() + '/' + inimigo.getVidaMaxima() + ") (" + inimigo.getEscudo() + " de escudo)\n" +
                 "\n" +
                 energia + '/' + energiaMaxima + " de Energia disponível\n" +
-                "1 - Usar" + cartaDano.nome + "\n" +
-                "2 - Usar " + cartaEscudo.nome + "\n" +
+                "1 - Usar" + cartaDano.getNome() + "\n" +
+                "2 - Usar " + cartaEscudo.getNome() + "\n" +
                 "3 - Encerrar turno\n");
 
         System.out.println("Escolha: ");
@@ -45,7 +45,7 @@ public class App {
         int energia, energiaMaxima = 3;
 
         while (heroi.estaVivo() && inimigo.estaVivo()) {
-            heroi.escudo = 0;
+            heroi.setEscudo(0);
             energia = energiaMaxima;
             boolean emTurno = true;
             while (emTurno) {
@@ -53,13 +53,13 @@ public class App {
                 int escolhaPlayer = leEscolhaPlayer(scan);
                 switch (escolhaPlayer) {
                     case 1:
-                        if (espadaSuprema.usar(inimigo, energia)){
-                            energia -= espadaSuprema.custo;
+                        if (espadaSuprema.usarSePossivel(inimigo, energia)){
+                            energia -= espadaSuprema.getCusto();
                         }
                         break;
                     case 2:
-                        if(escudoSupremo.usar(heroi, energia)){
-                            energia -= escudoSupremo.custo;
+                        if(escudoSupremo.usarSePossivel(heroi, energia)){
+                            energia -= escudoSupremo.getCusto();
                         }
                         break;
                     case 3:
@@ -77,7 +77,7 @@ public class App {
             }
 
             if(inimigo.estaVivo()){
-                heroi.receberDano(inimigo.dano);
+                heroi.receberDano(inimigo.getDano());
             }
         }
 

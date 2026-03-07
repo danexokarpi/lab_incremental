@@ -1,9 +1,9 @@
 public class Inimigo {
-    public String nome;
-    public int vidaMaxima;
-    public int escudo;
-    public int vida;
-    public int dano;
+    private String nome;
+    private int vidaMaxima;
+    private int escudo;
+    private int vida;
+    private int dano;
 
     public Inimigo(String nome, int vidaMaxima, int escudo, int dano) {
         this.nome = nome;
@@ -12,7 +12,7 @@ public class Inimigo {
         this.vida = vidaMaxima;
         this.dano = dano;
     }
-
+    // Sistema de dano verdadeiro, basicamente reduz o escudo do dano e aplica o dano absoluto na vida do heroi caso o escudo for menor
     public void receberDano(int dano) {
         int danoVerdadeiro = escudo - dano;
         if (danoVerdadeiro < 0) {
@@ -26,6 +26,26 @@ public class Inimigo {
 
     }
 
+    public String getNome(){
+        return this.nome;
+    }
+
+    public int getVidaMaxima(){
+        return this.vidaMaxima;
+    }
+
+    public int getEscudo(){
+        return this.escudo;
+    }
+
+    public int getvida(){
+        return this.vida;
+    }
+
+    public int getDano(){
+        return this.dano;
+    }
+
     public void receberEscudo(int escudoRecebido) {
         escudo += escudoRecebido;
     }
@@ -37,5 +57,7 @@ public class Inimigo {
             return true;
         }
     }
+
+
 }
 
