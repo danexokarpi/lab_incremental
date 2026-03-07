@@ -3,12 +3,14 @@ public class Inimigo {
     public int vidaMaxima;
     public int escudo;
     public int vida;
+    public int dano;
 
-    public Inimigo(String nome, int vidaMaxima, int escudo) {
+    public Inimigo(String nome, int vidaMaxima, int escudo, int dano) {
         this.nome = nome;
         this.vidaMaxima = vidaMaxima;
         this.escudo = escudo;
         this.vida = vidaMaxima;
+        this.dano = dano;
     }
 
     public void receberDano(int dano) {

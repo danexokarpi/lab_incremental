@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.Scanner;
 
 public class App {
@@ -7,9 +7,10 @@ public class App {
     // CARTA ESCOLHIDA
     // ACHO QUE ASSIM DA CERTO SEM TRABALHO
     // :)
-    public int escolher(int quantidadeDecisoes, List listaOpcoes) {
-        return 0;
-    }
+    
+    //public int escolher(int quantidadeDecisoes, ArrayList listaOpcoes) {
+    //    return 0;
+    //}
 
     public static void printaMenu(Heroi heroi, Inimigo inimigo, CartaDano cartaDano, CartaEscudo cartaEscudo,
             int energia,
@@ -37,27 +38,29 @@ public class App {
         Scanner scan = new Scanner(System.in);
 
         Heroi heroi = new Heroi("Capitão Cabra", 10, 0);
-        Inimigo inimigo = new Inimigo("Gosma", 10, 10);
+        Inimigo inimigo = new Inimigo("Gosma", 10, 10, 2);
         CartaDano espadaSuprema = new CartaDano("Espadada Suprema", 1, 3);
         CartaEscudo escudoSupremo = new CartaEscudo("Escudo Supremo", 1, 3);
 
         int energia, energiaMaxima = 3;
 
         while (heroi.estaVivo() || inimigo.estaVivo()) {
+            heroi.escudo = 0;
             energia = energiaMaxima;
-
             boolean emTurno = true;
             while (emTurno) {
                 printaMenu(heroi, inimigo, espadaSuprema, escudoSupremo, energia, energiaMaxima);
                 int escolhaPlayer = leEscolhaPlayer(scan);
                 switch (escolhaPlayer) {
                     case 1:
-                        espadaSuprema.usar(inimigo, energia);
-                        energia -= espadaSuprema.custo;
+                        if (espadaSuprema.usar(inimigo, energia)){
+                            energia -= espadaSuprema.custo;
+                        }
                         break;
                     case 2:
-                        escudoSupremo.usar(inimigo, energia);
-                        energia -= escudoSupremo.custo;
+                        if(escudoSupremo.usar(heroi, energia)){
+                            energia -= escudoSupremo.custo;
+                        }
                         break;
                     case 3:
                         emTurno = false;
@@ -70,6 +73,9 @@ public class App {
 
             }
 
+            if(inimigo.estaVivo()){
+                heroi.receberDano(inimigo.dano);
+            }
         }
 
     }

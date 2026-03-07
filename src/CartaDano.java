@@ -9,12 +9,12 @@ public class CartaDano {
         this.dano = dano;
     }
 
-    public int usar(Inimigo inimigo, int energiaDisponivel) {
+    public boolean usar(Inimigo inimigo, int energiaDisponivel) {
         if (energiaDisponivel < custo) {
-            return 1;
+            return false;
         }
         inimigo.receberDano(dano);
-        return 0;
+        return true;
     }
 
 }

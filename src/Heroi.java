@@ -25,7 +25,7 @@ public class Heroi {
         
     }
     
-    public void ganharEscudo (int escudoRecebido){
+    public void receberEscudo (int escudoRecebido){
         escudo += escudoRecebido;
     }
 

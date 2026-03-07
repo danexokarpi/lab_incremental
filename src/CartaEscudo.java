@@ -9,11 +9,12 @@ public class CartaEscudo {
         this.escudo = escudo;
     }
 
-    public int usar(Inimigo inimigo, int energiaDisponivel) {
+    
+    public boolean usar(Heroi heroi, int energiaDisponivel) {
         if (energiaDisponivel < custo) {
-            return 1;
+            return false;
         }
-        inimigo.receberEscudo(escudo);
-        return 0;
+        heroi.receberEscudo(escudo);
+        return true;
     }
 }
