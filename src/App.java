@@ -1,3 +1,4 @@
+
 //import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -7,18 +8,20 @@ public class App {
     // CARTA ESCOLHIDA
     // ACHO QUE ASSIM DA CERTO SEM TRABALHO
     // :)
-    
-    //public int escolher(int quantidadeDecisoes, ArrayList listaOpcoes) {
-    //    return 0;
-    //}
+
+    // public int escolher(int quantidadeDecisoes, ArrayList listaOpcoes) {
+    // return 0;
+    // }
 
     public static void printaMenu(Heroi heroi, Inimigo inimigo, CartaDano cartaDano, CartaEscudo cartaEscudo,
             int energia,
             int energiaMaxima) {
         System.out.println("\n=-=\n" +
-                heroi.getNome() + " (" + heroi.getVida() + '/' + heroi.getVidaMaxima() + ") (" + heroi.getEscudo() + " de escudo)\n" +
+                heroi.getNome() + " (" + heroi.getVida() + '/' + heroi.getVidaMaxima() + ") (" + heroi.getEscudo()
+                + " de escudo)\n" +
                 "vs\n" +
-                inimigo.getNome() + " (" + inimigo.getvida() + '/' + inimigo.getVidaMaxima() + ") (" + inimigo.getEscudo() + " de escudo)\n" +
+                inimigo.getNome() + " (" + inimigo.getvida() + '/' + inimigo.getVidaMaxima() + ") ("
+                + inimigo.getEscudo() + " de escudo)\n" +
                 "\n" +
                 energia + '/' + energiaMaxima + " de Energia disponível\n" +
                 "1 - Usar" + cartaDano.getNome() + "\n" +
@@ -33,6 +36,50 @@ public class App {
         return escolhaPlayer;
     }
 
+    private static void novoTurno(Scanner scan, Heroi heroi, Inimigo inimigo, CartaDano cartaDano,
+            CartaEscudo cartaEscudo, int energiaMaxima) {
+        heroi.setEscudo(0);
+        int energia = energiaMaxima;
+        boolean emTurno = true;
+        while (emTurno) {
+            clearScreen();
+            printaMenu(heroi, inimigo, cartaDano, cartaEscudo, energia, energiaMaxima);
+            int escolhaPlayer = leEscolhaPlayer(scan);
+            switch (escolhaPlayer) {
+                case 1:
+                    if (cartaDano.usarSePossivel(inimigo, energia)) {
+                        energia -= cartaDano.getCusto();
+                    }
+                    break;
+                case 2:
+                    if (cartaEscudo.usarSePossivel(heroi, energia)) {
+                        energia -= cartaEscudo.getCusto();
+                    }
+                    break;
+                case 3:
+                    emTurno = false;
+                    break;
+
+                default:
+                    // comando inválido
+                    break;
+            }
+            if (!inimigo.estaVivo()) {
+                break;
+            }
+
+        }
+
+        if (inimigo.estaVivo()) {
+            heroi.receberDano(inimigo.getDano());
+        }
+    }
+
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
     public static void main(String[] args) {
 
         Scanner scan = new Scanner(System.in);
@@ -42,44 +89,16 @@ public class App {
         CartaDano espadaSuprema = new CartaDano("Espadada Suprema", 1, 3);
         CartaEscudo escudoSupremo = new CartaEscudo("Escudo Supremo", 1, 3);
 
-        int energia, energiaMaxima = 3;
+        int energiaMaxima = 3;
 
         while (heroi.estaVivo() && inimigo.estaVivo()) {
-            heroi.setEscudo(0);
-            energia = energiaMaxima;
-            boolean emTurno = true;
-            while (emTurno) {
-                printaMenu(heroi, inimigo, espadaSuprema, escudoSupremo, energia, energiaMaxima);
-                int escolhaPlayer = leEscolhaPlayer(scan);
-                switch (escolhaPlayer) {
-                    case 1:
-                        if (espadaSuprema.usarSePossivel(inimigo, energia)){
-                            energia -= espadaSuprema.getCusto();
-                        }
-                        break;
-                    case 2:
-                        if(escudoSupremo.usarSePossivel(heroi, energia)){
-                            energia -= escudoSupremo.getCusto();
-                        }
-                        break;
-                    case 3:
-                        emTurno = false;
-                        break;
-
-                    default:
-                        // comando inválido
-                        break;
-                }
-                if (!inimigo.estaVivo()){
-                    break;
-                }
-
-            }
-
-            if(inimigo.estaVivo()){
-                heroi.receberDano(inimigo.getDano());
-            }
+            novoTurno(scan, heroi, inimigo, espadaSuprema, escudoSupremo, energiaMaxima);
         }
+
+        if (heroi.estaVivo())
+            System.out.println("\nParabéns! Você GANHOU\n");
+        else
+            System.out.println("\nQue pena! Você perdeu\n");
 
     }
 
