@@ -12,7 +12,9 @@ public class App {
     // public int escolher(int quantidadeDecisoes, ArrayList listaOpcoes) {
     // return 0;
     // }
-
+    public static void printaTitulo(){
+        
+    }
     public static void printaMenu(Heroi heroi, Inimigo inimigo, CartaDano cartaDano, CartaEscudo cartaEscudo,
             int energia,
             int energiaMaxima) {
