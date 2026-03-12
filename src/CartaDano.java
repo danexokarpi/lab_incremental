@@ -1,28 +1,20 @@
-public class CartaDano {
-    private String nome;
-    private int custo;
+public class CartaDano extends Carta {
     private int dano;
 
-    public CartaDano(String nome, int custo, int dano) {
-        this.nome = nome;
-        this.custo = custo;
+    public CartaDano(String nome, String descricao, int custo, int dano) {
+        super(nome, descricao, custo);
         this.dano = dano;
     }
 
+    public void usar() {
+    }
+
     public boolean usarSePossivel(Inimigo inimigo, int energiaDisponivel) {
-        if (energiaDisponivel < custo) {
+        if (energiaDisponivel < getCusto()) {
             return false;
         }
         inimigo.receberDano(dano);
         return true;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public int getCusto () {
-        return custo;
     }
 
     public int getDano() {
