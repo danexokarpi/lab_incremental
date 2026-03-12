@@ -86,8 +86,8 @@ public class App {
 
         Heroi heroi = new Heroi("Capitão Cabra", 10, 0);
         Inimigo inimigo = new Inimigo("Gosma", 10, 0, 2);
-        CartaDano espadaSuprema = new CartaDano("Espadada Suprema", 1, 3);
-        CartaEscudo escudoSupremo = new CartaEscudo("Escudo Supremo", 1, 3);
+        CartaDano espadaSuprema = new CartaDano("Espadada Suprema", "", 1, 3);
+        CartaEscudo escudoSupremo = new CartaEscudo("Escudo Supremo", "", 1, 3);
 
         int energiaMaxima = 3;
 
