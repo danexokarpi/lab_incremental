@@ -65,6 +65,9 @@ O combate termina quando:
 - o **herói é derrotado** (Vida chega à zero), ou
 - todos os **inimigos são derrotados** (O inimigo tem sua vida zerada)
 
+# Exemplo de Combate Completo
+![ezgif com-animated-gif-maker](https://github.com/user-attachments/assets/305566a9-18d8-429a-bbda-b7936698105c)
+
 # Tecnologias Utilizadas
 
 - Java 25
@@ -76,4 +79,5 @@ O combate termina quando:
 Projeto desenvolvido por:
 
 - Danilo Henrique Brondi Karpiuck, RA 223386
+
 - Vítor Guimarães Duarte, RA 268526
