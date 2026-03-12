@@ -20,7 +20,7 @@ public class App {
                 heroi.getNome() + " (" + heroi.getVida() + '/' + heroi.getVidaMaxima() + ") (" + heroi.getEscudo()
                 + " de escudo)\n" +
                 "vs\n" +
-                inimigo.getNome() + " (" + inimigo.getvida() + '/' + inimigo.getVidaMaxima() + ") ("
+                inimigo.getNome() + " (" + inimigo.getVida() + '/' + inimigo.getVidaMaxima() + ") ("
                 + inimigo.getEscudo() + " de escudo)\n" +
                 "\n" +
                 energia + '/' + energiaMaxima + " de Energia disponível\n" +
@@ -38,7 +38,7 @@ public class App {
 
     private static void novoTurno(Scanner scan, Heroi heroi, Inimigo inimigo, CartaDano cartaDano,
             CartaEscudo cartaEscudo, int energiaMaxima) {
-        heroi.setEscudo(0);
+        heroi.setarEscudo(0);
         int energia = energiaMaxima;
         boolean emTurno = true;
         while (emTurno) {

@@ -9,7 +9,7 @@ public abstract class Carta {
         this.custo = custo;
     }
 
-    public abstract void usar();
+    public abstract void usar(Tabuleiro tabuleiro);
 
     public String getNome() {
         return nome;

@@ -6,7 +6,8 @@ public class CartaDano extends Carta {
         this.dano = dano;
     }
 
-    public void usar() {
+    public void usar(Tabuleiro tabuleiro) {
+        tabuleiro.getinimigo().receberDano(dano);
     }
 
     public boolean usarSePossivel(Inimigo inimigo, int energiaDisponivel) {

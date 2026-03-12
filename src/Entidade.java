@@ -29,7 +29,7 @@ public abstract class Entidade {
         escudo += escudoRecebido;
     }
 
-    public void setEscudo(int escudoDefinido) {
+    public void setarEscudo(int escudoDefinido) {
         escudo = escudoDefinido;
     }
 

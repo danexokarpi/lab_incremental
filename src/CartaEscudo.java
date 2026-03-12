@@ -6,7 +6,8 @@ public class CartaEscudo extends Carta {
         this.escudo = escudo;
     }
 
-    public void usar() {
+    public void usar(Tabuleiro tabuleiro){
+        tabuleiro.getHeroi().receberEscudo(escudo);
     }
 
     public boolean usarSePossivel(Heroi heroi, int energiaDisponivel) {
