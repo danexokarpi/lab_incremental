@@ -1,28 +1,21 @@
-public class CartaEscudo {
-    private String nome;
-    private int custo;
+public class CartaEscudo extends Carta {
     private int escudo;
 
-    public CartaEscudo(String nome, int custo, int escudo) {
-        this.nome = nome;
-        this.custo = custo;
+    public CartaEscudo(String nome, String descricao, int custo, int escudo) {
+        super(nome, descricao, custo);
         this.escudo = escudo;
     }
 
+    public void usar(Tabuleiro tabuleiro){
+        tabuleiro.getHeroi().receberEscudo(escudo);
+    }
+
     public boolean usarSePossivel(Heroi heroi, int energiaDisponivel) {
-        if (energiaDisponivel < custo) {
+        if (energiaDisponivel < getCusto()) {
             return false;
         }
         heroi.receberEscudo(escudo);
         return true;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public int getCusto () {
-        return custo;
     }
 
     public int getEscudo() {

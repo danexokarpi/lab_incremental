@@ -12,7 +12,9 @@ public class App {
     // public int escolher(int quantidadeDecisoes, ArrayList listaOpcoes) {
     // return 0;
     // }
-
+    public static void printaTitulo(){
+        
+    }
     public static void printaMenu(Heroi heroi, Inimigo inimigo, CartaDano cartaDano, CartaEscudo cartaEscudo,
             int energia,
             int energiaMaxima) {
@@ -20,7 +22,7 @@ public class App {
                 heroi.getNome() + " (" + heroi.getVida() + '/' + heroi.getVidaMaxima() + ") (" + heroi.getEscudo()
                 + " de escudo)\n" +
                 "vs\n" +
-                inimigo.getNome() + " (" + inimigo.getvida() + '/' + inimigo.getVidaMaxima() + ") ("
+                inimigo.getNome() + " (" + inimigo.getVida() + '/' + inimigo.getVidaMaxima() + ") ("
                 + inimigo.getEscudo() + " de escudo)\n" +
                 "\n" +
                 energia + '/' + energiaMaxima + " de Energia disponível\n" +
@@ -38,7 +40,7 @@ public class App {
 
     private static void novoTurno(Scanner scan, Heroi heroi, Inimigo inimigo, CartaDano cartaDano,
             CartaEscudo cartaEscudo, int energiaMaxima) {
-        heroi.setEscudo(0);
+        heroi.setarEscudo(0);
         int energia = energiaMaxima;
         boolean emTurno = true;
         while (emTurno) {
@@ -85,9 +87,9 @@ public class App {
         Scanner scan = new Scanner(System.in);
 
         Heroi heroi = new Heroi("Capitão Cabra", 10, 0);
-        Inimigo inimigo = new Inimigo("Gosma", 10, 0, 3);
-        CartaDano espadaSuprema = new CartaDano("Espadada Suprema", 1, 3);
-        CartaEscudo escudoSupremo = new CartaEscudo("Escudo Supremo", 1, 3);
+        Inimigo inimigo = new Inimigo("Gosma", 10, 0, 2);
+        CartaDano espadaSuprema = new CartaDano("Espadada Suprema", "", 1, 3);
+        CartaEscudo escudoSupremo = new CartaEscudo("Escudo Supremo", "", 1, 3);
 
         int energiaMaxima = 3;
 
