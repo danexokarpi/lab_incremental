@@ -26,7 +26,7 @@ public class App {
                 + inimigo.getEscudo() + " de escudo)\n" +
                 "\n" +
                 energia + '/' + energiaMaxima + " de Energia disponível\n" +
-                "1 - Usar" + cartaDano.getNome() + "\n" +
+                "1 - Usar " + cartaDano.getNome() + "\n" +
                 "2 - Usar " + cartaEscudo.getNome() + "\n" +
                 "3 - Encerrar turno\n");
 
