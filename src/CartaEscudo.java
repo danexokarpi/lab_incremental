@@ -6,16 +6,13 @@ public class CartaEscudo extends Carta {
         this.escudo = escudo;
     }
 
-    public void usar(Tabuleiro tabuleiro){
-        tabuleiro.getHeroi().receberEscudo(escudo);
-    }
-
-    public boolean usarSePossivel(Heroi heroi, int energiaDisponivel) {
+    public boolean usarSePossivel(Tabuleiro tabuleiro, int energiaDisponivel){
         if (energiaDisponivel < getCusto()) {
             return false;
         }
-        heroi.receberEscudo(escudo);
+        tabuleiro.getHeroi().receberEscudo(escudo);
         return true;
+        
     }
 
     public int getEscudo() {
