@@ -14,51 +14,36 @@ public class App {
     // public int escolher(int quantidadeDecisoes, ArrayList listaOpcoes) {
     // return 0;
     // }
-    //public static void printaTitulo(){
-    //    
-    //}
-
-    public static void printaMenu(Heroi heroi, Inimigo inimigo, MaoDoJogador maoDoJogador,
-            int energia,
-            int energiaMaxima) {
-        System.out.println("\n=-=\n" +
-                heroi.getNome() + " (" + heroi.getVida() + '/' + heroi.getVidaMaxima() + ") (" + heroi.getEscudo()
-                + " de escudo)\n" +
-                "vs\n" +
-                inimigo.getNome() + " (" + inimigo.getVida() + '/' + inimigo.getVidaMaxima() + ") ("
-                + inimigo.getEscudo() + " de escudo)\n" +
-                "\n" +
-                energia + '/' + energiaMaxima + " de Energia disponível\n");
-        int i = 0;
-        for (; i < maoDoJogador.getTamanho(); i++){
-            System.out.println((i+1) + " - " + maoDoJogador.getCarta(i).getNome());
-        }
-        System.out.println((i+1) + " - Encerrar Turno" );
-        System.out.println("Escolha: ");
-    }
+    // public static void printaTitulo(){
+    //
+    // }
 
     public static int leEscolhaPlayer(Scanner scan) {
+        System.out.println("Escolha: ");
         int escolhaPlayer = scan.nextInt();
         return escolhaPlayer;
     }
 
-    private static void novoTurno(Scanner scan, Tabuleiro tabuleiro, PilhaDeCompra pilhaDeCompra, PilhaDeDescarte pilhaDeDescarte, MaoDoJogador maoDoJogador, int energiaMaxima) {
+    private static void novoTurno(Scanner scan, Tabuleiro tabuleiro,
+            PilhaDeCompra pilhaDeCompra, PilhaDeDescarte pilhaDeDescarte,
+            MaoDoJogador maoDoJogador, int energiaMaxima) {
+
         Heroi heroi = tabuleiro.getHeroi();
-        Inimigo inimigo = tabuleiro.getinimigo();
+        Inimigo inimigo = tabuleiro.getInimigo();
 
         heroi.setarEscudo(0);
 
         int energia = energiaMaxima;
         boolean emTurno = true;
 
-        if(pilhaDeCompra.isempty()){
+        if (pilhaDeCompra.isEmpty()) {
             pilhaDeDescarte.reabastecerCompra(pilhaDeCompra);
         }
-        
-         // DEPOIS PRECISAMOS FAZER UMA VARIÁVEL PARA A CAPACIDADE
 
-        while(!maoDoJogador.estaCheia()){
-            maoDoJogador.addCarta(pilhaDeCompra.pop());
+        // DEPOIS PRECISAMOS FAZER UMA VARIÁVEL PARA A CAPACIDADE
+
+        while (!maoDoJogador.estaCheia()) {
+            maoDoJogador.addCarta(pilhaDeCompra.popRandom());
         }
 
         while (emTurno) {
@@ -70,21 +55,21 @@ public class App {
             }
 
             int escolhaPlayer = leEscolhaPlayer(scan) - 1;
-            if (escolhaPlayer >= 0 && escolhaPlayer != maoDoJogador.getTamanho()){
+            if (escolhaPlayer >= 0 && escolhaPlayer != maoDoJogador.getTamanho()) {
                 Carta carta = maoDoJogador.getCarta(escolhaPlayer);
-                
-                if(carta.usarSePossivel(tabuleiro, energia)){
+
+                if (carta.usarSePossivel(tabuleiro, energia)) {
                     energia -= carta.getCusto();
                     pilhaDeDescarte.push(carta);
                     maoDoJogador.removeCarta(escolhaPlayer);
                 }
                 continue;
 
-            }else if(escolhaPlayer >= 0 && escolhaPlayer == maoDoJogador.getTamanho()){
+            } else if (escolhaPlayer >= 0 && escolhaPlayer == maoDoJogador.getTamanho()) {
                 emTurno = false;
                 maoDoJogador.descartarTudo(pilhaDeDescarte);
                 continue;
-            } else{ // NÃO TENHO CERTEZA DE COMO RESOLVER PARA UM VALOR ALEATÓRIO DE NÚMERO
+            } else { // NÃO TENHO CERTEZA DE COMO RESOLVER PARA UM VALOR ALEATÓRIO DE NÚMERO
             }
 
         }
@@ -92,7 +77,6 @@ public class App {
         if (inimigo.estaVivo()) {
             heroi.receberDano(inimigo.getDano());
         }
-
 
     }
 
@@ -107,17 +91,23 @@ public class App {
 
         ArrayList<Carta> listaInventarioJogador = new ArrayList<Carta>();
 
-
         Heroi heroi = new Heroi("Capitão Cabra", 10, 0);
         Inimigo inimigo = new Inimigo("Gosma", 10, 0, 2);
         Tabuleiro tabuleiro = new Tabuleiro(heroi, inimigo);
 
-        CartaDano laserCinético = new CartaDano("Laser Cinético", "Atira luz estimulada por emissão de radiação, pesquise a sigla!", 1, 3);
-        CartaDano sabreDeFotons = new CartaDano("Sabre de Fótons", "Consegue atravessar quase qualquer coisa. \nQualquer semelhança é mera coencidência", 2, 4);
-        CartaEscudo escudoEletromagneticoGrande = new CartaEscudo("Escudo Eletromagnético Grande", "Crie um campo magnético em volta de si, a única fraqueza do sabre de fótons", 2, 5);
-        CartaEscudo escudoEletromagneticoPequeno = new CartaEscudo("Escudo Eletromagnético Pequeno", "Crie um campo magnético em volta de si, a única fraqueza do sabre de fótons", 1, 2);
-        
-        listaInventarioJogador.add(laserCinético); listaInventarioJogador.add(sabreDeFotons); listaInventarioJogador.add(escudoEletromagneticoGrande); listaInventarioJogador.add(escudoEletromagneticoPequeno);
+        CartaDano laserCinético = new CartaDano("Laser Cinético",
+                "Atira luz estimulada por emissão de radiação, pesquise a sigla!", 1, 3);
+        CartaDano sabreDeFotons = new CartaDano("Sabre de Fótons",
+                "Consegue atravessar quase qualquer coisa. \nQualquer semelhança é mera coencidência", 2, 4);
+        CartaEscudo escudoEletromagneticoGrande = new CartaEscudo("Escudo Eletromagnético Grande",
+                "Crie um campo magnético em volta de si, a única fraqueza do sabre de fótons", 2, 5);
+        CartaEscudo escudoEletromagneticoPequeno = new CartaEscudo("Escudo Eletromagnético Pequeno",
+                "Crie um campo magnético em volta de si, a única fraqueza do sabre de fótons", 1, 2);
+
+        listaInventarioJogador.add(laserCinético);
+        listaInventarioJogador.add(sabreDeFotons);
+        listaInventarioJogador.add(escudoEletromagneticoGrande);
+        listaInventarioJogador.add(escudoEletromagneticoPequeno);
 
         int energiaMaxima = 3;
 

@@ -2,7 +2,7 @@ public class Tabuleiro {
     private Heroi heroi;
     private Inimigo inimigo;
 
-    public Tabuleiro (Heroi heroi, Inimigo inimigo){
+    public Tabuleiro(Heroi heroi, Inimigo inimigo) {
         this.heroi = heroi;
         this.inimigo = inimigo;
     }
@@ -11,9 +11,8 @@ public class Tabuleiro {
         return heroi;
     }
 
-    public Inimigo getinimigo() {
+    public Inimigo getInimigo() {
         return inimigo;
     }
-
 
 }
