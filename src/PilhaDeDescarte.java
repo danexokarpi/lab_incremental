@@ -1,18 +1,27 @@
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class PilhaDeDescarte {
-    private Deque<Carta> pilha = new ArrayDeque<Carta>();
+    private ArrayList<Carta> pilha = new ArrayList<Carta>();
 
     public PilhaDeDescarte() {
         //
     }
 
-    public Carta pop() {
-        return pilha.pollFirst();
+    public void push(Carta carta) {
+        pilha.addFirst(carta);
     }
 
-    public void push(Carta carta) {
-        pilha.push(carta);
+    public void reabastecerCompra(PilhaDeCompra pilhaDeCompra){
+        Random random = new Random();
+        while(pilha.size() != 0){
+            int i = random.nextInt(pilha.size());
+            pilhaDeCompra.push(pilha.get(i));
+            pilha.remove(i);
+        }
+    }
+
+    public boolean isempty(){
+        return pilha.size() == 0;
     }
 }

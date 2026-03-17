@@ -1,8 +1,10 @@
 
 //import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class App {
+
     // IDEIA É, ENTREGAR A LISTA DE NOMES DE CARTAS, DAI PARA CADA TURNO DE JOGADOR
     // A GENTE TIRA O NOME DE DENTRO DA LISTA E A LISTA DE ESCOLHA DEVOLVE O NOME DA
     // CARTA ESCOLHIDA
@@ -12,10 +14,11 @@ public class App {
     // public int escolher(int quantidadeDecisoes, ArrayList listaOpcoes) {
     // return 0;
     // }
-    public static void printaTitulo(){
-        
-    }
-    public static void printaMenu(Heroi heroi, Inimigo inimigo, CartaDano cartaDano, CartaEscudo cartaEscudo,
+    //public static void printaTitulo(){
+    //    
+    //}
+
+    public static void printaMenu(Heroi heroi, Inimigo inimigo, MaoDoJogador maoDoJogador,
             int energia,
             int energiaMaxima) {
         System.out.println("\n=-=\n" +
@@ -25,11 +28,12 @@ public class App {
                 inimigo.getNome() + " (" + inimigo.getVida() + '/' + inimigo.getVidaMaxima() + ") ("
                 + inimigo.getEscudo() + " de escudo)\n" +
                 "\n" +
-                energia + '/' + energiaMaxima + " de Energia disponível\n" +
-                "1 - Usar " + cartaDano.getNome() + "\n" +
-                "2 - Usar " + cartaEscudo.getNome() + "\n" +
-                "3 - Encerrar turno\n");
-
+                energia + '/' + energiaMaxima + " de Energia disponível\n");
+        int i = 0;
+        for (; i < maoDoJogador.getTamanho(); i++){
+            System.out.println((i+1) + " - " + maoDoJogador.getCarta(i).getNome());
+        }
+        System.out.println((i+1) + " - Encerrar Turno" );
         System.out.println("Escolha: ");
     }
 
@@ -38,36 +42,49 @@ public class App {
         return escolhaPlayer;
     }
 
-    private static void novoTurno(Scanner scan, Heroi heroi, Inimigo inimigo, CartaDano cartaDano,
-            CartaEscudo cartaEscudo, int energiaMaxima) {
+    private static void novoTurno(Scanner scan, Tabuleiro tabuleiro, PilhaDeCompra pilhaDeCompra, PilhaDeDescarte pilhaDeDescarte, MaoDoJogador maoDoJogador, int energiaMaxima) {
+        Heroi heroi = tabuleiro.getHeroi();
+        Inimigo inimigo = tabuleiro.getinimigo();
+
         heroi.setarEscudo(0);
+
         int energia = energiaMaxima;
         boolean emTurno = true;
+
+        if(pilhaDeCompra.isempty()){
+            pilhaDeDescarte.reabastecerCompra(pilhaDeCompra);
+        }
+        
+         // DEPOIS PRECISAMOS FAZER UMA VARIÁVEL PARA A CAPACIDADE
+
+        while(!maoDoJogador.estaCheia()){
+            maoDoJogador.addCarta(pilhaDeCompra.pop());
+        }
+
         while (emTurno) {
             clearScreen();
-            printaMenu(heroi, inimigo, cartaDano, cartaEscudo, energia, energiaMaxima);
-            int escolhaPlayer = leEscolhaPlayer(scan);
-            switch (escolhaPlayer) {
-                case 1:
-                    if (cartaDano.usarSePossivel(inimigo, energia)) {
-                        energia -= cartaDano.getCusto();
-                    }
-                    break;
-                case 2:
-                    if (cartaEscudo.usarSePossivel(heroi, energia)) {
-                        energia -= cartaEscudo.getCusto();
-                    }
-                    break;
-                case 3:
-                    emTurno = false;
-                    break;
+            printaMenu(heroi, inimigo, maoDoJogador, energia, energiaMaxima);
 
-                default:
-                    // comando inválido
-                    break;
-            }
             if (!inimigo.estaVivo()) {
                 break;
+            }
+
+            int escolhaPlayer = leEscolhaPlayer(scan) - 1;
+            if (escolhaPlayer >= 0 && escolhaPlayer != maoDoJogador.getTamanho()){
+                Carta carta = maoDoJogador.getCarta(escolhaPlayer);
+                
+                if(carta.usarSePossivel(tabuleiro, energia)){
+                    energia -= carta.getCusto();
+                    pilhaDeDescarte.push(carta);
+                    maoDoJogador.removeCarta(escolhaPlayer);
+                }
+                continue;
+
+            }else if(escolhaPlayer >= 0 && escolhaPlayer == maoDoJogador.getTamanho()){
+                emTurno = false;
+                maoDoJogador.descartarTudo(pilhaDeDescarte);
+                continue;
+            } else{ // NÃO TENHO CERTEZA DE COMO RESOLVER PARA UM VALOR ALEATÓRIO DE NÚMERO
             }
 
         }
@@ -75,6 +92,8 @@ public class App {
         if (inimigo.estaVivo()) {
             heroi.receberDano(inimigo.getDano());
         }
+
+
     }
 
     public static void clearScreen() {
@@ -86,15 +105,28 @@ public class App {
 
         Scanner scan = new Scanner(System.in);
 
+        ArrayList<Carta> listaInventarioJogador = new ArrayList<Carta>();
+
+
         Heroi heroi = new Heroi("Capitão Cabra", 10, 0);
         Inimigo inimigo = new Inimigo("Gosma", 10, 0, 2);
-        CartaDano espadaSuprema = new CartaDano("Espadada Suprema", "", 1, 3);
-        CartaEscudo escudoSupremo = new CartaEscudo("Escudo Supremo", "", 1, 3);
+        Tabuleiro tabuleiro = new Tabuleiro(heroi, inimigo);
+
+        CartaDano laserCinético = new CartaDano("Laser Cinético", "Atira luz estimulada por emissão de radiação, pesquise a sigla!", 1, 3);
+        CartaDano sabreDeFotons = new CartaDano("Sabre de Fótons", "Consegue atravessar quase qualquer coisa. \nQualquer semelhança é mera coencidência", 2, 4);
+        CartaEscudo escudoEletromagneticoGrande = new CartaEscudo("Escudo Eletromagnético Grande", "Crie um campo magnético em volta de si, a única fraqueza do sabre de fótons", 2, 5);
+        CartaEscudo escudoEletromagneticoPequeno = new CartaEscudo("Escudo Eletromagnético Pequeno", "Crie um campo magnético em volta de si, a única fraqueza do sabre de fótons", 1, 2);
+        
+        listaInventarioJogador.add(laserCinético); listaInventarioJogador.add(sabreDeFotons); listaInventarioJogador.add(escudoEletromagneticoGrande); listaInventarioJogador.add(escudoEletromagneticoPequeno);
 
         int energiaMaxima = 3;
 
+        PilhaDeCompra pilhaDeCompra = new PilhaDeCompra(listaInventarioJogador);
+        PilhaDeDescarte pilhaDeDescarte = new PilhaDeDescarte();
+        MaoDoJogador maoDoJogador = new MaoDoJogador(2);
+
         while (heroi.estaVivo() && inimigo.estaVivo()) {
-            novoTurno(scan, heroi, inimigo, espadaSuprema, escudoSupremo, energiaMaxima);
+            novoTurno(scan, tabuleiro, pilhaDeCompra, pilhaDeDescarte, maoDoJogador, energiaMaxima);
         }
 
         if (heroi.estaVivo())

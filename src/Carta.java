@@ -9,7 +9,7 @@ public abstract class Carta {
         this.custo = custo;
     }
 
-    public abstract void usar(Tabuleiro tabuleiro);
+    public abstract boolean usarSePossivel(Tabuleiro tabuleiro, int energiaDisponivel);
 
     public String getNome() {
         return nome;
