@@ -35,5 +35,12 @@ public class MaoDoJogador {
         this.mao.remove(index);
         this.tamanho --;
     }
+    public void descartarTudo(PilhaDeDescarte pilhaDeDescarte){
+        while(this.mao.size() != 0){
+            pilhaDeDescarte.push(this.mao.get(0));
+            this.mao.remove(0);
+            this.tamanho --;
+        }
+    }
 
 }
