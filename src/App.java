@@ -42,27 +42,33 @@ public class App {
         return escolhaPlayer;
     }
 
-    private static void novoTurno(Scanner scan, Tabuleiro tabuleiro, PilhaDeCompra pilhaDeCompra, PilhaDeDescarte pilhaDeDescarte, int energiaMaxima) {
+    private static void novoTurno(Scanner scan, Tabuleiro tabuleiro, PilhaDeCompra pilhaDeCompra, PilhaDeDescarte pilhaDeDescarte, MaoDoJogador maoDoJogador, int energiaMaxima) {
         Heroi heroi = tabuleiro.getHeroi();
         Inimigo inimigo = tabuleiro.getinimigo();
 
         heroi.setarEscudo(0);
+
+        int energia = energiaMaxima;
+        boolean emTurno = true;
+
         if(pilhaDeCompra.isempty()){
             pilhaDeDescarte.reabastecerCompra(pilhaDeCompra);
         }
         
-        MaoDoJogador maoDoJogador = new MaoDoJogador(2); // DEPOIS PRECISAMOS FAZER UMA VARIÁVEL PARA A CAPACIDADE
+         // DEPOIS PRECISAMOS FAZER UMA VARIÁVEL PARA A CAPACIDADE
 
         while(!maoDoJogador.estaCheia()){
             maoDoJogador.addCarta(pilhaDeCompra.pop());
         }
 
-        int energia = energiaMaxima;
-        boolean emTurno = true;
-
         while (emTurno) {
             clearScreen();
             printaMenu(heroi, inimigo, maoDoJogador, energia, energiaMaxima);
+
+            if (!inimigo.estaVivo()) {
+                break;
+            }
+
             int escolhaPlayer = leEscolhaPlayer(scan) - 1;
             if (escolhaPlayer >= 0 && escolhaPlayer != maoDoJogador.getTamanho()){
                 Carta carta = maoDoJogador.getCarta(escolhaPlayer);
@@ -76,12 +82,9 @@ public class App {
 
             }else if(escolhaPlayer >= 0 && escolhaPlayer == maoDoJogador.getTamanho()){
                 emTurno = false;
+                maoDoJogador.descartarTudo(pilhaDeDescarte);
                 continue;
-            }
-
-            if (!inimigo.estaVivo()) {
-                printaMenu(heroi, inimigo, maoDoJogador, energia, energiaMaxima);
-                continue;
+            } else{ // NÃO TENHO CERTEZA DE COMO RESOLVER PARA UM VALOR ALEATÓRIO DE NÚMERO
             }
 
         }
@@ -120,9 +123,10 @@ public class App {
 
         PilhaDeCompra pilhaDeCompra = new PilhaDeCompra(listaInventarioJogador);
         PilhaDeDescarte pilhaDeDescarte = new PilhaDeDescarte();
+        MaoDoJogador maoDoJogador = new MaoDoJogador(2);
 
         while (heroi.estaVivo() && inimigo.estaVivo()) {
-            novoTurno(scan, tabuleiro, pilhaDeCompra, pilhaDeDescarte, energiaMaxima);
+            novoTurno(scan, tabuleiro, pilhaDeCompra, pilhaDeDescarte, maoDoJogador, energiaMaxima);
         }
 
         if (heroi.estaVivo())
