@@ -17,6 +17,7 @@ public abstract class Entidade {
         int dano_verdadeiro = escudo - dano;
         if (dano_verdadeiro < 0) {
             vida -= Math.abs(dano_verdadeiro);
+            if (vida <= 0) vida = 0;
             escudo = 0;
         } else if (dano_verdadeiro == 0) {
             escudo = 0;
