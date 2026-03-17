@@ -3,49 +3,30 @@ import java.util.Random;
 
 public class PilhaDeDescarte {
     private ArrayList<Carta> pilha = new ArrayList<Carta>();
-<<<<<<< HEAD
     private Random random = new Random();
-=======
->>>>>>> eec19276c9188608eeb640d8b21bf44309deac73
 
     public PilhaDeDescarte(Carta[] cartas) {
-        for (int i = 0; i < cartas.length; i++) {
-            this.pilha.add(cartas[i]);
+        for (Carta carta : cartas) {
+            this.pilha.add(carta);
         }
     }
 
-<<<<<<< HEAD
-    public Carta pop() {
-        Carta primeiraCarta = pilha.get(0);
-        pilha.remove(0);
-        return primeiraCarta;
-    }
-
     public Carta popRandom() {
-        int randomIndex = random.nextInt();
-        Carta cartaEscolhida = pilha.get(randomIndex);
-        pilha.remove(randomIndex);
-        return cartaEscolhida;
+        int randomIndex = this.random.nextInt(pilha.size());
+        return this.pilha.remove(randomIndex);
     }
 
     public void push(Carta carta) {
         pilha.add(carta);
-=======
-    public void push(Carta carta) {
-        pilha.addFirst(carta);
     }
 
-    public void reabastecerCompra(PilhaDeCompra pilhaDeCompra){
-        Random random = new Random();
-        while(pilha.size() != 0){
-            int i = random.nextInt(pilha.size());
-            pilhaDeCompra.push(pilha.get(i));
-            pilha.remove(i);
+    public void reabastecerCompra(PilhaDeCompra pilhaDeCompra) {
+        while (this.pilha.size() != 0) {
+            pilhaDeCompra.push(this.popRandom());
         }
     }
 
-    public boolean isempty(){
+    public boolean isEmpty() {
         return pilha.size() == 0;
->>>>>>> eec19276c9188608eeb640d8b21bf44309deac73
     }
 }
