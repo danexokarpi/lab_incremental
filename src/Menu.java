@@ -15,20 +15,29 @@ public class Menu {
         System.out.printf("%d/%d de energia disponível\n", energia, energiaMaxima);
     }
 
-    public void escolhaForaDeAlcance() {
-        // Número escolhido não é uma opção válida.
-    }
-
-    public void energiaInsuficiente() {
-        // Carta escolhida possui um custo acima da energia atual.
-    }
-
     public void escolhas(MaoDoJogador mao) {
         int i = 0;
         while (i < mao.getTamanho()) {
             System.out.printf("%d - %s\n", i + 1, mao.getCarta(i).getNome());
         }
         System.out.printf("%d - Encerrar Turno\n", i + 1);
+    }
+
+    public void escolhaForaDeAlcance() {
+        System.out.printf("ATENÇÃO: escolha uma opção dentre os números listados.\n");
+    }
+
+    public void energiaInsuficiente() {
+        System.out.printf(
+                "ENERGIA INSUFICIENTE: a carta selecionada possui custo de energia superior ao nível de energia atual.");
+    }
+
+    public void playerGanhou() {
+        System.out.println("\nParabéns! Você GANHOU\n");
+    }
+
+    public void playerPerdeu() {
+        System.out.println("\nQue pena! Você perdeu\n");
     }
 
     public int leEscolhaPlayer() {

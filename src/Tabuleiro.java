@@ -67,20 +67,27 @@ public class Tabuleiro {
         if (pilhaDeCompra.isEmpty()) {
             pilhaDeDescarte.reabastecerCompra(pilhaDeCompra);
         }
-
-        // DEPOIS PRECISAMOS FAZER UMA VARIÁVEL PARA A CAPACIDADE
-        while (!maoDoJogador.estaCheia()) {
-            maoDoJogador.addCarta(pilhaDeCompra.popRandom());
-        }
+        pilhaDeCompra.reabastecerMao(maoDoJogador);
         heroi.setarEscudo(0);
         energia = energiaMaxima;
         boolean heroiEmTurno = true;
         while (heroiEmTurno && inimigo.estaVivo()) {
-            heroiEmTurno = jogadaDoPlayer();
+            heroiEmTurno = this.jogadaDoPlayer();
         }
 
         if (inimigo.estaVivo()) {
             heroi.receberDano(inimigo.getDano());
+        }
+    }
+
+    public void novaBatalha() {
+        while (heroi.estaVivo() && inimigo.estaVivo()) {
+            this.novoTurno();
+        }
+        if (heroi.estaVivo()) {
+            menu.playerGanhou();
+        } else {
+            menu.playerPerdeu();
         }
     }
 

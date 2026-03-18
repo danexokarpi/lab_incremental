@@ -11,6 +11,12 @@ public class PilhaDeCompra {
         }
     }
 
+    public void reabastecerMao(MaoDoJogador maoDoJogador) {
+        while (!maoDoJogador.estaCheia()) {
+            maoDoJogador.addCarta(this.popRandom());
+        }
+    }
+
     public Carta popRandom() {
         int randomIndex = random.nextInt(pilha.size());
         return this.pilha.remove(randomIndex);
