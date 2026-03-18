@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class Menu {
-    private Scanner scan = new Scanner(System.in);
+    private static Scanner scan = new Scanner(System.in);
 
     public void status(Heroi heroi, Inimigo inimigo, MaoDoJogador maoDoJogador,
             int energia,
@@ -42,7 +42,7 @@ public class Menu {
 
     public int leEscolhaPlayer() {
         System.out.printf("Escolha: ");
-        int escolhaPlayer = this.scan.nextInt();
+        int escolhaPlayer = scan.nextInt();
         return escolhaPlayer;
     }
 

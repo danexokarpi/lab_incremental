@@ -3,7 +3,7 @@ import java.util.Random;
 
 public class PilhaDeCompra {
     private ArrayList<Carta> pilha = new ArrayList<Carta>();
-    private Random random = new Random();
+    private static Random random = new Random();
 
     public PilhaDeCompra(ArrayList<Carta> cartasInventario) {
         for (Carta carta : cartasInventario) {

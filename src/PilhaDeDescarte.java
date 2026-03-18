@@ -3,10 +3,10 @@ import java.util.Random;
 
 public class PilhaDeDescarte {
     private ArrayList<Carta> pilha = new ArrayList<Carta>();
-    private Random random = new Random();
+    private static Random random = new Random();
 
     public Carta popRandom() {
-        int randomIndex = this.random.nextInt(pilha.size());
+        int randomIndex = random.nextInt(pilha.size());
         return this.pilha.remove(randomIndex);
     }
 
