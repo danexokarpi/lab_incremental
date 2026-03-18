@@ -3,11 +3,7 @@ import java.util.Arrays;
 
 public class App {
 
-    public static void main(String[] args) {
-        Heroi heroi = new Heroi("Capitão Cabra", 10, 0);
-        Inimigo inimigo = new Inimigo("Gosma", 10, 0, 2);
-        int energiaMaxima = 3;
-
+    private static ArrayList<Carta> criaBaralho() {
         CartaDano laserCinético = new CartaDano("Laser Cinético",
                 "Atira luz estimulada por emissão de radiação, pesquise a sigla!", 1, 3);
         CartaDano sabreDeFotons = new CartaDano("Sabre de Fótons",
@@ -17,11 +13,19 @@ public class App {
         CartaEscudo escudoEletromagneticoPequeno = new CartaEscudo("Escudo Eletromagnético Pequeno",
                 "Crie um campo magnético em volta de si; a única fraqueza do sabre de fótons", 1, 2);
 
-        Carta[] listaInventarioDoJogador = { laserCinético, sabreDeFotons,
+        Carta[] listaBaralho = { laserCinético, sabreDeFotons,
                 escudoEletromagneticoGrande, escudoEletromagneticoPequeno };
-        ArrayList<Carta> listaInventarioJogador = new ArrayList<Carta>(Arrays.asList(listaInventarioDoJogador));
+        return new ArrayList<Carta>(Arrays.asList(listaBaralho));
+    }
 
-        Tabuleiro tabuleiro = new Tabuleiro(heroi, inimigo, listaInventarioJogador, energiaMaxima);
+    public static void main(String[] args) {
+        Heroi heroi = new Heroi("Capitão Cabra", 10, 0);
+        Inimigo inimigo = new Inimigo("Gosma", 10, 0, 2);
+        int energiaMaxima = 3;
+
+        ArrayList<Carta> baralho = criaBaralho();
+
+        Tabuleiro tabuleiro = new Tabuleiro(heroi, inimigo, baralho, energiaMaxima);
         tabuleiro.novaBatalha();
     }
 
