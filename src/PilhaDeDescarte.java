@@ -5,12 +5,6 @@ public class PilhaDeDescarte {
     private ArrayList<Carta> pilha = new ArrayList<Carta>();
     private Random random = new Random();
 
-    public PilhaDeDescarte(Carta[] cartas) {
-        for (Carta carta : cartas) {
-            this.pilha.add(carta);
-        }
-    }
-
     public Carta popRandom() {
         int randomIndex = this.random.nextInt(pilha.size());
         return this.pilha.remove(randomIndex);
