@@ -6,17 +6,24 @@ public class Menu {
     public void status(Heroi heroi, Inimigo inimigo, MaoDoJogador maoDoJogador,
             int energia,
             int energiaMaxima) {
-        System.out.println("\n=-=\n" +
-                heroi.getNome() + " (" + heroi.getVida() + '/' + heroi.getVidaMaxima() + ") (" + heroi.getEscudo()
-                + " de escudo)\n" +
-                "vs\n" +
-                inimigo.getNome() + " (" + inimigo.getVida() + '/' + inimigo.getVidaMaxima() + ") ("
-                + inimigo.getEscudo() + " de escudo)\n" +
-                "\n" +
-                energia + '/' + energiaMaxima + " de Energia disponível\n");
+        System.out.printf("=-=\n");
+        System.out.printf("%s (%d/%d) (%d de escudo)\n", heroi.getNome(),
+                heroi.getVida(), heroi.getVida(), heroi.getEscudo());
+        System.out.printf("vs\n");
+        System.out.printf("%s (%d/%d) (%d de escudo)\n\n", inimigo.getNome(),
+                inimigo.getVida(), inimigo.getVida(), inimigo.getEscudo());
+        System.out.printf("%d/%d de energia disponível\n", energia, energiaMaxima);
     }
 
-    public void mao(MaoDoJogador mao) {
+    public void escolhaForaDeAlcance() {
+        // Número escolhido não é uma opção válida.
+    }
+
+    public void energiaInsuficiente() {
+        // Carta escolhida possui um custo acima da energia atual.
+    }
+
+    public void escolhas(MaoDoJogador mao) {
         int i = 0;
         while (i < mao.getTamanho()) {
             System.out.printf("%d - %s\n", i + 1, mao.getCarta(i).getNome());
@@ -28,5 +35,10 @@ public class Menu {
         System.out.printf("Escolha: ");
         int escolhaPlayer = this.scan.nextInt();
         return escolhaPlayer;
+    }
+
+    public void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 }
