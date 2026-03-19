@@ -25,7 +25,7 @@ public class App {
 
         ArrayList<Carta> baralho = criaBaralho();
 
-        Tabuleiro tabuleiro = new Tabuleiro(heroi, inimigo, baralho, energiaMaxima);
+        Tabuleiro tabuleiro = new Tabuleiro(heroi, inimigo, baralho, energiaMaxima, 2);
         tabuleiro.novaBatalha();
     }
 

@@ -8,10 +8,10 @@ public class Menu {
             int energiaMaxima) {
         System.out.printf("=-=\n");
         System.out.printf("%s (%d/%d) (%d de escudo)\n", heroi.getNome(),
-                heroi.getVida(), heroi.getVida(), heroi.getEscudo());
+                heroi.getVida(), heroi.getVidaMaxima(), heroi.getEscudo());
         System.out.printf("vs\n");
         System.out.printf("%s (%d/%d) (%d de escudo)\n\n", inimigo.getNome(),
-                inimigo.getVida(), inimigo.getVida(), inimigo.getEscudo());
+                inimigo.getVida(), inimigo.getVidaMaxima(), inimigo.getEscudo());
         System.out.printf("%d/%d de energia disponível\n", energia, energiaMaxima);
     }
 
@@ -19,6 +19,7 @@ public class Menu {
         int i = 0;
         while (i < mao.getTamanho()) {
             System.out.printf("%d - %s\n", i + 1, mao.getCarta(i).getNome());
+            i++;
         }
         System.out.printf("%d - Encerrar Turno\n", i + 1);
     }
@@ -29,7 +30,7 @@ public class Menu {
 
     public void energiaInsuficiente() {
         System.out.printf(
-                "ENERGIA INSUFICIENTE: a carta selecionada possui custo de energia superior ao nível de energia atual.");
+                "ENERGIA INSUFICIENTE: a carta selecionada possui custo de energia superior ao nível de energia atual.\n");
     }
 
     public void playerGanhou() {

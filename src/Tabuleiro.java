@@ -10,12 +10,13 @@ public class Tabuleiro {
     private int energia, energiaMaxima;
 
     public Tabuleiro(Heroi heroi, Inimigo inimigo, ArrayList<Carta> cartasInventário,
-            int energiaMaxima) {
+            int energiaMaxima, int capacidadeDaMao) {
         this.menu = new Menu();
         this.heroi = heroi;
         this.inimigo = inimigo;
         this.pilhaDeCompra = new PilhaDeCompra(cartasInventário);
         this.pilhaDeDescarte = new PilhaDeDescarte();
+        this.maoDoJogador = new MaoDoJogador(capacidadeDaMao);
         this.energiaMaxima = energiaMaxima;
     }
 
@@ -31,6 +32,8 @@ public class Tabuleiro {
         boolean heroiEmTurno = true;
         boolean escolhaEhValida = false;
         int escolhaDeEncerrar = maoDoJogador.getTamanho() + 1;
+        menu.clearScreen();
+        menu.status(heroi, inimigo, maoDoJogador, energia, energiaMaxima);
         while (!escolhaEhValida) {
             menu.escolhas(maoDoJogador);
             int escolhaPlayer = menu.leEscolhaPlayer();
@@ -54,7 +57,7 @@ public class Tabuleiro {
                 menu.energiaInsuficiente();
                 continue;
             }
-            cartaEscolhida.usar();
+            cartaEscolhida.usar(this);
             energia -= cartaEscolhida.getCusto();
             pilhaDeDescarte.push(cartaEscolhida);
             maoDoJogador.removeCarta(escolhaPlayer - 1);
@@ -84,6 +87,8 @@ public class Tabuleiro {
         while (heroi.estaVivo() && inimigo.estaVivo()) {
             this.novoTurno();
         }
+        menu.clearScreen();
+        menu.status(heroi, inimigo, maoDoJogador, energia, energiaMaxima);
         if (heroi.estaVivo()) {
             menu.playerGanhou();
         } else {
