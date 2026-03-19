@@ -3,25 +3,24 @@ import java.util.Random;
 
 public class PilhaDeDescarte {
     private ArrayList<Carta> pilha = new ArrayList<Carta>();
+    private static Random random = new Random();
 
-    public PilhaDeDescarte() {
-        //
+    public Carta popRandom() {
+        int randomIndex = random.nextInt(pilha.size());
+        return this.pilha.remove(randomIndex);
     }
 
     public void push(Carta carta) {
-        pilha.addFirst(carta);
+        pilha.add(carta);
     }
 
-    public void reabastecerCompra(PilhaDeCompra pilhaDeCompra){
-        Random random = new Random();
-        while(pilha.size() != 0){
-            int i = random.nextInt(pilha.size());
-            pilhaDeCompra.push(pilha.get(i));
-            pilha.remove(i);
+    public void reabastecerCompra(PilhaDeCompra pilhaDeCompra) {
+        while (this.pilha.size() != 0) {
+            pilhaDeCompra.push(this.popRandom());
         }
     }
 
-    public boolean isempty(){
+    public boolean isEmpty() {
         return pilha.size() == 0;
     }
 }
