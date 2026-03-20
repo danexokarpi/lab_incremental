@@ -11,6 +11,8 @@ public abstract class Carta {
 
     public abstract void usar(Tabuleiro tabuleiro);
 
+    public abstract String getEfeitoCusto();
+
     public String getNome() {
         return nome;
     }

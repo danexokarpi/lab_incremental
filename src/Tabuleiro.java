@@ -79,7 +79,7 @@ public class Tabuleiro {
         }
 
         if (inimigo.estaVivo()) {
-            heroi.receberDano(inimigo.getDano());
+            inimigo.agir(this);
         }
     }
 

@@ -25,6 +25,11 @@ public abstract class Entidade {
             escudo = dano_verdadeiro;
         }
     }
+    
+    public void curar(int cura){
+        this.vida += cura;
+        if(vida > vidaMaxima) vida = vidaMaxima;
+    }
 
     public void receberEscudo(int escudoRecebido) {
         escudo += escudoRecebido;
@@ -45,6 +50,7 @@ public abstract class Entidade {
     public String getNome() {
         return nome;
     }
+
 
     public int getVidaMaxima() {
         return vidaMaxima;

@@ -6,6 +6,10 @@ public class CartaDano extends Carta {
         this.dano = dano;
     }
 
+    public String getEfeitoCusto(){
+        return "(Dano - " + this.dano + ") (Custo - " + getCusto() + ")";
+    }
+
     public void usar(Tabuleiro tabuleiro) {
         tabuleiro.getInimigo().receberDano(dano);
     }

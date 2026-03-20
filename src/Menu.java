@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Menu {
@@ -10,15 +11,16 @@ public class Menu {
         System.out.printf("%s (%d/%d) (%d de escudo)\n", heroi.getNome(),
                 heroi.getVida(), heroi.getVidaMaxima(), heroi.getEscudo());
         System.out.printf("vs\n");
-        System.out.printf("%s (%d/%d) (%d de escudo)\n\n", inimigo.getNome(),
+        System.out.printf("%s (%d/%d) (%d de escudo)\n", inimigo.getNome(),
                 inimigo.getVida(), inimigo.getVidaMaxima(), inimigo.getEscudo());
+        System.out.printf("Irá %s\n\n", inimigo.imprimirProxAcao());
         System.out.printf("%d/%d de energia disponível\n", energia, energiaMaxima);
     }
 
     public void escolhas(MaoDoJogador mao) {
         int i = 0;
         while (i < mao.getTamanho()) {
-            System.out.printf("%d - %s\n", i + 1, mao.getCarta(i).getNome());
+            System.out.printf("%d - %s %s \n", i + 1, mao.getCarta(i).getNome(), mao.getCarta(i).getEfeitoCusto());
             i++;
         }
         System.out.printf("%d - Encerrar Turno\n", i + 1);
@@ -41,10 +43,24 @@ public class Menu {
         System.out.println("\nQue pena! Você perdeu\n");
     }
 
+    public void estradaNaoNumerica() {
+        System.out.println("\n ATENÇÂO: A escolha deve ser um número dentre os listados");
+    }
+
     public int leEscolhaPlayer() {
+        boolean inputValido = false;
+        int numero = 0;
         System.out.printf("Escolha: ");
-        int escolhaPlayer = scan.nextInt();
-        return escolhaPlayer;
+        while(!inputValido){
+            try{
+                int escolhaPlayer = scan.nextInt();
+                return escolhaPlayer;
+            } catch (InputMismatchException e){
+                scan.next();
+                
+            }
+        }
+        return 0;
     }
 
     public void clearScreen() {
