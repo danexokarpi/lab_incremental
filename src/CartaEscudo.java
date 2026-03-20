@@ -5,6 +5,10 @@ public class CartaEscudo extends Carta {
         super(nome, descricao, custo);
         this.escudo = escudo;
     }
+    
+    public String getEfeitoCusto(){
+        return "(Escudo - " + this.escudo + ") (Custo - " + getCusto() + ")";
+    }
 
     public void usar(Tabuleiro tabuleiro) {
         tabuleiro.getHeroi().receberEscudo(escudo);
