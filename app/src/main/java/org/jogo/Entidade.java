@@ -1,3 +1,5 @@
+package org.jogo;
+
 public abstract class Entidade {
     private String nome;
     private int vida;
@@ -17,7 +19,8 @@ public abstract class Entidade {
         int dano_verdadeiro = escudo - dano;
         if (dano_verdadeiro < 0) {
             vida -= Math.abs(dano_verdadeiro);
-            if (vida <= 0) vida = 0;
+            if (vida <= 0)
+                vida = 0;
             escudo = 0;
         } else if (dano_verdadeiro == 0) {
             escudo = 0;
@@ -25,10 +28,11 @@ public abstract class Entidade {
             escudo = dano_verdadeiro;
         }
     }
-    
-    public void curar(int cura){
+
+    public void curar(int cura) {
         this.vida += cura;
-        if(vida > vidaMaxima) vida = vidaMaxima;
+        if (vida > vidaMaxima)
+            vida = vidaMaxima;
     }
 
     public void receberEscudo(int escudoRecebido) {
@@ -50,7 +54,6 @@ public abstract class Entidade {
     public String getNome() {
         return nome;
     }
-
 
     public int getVidaMaxima() {
         return vidaMaxima;

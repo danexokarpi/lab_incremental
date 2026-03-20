@@ -1,3 +1,5 @@
+package org.jogo;
+
 import java.util.ArrayList;
 
 public class Tabuleiro {

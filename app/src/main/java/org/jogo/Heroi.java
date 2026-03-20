@@ -1,3 +1,5 @@
+package org.jogo;
+
 public class Heroi extends Entidade {
 
     public Heroi(String nome, int vidaMaxima, int escudo) {
@@ -5,4 +7,3 @@ public class Heroi extends Entidade {
     }
 
 }
-

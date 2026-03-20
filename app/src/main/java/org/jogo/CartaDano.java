@@ -1,3 +1,5 @@
+package org.jogo;
+
 public class CartaDano extends Carta {
     private int dano;
 
@@ -6,7 +8,7 @@ public class CartaDano extends Carta {
         this.dano = dano;
     }
 
-    public String getEfeitoCusto(){
+    public String getEfeitoCusto() {
         return "(Dano - " + this.dano + ") (Custo - " + getCusto() + ")";
     }
 

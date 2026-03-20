@@ -1,3 +1,5 @@
+package org.jogo;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -51,13 +53,13 @@ public class Menu {
         boolean inputValido = false;
         int numero = 0;
         System.out.printf("Escolha: ");
-        while(!inputValido){
-            try{
+        while (!inputValido) {
+            try {
                 int escolhaPlayer = scan.nextInt();
                 return escolhaPlayer;
-            } catch (InputMismatchException e){
+            } catch (InputMismatchException e) {
                 scan.next();
-                
+
             }
         }
         return 0;
