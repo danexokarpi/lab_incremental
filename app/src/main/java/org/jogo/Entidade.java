@@ -1,16 +1,20 @@
 package org.jogo;
 
+import java.util.ArrayList;
+
 public abstract class Entidade {
     private String nome;
     private int vida;
     private int vidaMaxima;
     private int escudo;
+    private ArrayList<Efeito> efeitos;
 
     public Entidade(String nome, int vidaMaxima, int escudo) {
         this.nome = nome;
         this.vidaMaxima = vidaMaxima;
         this.escudo = escudo;
         this.vida = vidaMaxima;
+        this.efeitos = new ArrayList<Efeito>();
     }
 
     // Sistema de dano verdadeiro. Basicamente reduz o escudo do dano e aplica
@@ -41,6 +45,23 @@ public abstract class Entidade {
 
     public void setarEscudo(int escudoDefinido) {
         escudo = escudoDefinido;
+    }
+
+    private Efeito getEffect(Efeito efeitoRecebido) {
+        for (Efeito efeitoPortado : this.efeitos) {
+            if (efeitoPortado.getNome() == efeitoRecebido.getNome())
+                return efeitoPortado;
+        }
+        return null;
+    }
+
+    public void aplicarEfeito(Efeito efeitoRecebido) {
+        Efeito efeitoPortado = this.getEffect(efeitoRecebido);
+        if (efeitoPortado == null) {
+            this.efeitos.add(efeitoRecebido);
+        } else {
+            efeitoPortado.somaAcumulos(efeitoRecebido.getAcumulos());
+        }
     }
 
     public boolean estaVivo() {
