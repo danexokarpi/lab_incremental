@@ -81,6 +81,7 @@ public class Tabuleiro {
         }
 
         if (inimigo.estaVivo()) {
+            inimigo.setarEscudo(0);
             inimigo.agir(this);
         }
     }
