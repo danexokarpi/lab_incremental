@@ -49,7 +49,6 @@ public class Menu {
 
     public int leEscolhaPlayer() {
         boolean inputValido = false;
-        int numero = 0;
         System.out.printf("Escolha: ");
         while(!inputValido){
             try{
