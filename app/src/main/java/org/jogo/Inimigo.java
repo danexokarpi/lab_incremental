@@ -1,3 +1,5 @@
+package org.jogo;
+
 import java.util.Random;
 
 public class Inimigo extends Entidade {
@@ -8,11 +10,12 @@ public class Inimigo extends Entidade {
     private char[] listaDeAcoes;
     private char proximaAcao;
 
-    public Inimigo(String nome, int vidaMaxima, int escudo, int dano, int cura, int escudoAoProteger, char[] listaDeAcoes) {
+    public Inimigo(String nome, int vidaMaxima, int escudo, int dano, int cura, int escudoAoProteger,
+            char[] listaDeAcoes) {
         super(nome, vidaMaxima, escudo);
         this.dano = dano;
         this.escudoAoProteger = escudoAoProteger;
-        this.listaDeAcoes = listaDeAcoes; 
+        this.listaDeAcoes = listaDeAcoes;
         this.cura = cura;
         this.proximaAcao = listaDeAcoes[random.nextInt(listaDeAcoes.length)];
     }
@@ -45,7 +48,6 @@ public class Inimigo extends Entidade {
                 return "";
         }
     }
-
 
     public int getDano() {
         return this.dano;

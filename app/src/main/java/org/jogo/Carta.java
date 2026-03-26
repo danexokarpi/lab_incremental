@@ -1,3 +1,5 @@
+package org.jogo;
+
 public abstract class Carta {
     private String nome;
     private String descricao;

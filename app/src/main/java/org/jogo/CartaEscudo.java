@@ -1,3 +1,5 @@
+package org.jogo;
+
 public class CartaEscudo extends Carta {
     private int escudo;
 
@@ -5,8 +7,8 @@ public class CartaEscudo extends Carta {
         super(nome, descricao, custo);
         this.escudo = escudo;
     }
-    
-    public String getEfeitoCusto(){
+
+    public String getEfeitoCusto() {
         return "(Escudo - " + this.escudo + ") (Custo - " + getCusto() + ")";
     }
 

@@ -1,3 +1,5 @@
+package org.jogo;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -20,7 +22,7 @@ public class App {
 
     public static void main(String[] args) {
         Heroi heroi = new Heroi("Capitão Cabra", 15, 0);
-        char [] acoes = {'A', 'E'};
+        char[] acoes = { 'A', 'E' };
         Inimigo inimigo = new Inimigo("Escorpião Gigante", 20, 0, 4, 0, 2, acoes);
         int energiaMaxima = 3;
 

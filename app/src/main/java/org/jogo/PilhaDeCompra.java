@@ -1,9 +1,23 @@
+package org.jogo;
+
 import java.util.ArrayList;
 import java.util.Random;
 
-public class PilhaDeDescarte {
+public class PilhaDeCompra {
     private ArrayList<Carta> pilha = new ArrayList<Carta>();
     private static Random random = new Random();
+
+    public PilhaDeCompra(ArrayList<Carta> cartasInventario) {
+        for (Carta carta : cartasInventario) {
+            this.pilha.add(carta);
+        }
+    }
+
+    public void reabastecerMao(MaoDoJogador maoDoJogador) {
+        while (!maoDoJogador.estaCheia()) {
+            maoDoJogador.addCarta(this.popRandom());
+        }
+    }
 
     public Carta popRandom() {
         int randomIndex = random.nextInt(pilha.size());
@@ -11,13 +25,7 @@ public class PilhaDeDescarte {
     }
 
     public void push(Carta carta) {
-        pilha.add(carta);
-    }
-
-    public void reabastecerCompra(PilhaDeCompra pilhaDeCompra) {
-        while (this.pilha.size() != 0) {
-            pilhaDeCompra.push(this.popRandom());
-        }
+        this.pilha.add(carta);
     }
 
     public boolean isEmpty() {

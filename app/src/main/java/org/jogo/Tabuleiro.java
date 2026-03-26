@@ -1,3 +1,5 @@
+package org.jogo;
+
 import java.util.ArrayList;
 
 public class Tabuleiro {
@@ -79,6 +81,7 @@ public class Tabuleiro {
         }
 
         if (inimigo.estaVivo()) {
+            inimigo.setarEscudo(0);
             inimigo.agir(this);
         }
     }

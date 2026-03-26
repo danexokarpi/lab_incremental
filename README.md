@@ -8,27 +8,7 @@ O projeto foi desenvolvido em **Java** e executado via terminal.
 
 # Estrutura do Projeto
 
-O projeto segue a estrutura padrão criada pelo VSCode para projetos Java:
-
-```text
-.
-├─ src/
-│  ├─ App.java
-│  ├─ Heroi.java
-│  ├─ Inimigo.java
-│  ├─ CartaDano.java
-│  ├─ CartaEscudo.java
-│  └─ ...
-├─ lib/
-├─ bin/
-└─ README.md
-```
-
-Onde:
-
-- **src** — contém todos os arquivos `.java` do projeto  
-- **lib** — pasta reservada para dependências externas (não utilizada neste projeto)  
-- **bin** — arquivos `.class` gerados após a compilação  
+O projeto segue a estrutura padrão de Java criada pelo gradle:
 
 # Como Compilar o Projeto
 
@@ -37,8 +17,13 @@ No diretório raiz do projeto, execute:
 ```bash
 javac -d bin $(find src -name "*.java")
 ```
-
 Esse comando compila todos os arquivos `.java` dentro da pasta `src` e coloca os arquivos compilados (`.class`) na pasta `bin`.
+
+Como alternativa, você pode utilizar também os comandos padrão do gradlew, como:
+
+```bash
+./gradlew build
+```
 
 # Como Executar o Projeto
 
@@ -47,6 +32,12 @@ Após compilar, execute:
 ```bash
 java -cp bin App
 ```
+ou, usando o gradlew:
+
+```bash
+./gradlew run
+```
+(o comando acima também compila o código automaticamente)
 
 Isso iniciará o programa e o sistema de combate será executado no terminal.
 
@@ -65,19 +56,18 @@ O combate termina quando:
 - o **herói é derrotado** (Vida chega à zero), ou
 - todos os **inimigos são derrotados** (O inimigo tem sua vida zerada)
 
-# Exemplo de Combate Completo
-![ezgif com-animated-gif-maker](https://github.com/user-attachments/assets/305566a9-18d8-429a-bbda-b7936698105c)
 
 # Tecnologias Utilizadas
 
 - Java 25
 - Visual Studio Code
+- Neovim
 - Git e GitHub
+- Gradle e Gradlew
 
 # Autores
 
 Projeto desenvolvido por:
 
-- Danilo Henrique Brondi Karpiuck, RA 223386
-
-- Vítor Guimarães Duarte, RA 268526
+- Danilo Henrique Brondi Karpiuck (RA 223386)
+- Vítor Guimarães Duarte (RA 268526)
