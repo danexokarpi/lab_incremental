@@ -1,12 +1,11 @@
 package org.jogo;
 
 import java.util.ArrayList;
-
 public class Tabuleiro {
     private Menu menu;
     private Heroi heroi;
     private Inimigo inimigo;
-    private ArrayList<Entidades> entidadesEmJogo;
+    private ArrayList<Entidade> entidadesEmJogo;
     private PilhaDeCompra pilhaDeCompra;
     private PilhaDeDescarte pilhaDeDescarte;
     private MaoDoJogador maoDoJogador;
@@ -90,7 +89,7 @@ public class Tabuleiro {
             inimigo.agir(this);
         }
 
-        notificarEvento(Efeito.gatilhos.FimDoRound);
+        notificarEvento(Evento.FimDoRound);
     }
 
     public void novaBatalha() {
@@ -106,9 +105,9 @@ public class Tabuleiro {
         }
     }
 
-    public void notificarEvento(int evento){
+    public void notificarEvento(Evento eventoOcorrido){
         for(Entidade entidade : entidadesEmJogo){
-            entidade.notificarEfeitos(evento);
+            entidade.notificarSeusEfeitos(eventoOcorrido);
         }
     }
 

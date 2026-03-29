@@ -65,10 +65,10 @@ public abstract class Entidade {
         }
     }
 
-    public void notificarEfeitos(int evento){
+    public void notificarSeusEfeitos(Evento eventoOcorrido){
         for (int i = efeitos.size()-1; i > 0; i --){
-            efeitos[i].receberNotificacao(evento);
-            if (!efeitos[i].isAtivo()){
+            efeitos.get(i).receberNotificacao(eventoOcorrido);
+            if (!efeitos.get(i).isAtivo()){
                 efeitos.remove(i);
             }
         }

@@ -9,13 +9,14 @@ public class Inimigo extends Entidade {
     private int escudoAoProteger;
     private char[] listaDeAcoes;
     private char proximaAcao;
-    private Efeito Efeito; 
+    private Efeito efeitoUtilizavel; 
 
     public Inimigo(String nome, int vidaMaxima, int escudo, int dano, int cura, int escudoAoProteger,
-            Efeito efeitoUtilizável ,char[] listaDeAcoes) {
+            Efeito efeitoUtilizavel ,char[] listaDeAcoes) {
         super(nome, vidaMaxima, escudo);
         this.dano = dano;
         this.escudoAoProteger = escudoAoProteger;
+        this.efeitoUtilizavel = efeitoUtilizavel;
         this.listaDeAcoes = listaDeAcoes;
         this.cura = cura;
         this.proximaAcao = listaDeAcoes[random.nextInt(listaDeAcoes.length)];
@@ -33,7 +34,7 @@ public class Inimigo extends Entidade {
                 this.receberEscudo(escudoAoProteger);
                 break;
             case 'U':
-                acharEntidadeValida(tabuleiro).aplicarEfeito(efeito);
+                acharEntidadeValida(tabuleiro).aplicarEfeito(efeitoUtilizavel);
                 break;
         }
 
@@ -53,10 +54,12 @@ public class Inimigo extends Entidade {
         }
     }
     private Entidade acharEntidadeValida(Tabuleiro tabuleiro){
-        if (efeito.getTipoDeEfeito() == "Buff"){
+        if (efeitoUtilizavel.getTipoDeEfeito() == "Buff"){
             return tabuleiro.getInimigo();
-        }else if (efeito.getTipoDeEfeito() == "Debuff"){
+        }else if (efeitoUtilizavel.getTipoDeEfeito() == "Debuff"){
             return tabuleiro.getHeroi();
+        }else{
+            return null;
         }
     }
 

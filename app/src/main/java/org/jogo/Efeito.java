@@ -18,16 +18,6 @@ public abstract class Efeito {
     }
 
 
-    public enum gatilhos{
-        FimDoRound,
-        FimDoTurnoDoJogador,
-        FimDoTurnoDeUmaEntidade,
-        AtaqueDeEntidade,
-        EntidadeRecebeDano
-
-    }
-
-
     public String getString() {
         return "[ " + nome + "(" + acumulos + "x) ]";
     }
@@ -44,6 +34,10 @@ public abstract class Efeito {
         return this.tipoDeEfeito;
     }
 
+    public Entidade getDono(){
+        return this.dono;
+    }
+
     public void setDono(Entidade dono){
         this.dono = dono;
     }
@@ -52,18 +46,18 @@ public abstract class Efeito {
         this.acumulos += acumulosRecebidos;
     }
 
-    public isAtivo(){
+    public boolean isAtivo(){
         return ativo;
     }
 
     public void subtrairAcumulo(){
-        if(acumulos>0){
+        if(acumulos > 0){
             acumulos--;
-        if(acumulos == 0){
-            this.ativo = false;
-        }
+            if(acumulos == 0){
+                this.ativo = false;
+            }
         }
     }
     
-    public abstract void receberNotificacao(int evento);
+    public abstract void receberNotificacao(Evento eventoOcorrido);
 }
