@@ -6,22 +6,18 @@ public abstract class Efeito {
     private Entidade dono;
     private int acumulos;
     private boolean ativo;
+    private String descricao;
 
-    protected Efeito (String nome, String tipoDeEfeito, int acumulos){
+    protected Efeito (String nome, String tipoDeEfeito, int acumulos, String descricao){
         this.nome = nome;
         this.tipoDeEfeito = tipoDeEfeito;
         this.dono = null;
         this.acumulos = acumulos;
+        this.descricao = descricao;
         this.ativo = acumulos > 0;
     }
-    
-    /* Os eventos são so seguintes
-    1-Fim do round
-    2-Fim do turno do Jogador
-    3-Fim do turno de uma Entidade
-    4-Ataque de Entidade
-    5-Entidade recebe dano
-    */
+
+
     public enum gatilhos{
         FimDoRound,
         FimDoTurnoDoJogador,
