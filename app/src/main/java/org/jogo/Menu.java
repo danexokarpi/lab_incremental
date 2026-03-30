@@ -3,6 +3,13 @@ package org.jogo;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Classe que opera os comandos na tela do jogador.
+ *
+ * O Menu printa as informações do jogo na tela do terminal, assim como recebe
+ * inputs
+ * do jogador.
+ */
 public class Menu {
     private static Scanner scan = new Scanner(System.in);
 
@@ -17,6 +24,29 @@ public class Menu {
                 inimigo.getVida(), inimigo.getVidaMaxima(), inimigo.getEscudo());
         System.out.printf("Irá %s\n\n", inimigo.imprimirProxAcao());
         System.out.printf("%d/%d de energia disponível\n", energia, energiaMaxima);
+    }
+
+    public void historico(Entidade emissor, char acao, Entidade receptor, int intensidadeDaAcao) {
+        switch (acao) {
+            case 'A':
+                System.out.printf("%s causou %d de dano a %s\n", emissor.getNome(),
+                        intensidadeDaAcao, receptor.getNome());
+                break;
+            case 'E':
+                System.out.printf("%s recebeu %d de escudo\n", receptor.getNome(),
+                        intensidadeDaAcao);
+                break;
+            case 'U':
+                System.out.printf("%s recebeu %d pontos de vida\n", receptor.getNome(),
+                        intensidadeDaAcao);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void historico(Entidade emissor, char acao, Entidade receptor, Efeito efeitoCausado) {
+
     }
 
     public void escolhas(MaoDoJogador mao) {
