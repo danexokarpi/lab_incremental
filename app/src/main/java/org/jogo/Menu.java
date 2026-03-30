@@ -28,7 +28,7 @@ public class Menu {
         System.out.printf("%d/%d de energia disponível\n", energia, energiaMaxima);
     }
 
-    public void historico(Entidade emissor, char acao, Entidade receptor, int intensidadeDaAcao) {
+    public void historico(char acao, Entidade emissor, Entidade receptor, int intensidadeDaAcao) {
         switch (acao) {
             case 'A':
                 System.out.printf("%s causou %d de dano a %s\n", emissor.getNome(),
@@ -47,8 +47,12 @@ public class Menu {
         }
     }
 
-    public void historico(Entidade emissor, char acao, Entidade receptor, Efeito efeitoCausado) {
-
+    public void historico(char acao, Entidade receptor, int intensidadeDaAcao, Efeito efeitoCausado) {
+        if (efeitoCausado.getTipoDeEfeito() == "Veneno") {
+            System.out.printf("%s recebeu %d de dano de veneno\n", receptor.getNome(), intensidadeDaAcao);
+        } else if (efeitoCausado.getTipoDeEfeito() == "Regeneração") {
+            System.out.printf("%s recebeu %d de cura regenerativa\n", receptor.getNome(), intensidadeDaAcao);
+        }
     }
 
     public void escolhas(MaoDoJogador mao) {
