@@ -6,16 +6,18 @@ import java.util.Scanner;
 public class Menu {
     private static Scanner scan = new Scanner(System.in);
 
-    public void status(Heroi heroi, Inimigo inimigo, MaoDoJogador maoDoJogador,
+    public void status(Tabuleiro tabuleiro, MaoDoJogador maoDoJogador,
             int energia,
             int energiaMaxima) {
+        Heroi heroi = tabuleiro.getHeroi();
+        Inimigo inimigo = tabuleiro.getInimigo();
         System.out.printf("=-=\n");
         System.out.printf("%s (%d/%d) (%d de escudo)\n", heroi.getNome(),
                 heroi.getVida(), heroi.getVidaMaxima(), heroi.getEscudo());
         System.out.printf("vs\n");
         System.out.printf("%s (%d/%d) (%d de escudo)\n", inimigo.getNome(),
                 inimigo.getVida(), inimigo.getVidaMaxima(), inimigo.getEscudo());
-        System.out.printf("Irá %s\n\n", inimigo.imprimirProxAcao());
+        System.out.printf("Irá %s\n\n", inimigo.imprimirProxAcao(tabuleiro));
         System.out.printf("%d/%d de energia disponível\n", energia, energiaMaxima);
     }
 

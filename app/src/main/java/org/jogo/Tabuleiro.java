@@ -39,13 +39,13 @@ public class Tabuleiro {
         boolean escolhaEhValida = false;
         int escolhaDeEncerrar = maoDoJogador.getTamanho() + 1;
         menu.clearScreen();
-        menu.status(heroi, inimigo, maoDoJogador, energia, energiaMaxima);
+        menu.status(this, maoDoJogador, energia, energiaMaxima);
         while (!escolhaEhValida) {
             menu.escolhas(maoDoJogador);
             int escolhaPlayer = menu.leEscolhaPlayer();
             if (escolhaPlayer < 0 || escolhaPlayer > escolhaDeEncerrar) {
                 menu.clearScreen();
-                menu.status(heroi, inimigo, maoDoJogador, energia, energiaMaxima);
+                menu.status(this, maoDoJogador, energia, energiaMaxima);
                 menu.escolhaForaDeAlcance();
                 continue;
             }
@@ -59,7 +59,7 @@ public class Tabuleiro {
             if (cartaEscolhida.getCusto() > energia) {
                 ;
                 menu.clearScreen();
-                menu.status(heroi, inimigo, maoDoJogador, energia, energiaMaxima);
+                menu.status(this, maoDoJogador, energia, energiaMaxima);
                 menu.energiaInsuficiente();
                 continue;
             }
@@ -76,7 +76,7 @@ public class Tabuleiro {
         if (pilhaDeCompra.isEmpty()) {
             pilhaDeDescarte.reabastecerCompra(pilhaDeCompra);
         }
-        pilhaDeCompra.reabastecerMao(maoDoJogador);
+        pilhaDeCompra.reabastecerMao(maoDoJogador, pilhaDeDescarte);
         heroi.setarEscudo(0);
         energia = energiaMaxima;
         boolean heroiEmTurno = true;
@@ -97,7 +97,7 @@ public class Tabuleiro {
             this.novoRound();
         }
         menu.clearScreen();
-        menu.status(heroi, inimigo, maoDoJogador, energia, energiaMaxima);
+        menu.status(this, maoDoJogador, energia, energiaMaxima);
         if (heroi.estaVivo()) {
             menu.playerGanhou();
         } else {

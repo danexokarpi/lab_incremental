@@ -66,7 +66,7 @@ public abstract class Entidade {
     }
 
     public void notificarSeusEfeitos(Evento eventoOcorrido){
-        for (int i = efeitos.size()-1; i > 0; i --){
+        for (int i = efeitos.size()-1; i >= 0; i --){
             efeitos.get(i).receberNotificacao(eventoOcorrido);
             if (!efeitos.get(i).isAtivo()){
                 efeitos.remove(i);
