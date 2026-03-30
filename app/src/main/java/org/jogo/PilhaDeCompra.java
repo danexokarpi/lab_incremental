@@ -13,12 +13,14 @@ public class PilhaDeCompra {
         }
     }
 
-    public void reabastecerMao(MaoDoJogador maoDoJogador) {
+    public void reabastecerMao(MaoDoJogador maoDoJogador, PilhaDeDescarte pilhaDeDescarte) {
         while (!maoDoJogador.estaCheia()) {
+            if (this.isEmpty()){
+                pilhaDeDescarte.reabastecerCompra(this);
+            }
             maoDoJogador.addCarta(this.popRandom());
         }
     }
-
     public Carta popRandom() {
         int randomIndex = random.nextInt(pilha.size());
         return this.pilha.remove(randomIndex);

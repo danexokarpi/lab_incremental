@@ -1,21 +1,25 @@
 package org.jogo;
 
 import java.util.ArrayList;
-
 public class Tabuleiro {
     private Menu menu;
     private Heroi heroi;
     private Inimigo inimigo;
+    private ArrayList<Entidade> entidadesEmJogo;
     private PilhaDeCompra pilhaDeCompra;
     private PilhaDeDescarte pilhaDeDescarte;
     private MaoDoJogador maoDoJogador;
     private int energia, energiaMaxima;
+    
 
     public Tabuleiro(Heroi heroi, Inimigo inimigo, ArrayList<Carta> cartasInventário,
             int energiaMaxima, int capacidadeDaMao) {
         this.menu = new Menu();
         this.heroi = heroi;
         this.inimigo = inimigo;
+        this.entidadesEmJogo = new ArrayList<>();
+        entidadesEmJogo.add(heroi);
+        entidadesEmJogo.add(inimigo); // Trocar para add All para vários inimigos
         this.pilhaDeCompra = new PilhaDeCompra(cartasInventário);
         this.pilhaDeDescarte = new PilhaDeDescarte();
         this.maoDoJogador = new MaoDoJogador(capacidadeDaMao);
@@ -35,13 +39,13 @@ public class Tabuleiro {
         boolean escolhaEhValida = false;
         int escolhaDeEncerrar = maoDoJogador.getTamanho() + 1;
         menu.clearScreen();
-        menu.status(heroi, inimigo, maoDoJogador, energia, energiaMaxima);
+        menu.status(this, maoDoJogador, energia, energiaMaxima);
         while (!escolhaEhValida) {
             menu.escolhas(maoDoJogador);
             int escolhaPlayer = menu.leEscolhaPlayer();
             if (escolhaPlayer < 0 || escolhaPlayer > escolhaDeEncerrar) {
                 menu.clearScreen();
-                menu.status(heroi, inimigo, maoDoJogador, energia, energiaMaxima);
+                menu.status(this, maoDoJogador, energia, energiaMaxima);
                 menu.escolhaForaDeAlcance();
                 continue;
             }
@@ -55,7 +59,7 @@ public class Tabuleiro {
             if (cartaEscolhida.getCusto() > energia) {
                 ;
                 menu.clearScreen();
-                menu.status(heroi, inimigo, maoDoJogador, energia, energiaMaxima);
+                menu.status(this, maoDoJogador, energia, energiaMaxima);
                 menu.energiaInsuficiente();
                 continue;
             }
@@ -68,11 +72,11 @@ public class Tabuleiro {
         return heroiEmTurno;
     }
 
-    public void novoTurno() {
+    public void novoRound() {
         if (pilhaDeCompra.isEmpty()) {
             pilhaDeDescarte.reabastecerCompra(pilhaDeCompra);
         }
-        pilhaDeCompra.reabastecerMao(maoDoJogador);
+        pilhaDeCompra.reabastecerMao(maoDoJogador, pilhaDeDescarte);
         heroi.setarEscudo(0);
         energia = energiaMaxima;
         boolean heroiEmTurno = true;
@@ -84,18 +88,26 @@ public class Tabuleiro {
             inimigo.setarEscudo(0);
             inimigo.agir(this);
         }
+
+        notificarEvento(Evento.FimDoRound);
     }
 
     public void novaBatalha() {
         while (heroi.estaVivo() && inimigo.estaVivo()) {
-            this.novoTurno();
+            this.novoRound();
         }
         menu.clearScreen();
-        menu.status(heroi, inimigo, maoDoJogador, energia, energiaMaxima);
+        menu.status(this, maoDoJogador, energia, energiaMaxima);
         if (heroi.estaVivo()) {
             menu.playerGanhou();
         } else {
             menu.playerPerdeu();
+        }
+    }
+
+    public void notificarEvento(Evento eventoOcorrido){
+        for(Entidade entidade : entidadesEmJogo){
+            entidade.notificarSeusEfeitos(eventoOcorrido);
         }
     }
 
