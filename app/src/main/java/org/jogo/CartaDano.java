@@ -1,19 +1,37 @@
 package org.jogo;
 
+import java.util.ArrayList;
+
 public class CartaDano extends Carta {
     private int dano;
+    private String areaDeEfeito;
 
-    public CartaDano(String nome, String descricao, int custo, int dano) {
+    public CartaDano(String nome, String descricao, int custo, int dano, String areaDeEfeito) {
         super(nome, descricao, custo);
         this.dano = dano;
+        this.areaDeEfeito = areaDeEfeito;
     }
 
     public String getEfeitoCusto() {
         return "(Dano - " + this.dano + ") (Custo - " + getCusto() + ")";
     }
 
-    public void usar(Tabuleiro tabuleiro) {
-        tabuleiro.getInimigo().receberDano(dano);
+    public boolean usar(Tabuleiro tabuleiro) {
+        if(areaDeEfeito == "Unico"){
+            Inimigo inimigo = tabuleiro.escolherUmInimigo();
+            if(inimigo != null){
+                inimigo.receberDano(dano);
+                return true;
+            }else{
+                return false;  
+            }
+        }else if(areaDeEfeito == "Todos"){
+            ArrayList<Inimigo> inimigos = tabuleiro.getInimigos();
+                for(Inimigo inimigo : inimigos){
+                    inimigo.receberDano(dano);
+                }
+        }
+        return false;
     }
 
     public int getDano() {
