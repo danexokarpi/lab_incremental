@@ -18,7 +18,6 @@ public class PilhaDeCompra {
             maoDoJogador.addCarta(this.popRandom());
         }
     }
-
     public Carta popRandom() {
         int randomIndex = random.nextInt(pilha.size());
         return this.pilha.remove(randomIndex);

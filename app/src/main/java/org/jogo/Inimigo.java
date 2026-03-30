@@ -9,12 +9,14 @@ public class Inimigo extends Entidade {
     private int escudoAoProteger;
     private char[] listaDeAcoes;
     private char proximaAcao;
+    private Efeito efeitoUtilizavel; 
 
     public Inimigo(String nome, int vidaMaxima, int escudo, int dano, int cura, int escudoAoProteger,
-            char[] listaDeAcoes) {
+            Efeito efeitoUtilizavel ,char[] listaDeAcoes) {
         super(nome, vidaMaxima, escudo);
         this.dano = dano;
         this.escudoAoProteger = escudoAoProteger;
+        this.efeitoUtilizavel = efeitoUtilizavel;
         this.listaDeAcoes = listaDeAcoes;
         this.cura = cura;
         this.proximaAcao = listaDeAcoes[random.nextInt(listaDeAcoes.length)];
@@ -23,13 +25,16 @@ public class Inimigo extends Entidade {
     public void agir(Tabuleiro tabuleiro) {
         switch (proximaAcao) {
             case 'A':
-                tabuleiro.getHeroi().receberDano(dano);
+                atacar(tabuleiro.getHeroi());
                 break;
             case 'C':
                 this.curar(cura);
                 break;
             case 'E':
                 this.receberEscudo(escudoAoProteger);
+                break;
+            case 'U':
+                acharEntidadeValida(tabuleiro).aplicarEfeito(efeitoUtilizavel);
                 break;
         }
 
@@ -47,6 +52,20 @@ public class Inimigo extends Entidade {
             default:
                 return "";
         }
+    }
+    private Entidade acharEntidadeValida(Tabuleiro tabuleiro){
+        if (efeitoUtilizavel.getTipoDeEfeito() == "Buff"){
+            return tabuleiro.getInimigo();
+        }else if (efeitoUtilizavel.getTipoDeEfeito() == "Debuff"){
+            return tabuleiro.getHeroi();
+        }else{
+            return null;
+        }
+    }
+
+
+    public void atacar(Entidade alvo){
+        alvo.receberDano(this.dano);
     }
 
     public int getDano() {

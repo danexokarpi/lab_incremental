@@ -59,9 +59,25 @@ public abstract class Entidade {
         Efeito efeitoPortado = this.getEffect(efeitoRecebido);
         if (efeitoPortado == null) {
             this.efeitos.add(efeitoRecebido);
+            efeitoRecebido.setDono(this);
         } else {
             efeitoPortado.somaAcumulos(efeitoRecebido.getAcumulos());
         }
+    }
+
+    public void notificarSeusEfeitos(Evento eventoOcorrido){
+        for (int i = efeitos.size()-1; i > 0; i --){
+            efeitos.get(i).receberNotificacao(eventoOcorrido);
+            if (!efeitos.get(i).isAtivo()){
+                efeitos.remove(i);
+            }
+        }
+    }
+
+    public void limparEfeitos(){
+        for (int i = efeitos.size()-1; i > 0; i --){
+                efeitos.remove(i);
+            }
     }
 
     public boolean estaVivo() {
