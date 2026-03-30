@@ -34,6 +34,10 @@ public abstract class Efeito {
         return this.tipoDeEfeito;
     }
 
+    public String getDescricao(){
+        return descricao;
+    }
+
     public Entidade getDono(){
         return this.dono;
     }
