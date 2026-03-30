@@ -13,8 +13,11 @@ public class PilhaDeCompra {
         }
     }
 
-    public void reabastecerMao(MaoDoJogador maoDoJogador) {
+    public void reabastecerMao(MaoDoJogador maoDoJogador, PilhaDeDescarte pilhaDeDescarte) {
         while (!maoDoJogador.estaCheia()) {
+            if (this.isEmpty()){
+                pilhaDeDescarte.reabastecerCompra(this);
+            }
             maoDoJogador.addCarta(this.popRandom());
         }
     }

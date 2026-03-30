@@ -9,7 +9,9 @@ public class Inimigo extends Entidade {
     private int escudoAoProteger;
     private char[] listaDeAcoes;
     private char proximaAcao;
+    private Entidade proximoAlvo;
     private Efeito efeitoUtilizavel; 
+    
 
     public Inimigo(String nome, int vidaMaxima, int escudo, int dano, int cura, int escudoAoProteger,
             Efeito efeitoUtilizavel ,char[] listaDeAcoes) {
@@ -25,23 +27,24 @@ public class Inimigo extends Entidade {
     public void agir(Tabuleiro tabuleiro) {
         switch (proximaAcao) {
             case 'A':
-                atacar(tabuleiro.getHeroi());
+                atacar(proximoAlvo);
                 break;
             case 'C':
-                this.curar(cura);
+                proximoAlvo.curar(cura);
                 break;
             case 'E':
-                this.receberEscudo(escudoAoProteger);
+                proximoAlvo.receberEscudo(escudoAoProteger);
                 break;
             case 'U':
-                acharEntidadeValida(tabuleiro).aplicarEfeito(efeitoUtilizavel);
+                proximoAlvo.aplicarEfeito(efeitoUtilizavel);
                 break;
         }
 
         proximaAcao = listaDeAcoes[random.nextInt(listaDeAcoes.length)];
     }
 
-    public String imprimirProxAcao() {
+    public String imprimirProxAcao(Tabuleiro tabuleiro) {
+        this.proximoAlvo = acharAlvoValido(tabuleiro);
         switch (proximaAcao) {
             case 'A':
                 return "Atacar: " + this.dano;
@@ -49,20 +52,30 @@ public class Inimigo extends Entidade {
                 return "Curar: " + this.cura;
             case 'E':
                 return "Proteger-se: " + this.escudoAoProteger;
+            case 'U':
+                return "Causar " + this.efeitoUtilizavel.getNome() + this.efeitoUtilizavel.getAcumulos() + " em " + proximoAlvo.getNome();
             default:
                 return "";
         }
     }
-    private Entidade acharEntidadeValida(Tabuleiro tabuleiro){
-        if (efeitoUtilizavel.getTipoDeEfeito() == "Buff"){
-            return tabuleiro.getInimigo();
-        }else if (efeitoUtilizavel.getTipoDeEfeito() == "Debuff"){
+    private Entidade acharAlvoValido(Tabuleiro tabuleiro){
+        if (proximaAcao == 'U'){
+            if (efeitoUtilizavel.getTipoDeEfeito() == "Buff"){
+                return tabuleiro.getInimigo();
+            }else if (efeitoUtilizavel.getTipoDeEfeito() == "Debuff"){
+                return tabuleiro.getHeroi();
+            }
+        }else if (proximaAcao == 'A'){
             return tabuleiro.getHeroi();
-        }else{
-            return null;
+        }else if (proximaAcao == 'E'){
+            return this;
+        }else if (proximaAcao == 'A'){
+            return this;
         }
-    }
-
+        
+        return null;
+        
+}
 
     public void atacar(Entidade alvo){
         alvo.receberDano(this.dano);
