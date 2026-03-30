@@ -12,8 +12,9 @@ public class CartaEscudo extends Carta {
         return "(Escudo - " + this.escudo + ") (Custo - " + getCusto() + ")";
     }
 
-    public void usar(Tabuleiro tabuleiro) {
+    public boolean usar(Tabuleiro tabuleiro) {
         tabuleiro.getHeroi().receberEscudo(escudo);
+        return true;
     }
 
     public int getEscudo() {

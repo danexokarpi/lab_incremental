@@ -2,6 +2,7 @@ package org.jogo;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 /**
  * Classe que opera os comandos na tela do jogador.
@@ -17,14 +18,16 @@ public class Menu {
             int energia,
             int energiaMaxima) {
         Heroi heroi = tabuleiro.getHeroi();
-        Inimigo inimigo = tabuleiro.getInimigo();
+        ArrayList<Inimigo> inimigos = tabuleiro.getInimigos();
         System.out.printf("=-=\n");
         System.out.printf("%s (%d/%d) (%d de escudo)\n", heroi.getNome(),
                 heroi.getVida(), heroi.getVidaMaxima(), heroi.getEscudo());
         System.out.printf("vs\n");
-        System.out.printf("%s (%d/%d) (%d de escudo)\n", inimigo.getNome(),
+        for(Inimigo inimigo : inimigos){
+            System.out.printf("%s (%d/%d) (%d de escudo)\n", inimigo.getNome(),
                 inimigo.getVida(), inimigo.getVidaMaxima(), inimigo.getEscudo());
-        System.out.printf("Irá %s\n\n", inimigo.imprimirProxAcao(tabuleiro));
+            System.out.printf("Irá %s\n\n", inimigo.imprimirProxAcao(tabuleiro));
+        }
         System.out.printf("%d/%d de energia disponível\n", energia, energiaMaxima);
     }
 
@@ -62,6 +65,17 @@ public class Menu {
             i++;
         }
         System.out.printf("%d - Encerrar Turno\n", i + 1);
+    }
+
+    public void escolhasDeInimigos(ArrayList<Inimigo> inimigos){
+        int i = 0;
+        for (Inimigo inimigo : inimigos){
+            if (inimigo.estaVivo()){
+                System.out.printf("%d - %s \n", i + 1, inimigo.getNome());
+                i++;
+            }
+        }
+        System.out.printf("%d - Cancelar\n", i + 1);
     }
 
     public void escolhaForaDeAlcance() {
