@@ -129,8 +129,15 @@ public class Tabuleiro {
                 escolhaEhValida = true;
                 continue;
             }
-            escolhaEhValida = true;
-            return inimigos.get(escolhaPlayer - 1);
+            if(inimigos.get(escolhaPlayer - 1).estaVivo()){
+                escolhaEhValida = true;
+                return inimigos.get(escolhaPlayer - 1);
+            }else if(!inimigos.get(escolhaPlayer - 1).estaVivo()){
+                menu.clearScreen();
+                menu.status(this, maoDoJogador, energia, energiaMaxima);
+                menu.inimigoEstaMorto();
+            }
+                
         }
         return null;
     }

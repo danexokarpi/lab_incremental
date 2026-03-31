@@ -19,7 +19,12 @@ public class Menu {
         for(Inimigo inimigo : inimigos){
             System.out.printf("%s (%d/%d) (%d de escudo)\n", inimigo.getNome(),
                 inimigo.getVida(), inimigo.getVidaMaxima(), inimigo.getEscudo());
-            System.out.printf("Irá %s\n\n", inimigo.imprimirProxAcao(tabuleiro));
+            if(inimigo.estaVivo()){
+                System.out.printf("Irá %s\n\n", inimigo.imprimirProxAcao(tabuleiro));
+            }else{
+                System.out.printf("Foi de base\n\n");
+            }
+            
         }
         System.out.printf("%d/%d de energia disponível\n", energia, energiaMaxima);
     }
@@ -36,10 +41,12 @@ public class Menu {
     public void escolhasDeInimigos(ArrayList<Inimigo> inimigos){
         int i = 0;
         for (Inimigo inimigo : inimigos){
-            if (inimigo.estaVivo()){
-                System.out.printf("%d - %s \n", i + 1, inimigo.getNome());
-                i++;
+            System.out.printf("%d - %s", i + 1, inimigo.getNome());
+            i++;
+            if (!inimigo.estaVivo()){
+                System.out.printf("(Morto)");
             }
+            System.out.printf("\n");
         }
         System.out.printf("%d - Cancelar\n", i + 1);
     }
@@ -51,6 +58,11 @@ public class Menu {
     public void energiaInsuficiente() {
         System.out.printf(
                 "ENERGIA INSUFICIENTE: a carta selecionada possui custo de energia superior ao nível de energia atual.\n");
+    }
+
+    public void inimigoEstaMorto(){
+        System.out.printf(
+            "INIMIGO JÁ ESTÁ MORTO: o inimigo selecionado já foi derrotado, essa acao não terá efeito\n");
     }
 
     public void playerGanhou() {
