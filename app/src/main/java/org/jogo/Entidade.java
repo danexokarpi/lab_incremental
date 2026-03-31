@@ -79,10 +79,10 @@ public abstract class Entidade {
         
     }
 
-    public void limparEfeitos(){
-        for (int i = efeitos.size()-1; i > 0; i --){
-                efeitos.remove(i);
-            }
+    public void limparEfeitos() {
+        for (int i = efeitos.size() - 1; i > 0; i--) {
+            efeitos.remove(i);
+        }
     }
 
     public boolean estaVivo() {
@@ -107,6 +107,10 @@ public abstract class Entidade {
 
     public int getVida() {
         return vida;
+    }
+
+    public ArrayList<Efeito> getEfeitos() {
+        return efeitos;
     }
 
 }

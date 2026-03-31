@@ -17,19 +17,20 @@ public class CartaDano extends Carta {
     }
 
     public boolean usar(Tabuleiro tabuleiro) {
-        if(areaDeEfeito == "Unico"){
+        if (areaDeEfeito == "Unico") {
             Inimigo inimigo = tabuleiro.escolherUmInimigo();
-            if(inimigo != null){
+            if (inimigo != null) {
                 inimigo.receberDano(dano);
+                tabuleiro.adicionarAoHistorico('A', tabuleiro.getHeroi(), inimigo, dano);
                 return true;
-            }else{
-                return false;  
+            } else {
+                return false;
             }
-        }else if(areaDeEfeito == "Todos"){
+        } else if (areaDeEfeito == "Todos") {
             ArrayList<Inimigo> inimigos = tabuleiro.getInimigos();
-                for(Inimigo inimigo : inimigos){
-                    inimigo.receberDano(dano);
-                }
+            for (Inimigo inimigo : inimigos) {
+                inimigo.receberDano(dano);
+            }
         }
         return false;
     }
