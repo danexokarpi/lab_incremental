@@ -23,43 +23,48 @@ public class Menu {
         System.out.printf("%s (%d/%d) (%d de escudo)\n", heroi.getNome(),
                 heroi.getVida(), heroi.getVidaMaxima(), heroi.getEscudo());
         System.out.printf("vs\n");
-        for(Inimigo inimigo : inimigos){
+        for (Inimigo inimigo : inimigos) {
             System.out.printf("%s (%d/%d) (%d de escudo)\n", inimigo.getNome(),
-                inimigo.getVida(), inimigo.getVidaMaxima(), inimigo.getEscudo());
-            if(inimigo.estaVivo()){
+                    inimigo.getVida(), inimigo.getVidaMaxima(), inimigo.getEscudo());
+            if (inimigo.estaVivo()) {
                 System.out.printf("Irá %s\n\n", inimigo.imprimirProxAcao(tabuleiro));
-            }else{
+            } else {
                 System.out.printf("Foi de base\n\n");
             }
-            
+
         }
         System.out.printf("%d/%d de energia disponível\n", energia, energiaMaxima);
     }
 
-    public void historico(char acao, Entidade emissor, Entidade receptor, int intensidadeDaAcao) {
+    public String criarMensagemDeAcao(char acao, Entidade emissor, Entidade receptor, int intensidadeDaAcao) {
         switch (acao) {
             case 'A':
-                System.out.printf("%s causou %d de dano a %s\n", emissor.getNome(),
+                return String.format("%s causou %d de dano a %s\n", emissor.getNome(),
                         intensidadeDaAcao, receptor.getNome());
-                break;
             case 'E':
-                System.out.printf("%s recebeu %d de escudo\n", receptor.getNome(),
+                return String.format("%s recebeu %d de escudo\n", receptor.getNome(),
                         intensidadeDaAcao);
-                break;
             case 'U':
-                System.out.printf("%s recebeu %d pontos de vida\n", receptor.getNome(),
+                return String.format("%s recebeu %d pontos de vida\n", receptor.getNome(),
                         intensidadeDaAcao);
-                break;
             default:
-                break;
+                throw new RuntimeException(String.format("Ação do tipo '%c' inválida", acao));
         }
     }
 
-    public void historico(char acao, Entidade receptor, int intensidadeDaAcao, Efeito efeitoCausado) {
-        if (efeitoCausado.getTipoDeEfeito() == "Veneno") {
-            System.out.printf("%s recebeu %d de dano de veneno\n", receptor.getNome(), intensidadeDaAcao);
-        } else if (efeitoCausado.getTipoDeEfeito() == "Regeneração") {
-            System.out.printf("%s recebeu %d de cura regenerativa\n", receptor.getNome(), intensidadeDaAcao);
+    public String criarMensagemDeAcao(char acao, Entidade receptor, int intensidadeDaAcao, Efeito efeitoCausado) {
+        if (efeitoCausado.getNome() == "Veneno") {
+            return String.format("%s recebeu %d de dano de veneno\n", receptor.getNome(), intensidadeDaAcao);
+        } else if (efeitoCausado.getNome() == "Regeneração") {
+            return String.format("%s recebeu %d de cura regenerativa\n", receptor.getNome(), intensidadeDaAcao);
+        } else {
+            throw new RuntimeException(String.format("Efeito '%s' inválido", efeitoCausado.getTipoDeEfeito()));
+        }
+    }
+
+    public void historico(ArrayList<String> historico) {
+        for (String acao : historico) {
+            System.out.printf("%s\n", acao);
         }
     }
 
@@ -72,12 +77,12 @@ public class Menu {
         System.out.printf("%d - Encerrar Turno\n", i + 1);
     }
 
-    public void escolhasDeInimigos(ArrayList<Inimigo> inimigos){
+    public void escolhasDeInimigos(ArrayList<Inimigo> inimigos) {
         int i = 0;
-        for (Inimigo inimigo : inimigos){
+        for (Inimigo inimigo : inimigos) {
             System.out.printf("%d - %s", i + 1, inimigo.getNome());
             i++;
-            if (!inimigo.estaVivo()){
+            if (!inimigo.estaVivo()) {
                 System.out.printf("(Morto)");
             }
             System.out.printf("\n");
@@ -94,9 +99,9 @@ public class Menu {
                 "ENERGIA INSUFICIENTE: a carta selecionada possui custo de energia superior ao nível de energia atual.\n");
     }
 
-    public void inimigoEstaMorto(){
+    public void inimigoEstaMorto() {
         System.out.printf(
-            "INIMIGO JÁ ESTÁ MORTO: o inimigo selecionado já foi derrotado, essa acao não terá efeito\n");
+                "INIMIGO JÁ ESTÁ MORTO: o inimigo selecionado já foi derrotado, essa acao não terá efeito\n");
     }
 
     public void playerGanhou() {

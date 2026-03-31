@@ -1,6 +1,7 @@
 package org.jogo;
 
 import java.util.ArrayList;
+
 public class Tabuleiro {
     private Menu menu;
     private Heroi heroi;
@@ -10,20 +11,21 @@ public class Tabuleiro {
     private PilhaDeDescarte pilhaDeDescarte;
     private MaoDoJogador maoDoJogador;
     private int energia, energiaMaxima;
-    
+    private ArrayList<String> historicoDeAcoes;
 
     public Tabuleiro(Heroi heroi, ArrayList<Inimigo> inimigos, ArrayList<Carta> cartasInventário,
             int energiaMaxima, int capacidadeDaMao) {
         this.menu = new Menu();
         this.heroi = heroi;
         this.inimigos = inimigos;
-        this.entidadesEmJogo = new ArrayList<>();
+        this.entidadesEmJogo = new ArrayList<Entidade>();
         entidadesEmJogo.add(heroi);
         entidadesEmJogo.addAll(inimigos);
         this.pilhaDeCompra = new PilhaDeCompra(cartasInventário);
         this.pilhaDeDescarte = new PilhaDeDescarte();
         this.maoDoJogador = new MaoDoJogador(capacidadeDaMao);
         this.energiaMaxima = energiaMaxima;
+        this.historicoDeAcoes = new ArrayList<String>();
     }
 
     /**
@@ -39,11 +41,13 @@ public class Tabuleiro {
         boolean escolhaEhValida = false;
         int escolhaDeEncerrar = maoDoJogador.getTamanho() + 1;
         menu.clearScreen();
+        menu.historico(historicoDeAcoes);
+        this.historicoDeAcoes.clear();
         menu.status(this, maoDoJogador, energia, energiaMaxima);
         while (!escolhaEhValida) {
             menu.escolhas(maoDoJogador);
             int escolhaPlayer = menu.leEscolhaPlayer();
-            
+
             if (escolhaPlayer < 0 || escolhaPlayer > escolhaDeEncerrar) {
                 menu.clearScreen();
                 menu.status(this, maoDoJogador, energia, energiaMaxima);
@@ -66,7 +70,7 @@ public class Tabuleiro {
                 menu.energiaInsuficiente();
                 continue;
             }
-            if (cartaEscolhida.usar(this)){
+            if (cartaEscolhida.usar(this)) {
                 energia -= cartaEscolhida.getCusto();
                 pilhaDeDescarte.push(cartaEscolhida);
                 maoDoJogador.removeCarta(escolhaPlayer - 1);
@@ -76,7 +80,7 @@ public class Tabuleiro {
                 menu.status(this, maoDoJogador, energia, energiaMaxima);
                 continue;
             }
-            
+
         }
         return heroiEmTurno;
     }
@@ -95,6 +99,15 @@ public class Tabuleiro {
 
         turnoDosInimigos();
 
+        for (Efeito efeito : this.heroi.getEfeitos()) {
+            this.adicionarAoHistorico('U', this.heroi, efeito.getAcumulos(), efeito);
+        }
+        for (int i = 0; this.inimigos.get(i) == null; i++) {
+            for (Efeito efeito : this.inimigos.get(i).getEfeitos()) {
+                this.adicionarAoHistorico('U', this.inimigos.get(i), efeito.getAcumulos(), efeito);
+            }
+        }
+
         notificarEvento(Evento.FimDoRound);
     }
 
@@ -111,12 +124,12 @@ public class Tabuleiro {
         }
     }
 
-    public Inimigo escolherUmInimigo(){
+    public Inimigo escolherUmInimigo() {
         boolean escolhaEhValida = false;
         int escolhaDeCancelar = inimigos.size() + 1;
         menu.clearScreen();
         menu.status(this, maoDoJogador, energia, energiaMaxima);
-        while(!escolhaEhValida){
+        while (!escolhaEhValida) {
             menu.escolhasDeInimigos(inimigos);
             int escolhaPlayer = menu.leEscolhaPlayer();
             if (escolhaPlayer < 0 || escolhaPlayer > escolhaDeCancelar) {
@@ -129,23 +142,33 @@ public class Tabuleiro {
                 escolhaEhValida = true;
                 continue;
             }
-            if(inimigos.get(escolhaPlayer - 1).estaVivo()){
+            if (inimigos.get(escolhaPlayer - 1).estaVivo()) {
                 escolhaEhValida = true;
                 return inimigos.get(escolhaPlayer - 1);
-            }else if(!inimigos.get(escolhaPlayer - 1).estaVivo()){
+            } else if (!inimigos.get(escolhaPlayer - 1).estaVivo()) {
                 menu.clearScreen();
                 menu.status(this, maoDoJogador, energia, energiaMaxima);
                 menu.inimigoEstaMorto();
             }
-                
         }
         return null;
     }
 
-    public void notificarEvento(Evento eventoOcorrido){
-        for(Entidade entidade : entidadesEmJogo){
+    public void notificarEvento(Evento eventoOcorrido) {
+        for (Entidade entidade : entidadesEmJogo) {
             entidade.notificarSeusEfeitos(eventoOcorrido);
         }
+    }
+
+    public void adicionarAoHistorico(char acao, Entidade emissor, Entidade receptor, int intensidadeDaAcao) {
+        String mensagemDaAcao = menu.criarMensagemDeAcao(acao, emissor, receptor, intensidadeDaAcao);
+        this.historicoDeAcoes.add(mensagemDaAcao);
+    }
+
+    public void adicionarAoHistorico(char acao, Entidade receptor, int intensidadeDaAcao,
+            Efeito efeito) {
+        String mensagemDaAcao = menu.criarMensagemDeAcao(acao, receptor, intensidadeDaAcao, efeito);
+        this.historicoDeAcoes.add(mensagemDaAcao);
     }
 
     public Heroi getHeroi() {
@@ -176,8 +199,8 @@ public class Tabuleiro {
         return energiaMaxima;
     }
 
-    private void turnoDosInimigos(){
-        for(Inimigo inimigo : inimigos){
+    private void turnoDosInimigos() {
+        for (Inimigo inimigo : inimigos) {
             if (inimigo.estaVivo()) {
                 inimigo.setarEscudo(0);
                 inimigo.agir(this);
@@ -185,13 +208,14 @@ public class Tabuleiro {
         }
     }
 
-    private boolean todosInimigosMortos(){
+    private boolean todosInimigosMortos() {
         int quantidadeDeMortos = 0;
-        for (Inimigo inimigo : inimigos){
-            if(!inimigo.estaVivo()){
+        for (Inimigo inimigo : inimigos) {
+            if (!inimigo.estaVivo()) {
                 quantidadeDeMortos++;
             }
-            if(quantidadeDeMortos == inimigos.size()) return true;
+            if (quantidadeDeMortos == inimigos.size())
+                return true;
         }
         return false;
     }

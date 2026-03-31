@@ -14,6 +14,7 @@ public class CartaEscudo extends Carta {
 
     public boolean usar(Tabuleiro tabuleiro) {
         tabuleiro.getHeroi().receberEscudo(escudo);
+        tabuleiro.adicionarAoHistorico('E', tabuleiro.getHeroi(), tabuleiro.getHeroi(), escudo);
         return true;
     }
 

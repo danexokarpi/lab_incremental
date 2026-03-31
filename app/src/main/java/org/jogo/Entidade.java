@@ -65,19 +65,19 @@ public abstract class Entidade {
         }
     }
 
-    public void notificarSeusEfeitos(Evento eventoOcorrido){
-        for (int i = efeitos.size()-1; i >= 0; i --){
+    public void notificarSeusEfeitos(Evento eventoOcorrido) {
+        for (int i = efeitos.size() - 1; i >= 0; i--) {
             efeitos.get(i).receberNotificacao(eventoOcorrido);
-            if (!efeitos.get(i).isAtivo()){
+            if (!efeitos.get(i).isAtivo()) {
                 efeitos.remove(i);
             }
         }
     }
 
-    public void limparEfeitos(){
-        for (int i = efeitos.size()-1; i > 0; i --){
-                efeitos.remove(i);
-            }
+    public void limparEfeitos() {
+        for (int i = efeitos.size() - 1; i > 0; i--) {
+            efeitos.remove(i);
+        }
     }
 
     public boolean estaVivo() {
@@ -102,6 +102,10 @@ public abstract class Entidade {
 
     public int getVida() {
         return vida;
+    }
+
+    public ArrayList<Efeito> getEfeitos() {
+        return efeitos;
     }
 
 }

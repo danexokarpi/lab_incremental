@@ -3,7 +3,6 @@ package org.jogo;
 import java.util.Random;
 import java.util.ArrayList;
 
-
 public class Inimigo extends Entidade {
     private static Random random = new Random();
     private int dano;
@@ -13,10 +12,9 @@ public class Inimigo extends Entidade {
     private char proximaAcao;
     private Entidade proximoAlvo;
     private FabricaDeEfeito fabricaDeEfeito;
-    
 
     public Inimigo(String nome, int vidaMaxima, int escudo, int dano, int cura, int escudoAoProteger,
-            FabricaDeEfeito fabricaDeEfeito ,char[] listaDeAcoes) {
+            FabricaDeEfeito fabricaDeEfeito, char[] listaDeAcoes) {
         super(nome, vidaMaxima, escudo);
         this.dano = dano;
         this.escudoAoProteger = escudoAoProteger;
@@ -30,12 +28,15 @@ public class Inimigo extends Entidade {
         switch (proximaAcao) {
             case 'A':
                 atacar(proximoAlvo);
+                tabuleiro.adicionarAoHistorico('A', this, proximoAlvo, dano);
                 break;
             case 'C':
                 proximoAlvo.curar(cura);
+                tabuleiro.adicionarAoHistorico('C', this, proximoAlvo, cura);
                 break;
             case 'E':
                 proximoAlvo.receberEscudo(escudoAoProteger);
+                tabuleiro.adicionarAoHistorico('E', this, proximoAlvo, escudoAoProteger);
                 break;
             case 'U':
                 Efeito efeito = fabricaDeEfeito.criarEfeito();
@@ -62,28 +63,29 @@ public class Inimigo extends Entidade {
                 return "";
         }
     }
-    private Entidade acharAlvoValido(Tabuleiro tabuleiro){
-        if (proximaAcao == 'U'){
+
+    private Entidade acharAlvoValido(Tabuleiro tabuleiro) {
+        if (proximaAcao == 'U') {
             Efeito efeito = fabricaDeEfeito.criarEfeito();
-            if (efeito.getTipoDeEfeito() == "Buff"){
+            if (efeito.getTipoDeEfeito() == "Buff") {
                 ArrayList<Inimigo> inimigos = tabuleiro.getInimigos();
                 return inimigos.get(random.nextInt(inimigos.size()));
-            }else if (efeito.getTipoDeEfeito() == "Debuff"){
+            } else if (efeito.getTipoDeEfeito() == "Debuff") {
                 return tabuleiro.getHeroi();
             }
-        }else if (proximaAcao == 'A'){
+        } else if (proximaAcao == 'A') {
             return tabuleiro.getHeroi();
-        }else if (proximaAcao == 'E'){
+        } else if (proximaAcao == 'E') {
             return this;
-        }else if (proximaAcao == 'A'){
+        } else if (proximaAcao == 'A') {
             return this;
         }
-        
-        return null;
-        
-}
 
-    public void atacar(Entidade alvo){
+        return null;
+
+    }
+
+    public void atacar(Entidade alvo) {
         alvo.receberDano(this.dano);
     }
 
