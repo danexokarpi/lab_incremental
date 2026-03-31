@@ -57,7 +57,7 @@ public class Inimigo extends Entidade {
                 return "Proteger-se: " + this.escudoAoProteger;
             case 'U':
                 Efeito efeito = fabricaDeEfeito.criarEfeito();
-                return "Causar " + efeito.getNome() + efeito.getAcumulos() + " em " + proximoAlvo.getNome();
+                return "Causar " + efeito.getNome() + " " + efeito.getAcumulos() + " em " + proximoAlvo.getNome();
             default:
                 return "";
         }
