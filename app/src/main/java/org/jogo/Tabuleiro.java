@@ -102,9 +102,9 @@ public class Tabuleiro {
         for (Efeito efeito : this.heroi.getEfeitos()) {
             this.adicionarAoHistorico('U', this.heroi, efeito.getAcumulos(), efeito);
         }
-        for (int i = 0; this.inimigos.get(i) == null; i++) {
-            for (Efeito efeito : this.inimigos.get(i).getEfeitos()) {
-                this.adicionarAoHistorico('U', this.inimigos.get(i), efeito.getAcumulos(), efeito);
+        for (Inimigo inimigo : this.inimigos) {
+            for (Efeito efeito : inimigo.getEfeitos()) {
+                this.adicionarAoHistorico('U', inimigo, efeito.getAcumulos(), efeito);
             }
         }
 
