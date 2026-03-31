@@ -17,10 +17,11 @@ public class App {
         CartaEfeito stimPack = new CartaEfeito("Stimpack",
                 "Uma grande dose de seilá o que direto nas suas veias, vai curar quase qualquer ferida," +
                 "menos as psicológicas", 2, new FabricaDeEfeito("regeneracao", 3), "Unico");
-
+        CartaEfeito frascoDeVeneno = new CartaEfeito("Frasco de Veneno", "Um pequeno fraco com veneno concentrado, lance apenas em inimigos!",
+                2 , new FabricaDeEfeito("veneno", 3), "Unico");
         Carta[] listaBaralho = { laserCinético, sabreDeFotons,
                 escudoEletromagneticoGrande, escudoEletromagneticoPequeno,
-                stimPack };
+                stimPack, frascoDeVeneno};
         return new ArrayList<Carta>(Arrays.asList(listaBaralho));
     }
 
