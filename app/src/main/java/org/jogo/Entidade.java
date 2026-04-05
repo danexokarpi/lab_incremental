@@ -116,20 +116,25 @@ public abstract class Entidade {
     }
 
     /**
-     * Notifica todos os efeitos da entidade sobre a ocorrência de um evento.
-     *
+     * Notifica todos os efeitos da entidade viva sobre a ocorrência de um evento.
+     *  
      * Os efeitos podem se modificar ou expirar em função do evento. Efeitos que não
      * estão mais ativos são removidos da lista.
      *
      * @param eventoOcorrido evento que foi disparado no jogo.
      */
-    public void notificarSeusEfeitos(Evento eventoOcorrido) {
-        for (int i = efeitos.size() - 1; i >= 0; i--) {
-            efeitos.get(i).receberNotificacao(eventoOcorrido);
-            if (!efeitos.get(i).isAtivo()) {
-                efeitos.remove(i);
+    public void notificarSeusEfeitos(Evento eventoOcorrido){
+        if(estaVivo()){
+            for (int i = efeitos.size()-1; i >= 0; i --){
+                efeitos.get(i).receberNotificacao(eventoOcorrido);
+                if (!efeitos.get(i).isAtivo()){
+                    efeitos.remove(i);
+                }
             }
+        }else if(!estaVivo()){
+            limparEfeitos();
         }
+        
     }
 
     /**

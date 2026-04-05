@@ -38,8 +38,8 @@ public class Menu {
                     inimigo.getVida(), inimigo.getVidaMaxima(), inimigo.getEscudo());
             if (inimigo.estaVivo()) {
                 System.out.printf("Irá %s\n\n", inimigo.imprimirProxAcao(tabuleiro));
-            } else {
-                System.out.printf("Foi de base\n\n");
+            }else{
+                System.out.printf("Está morto.\n\n");
             }
 
         }
