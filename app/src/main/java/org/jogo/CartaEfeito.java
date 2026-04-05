@@ -15,16 +15,16 @@ public class CartaEfeito extends Carta {
     public boolean usar(Tabuleiro tabuleiro) {
         Efeito efeito = fabricaDeEfeito.criarEfeito();
 
-        if (efeito.getTipoDeEfeito() == "Buff") {
+        if (efeito.getTipoDeEfeito().equals("Buff")) {
             tabuleiro.getHeroi().aplicarEfeito(efeito);
             return true;
-        } else if (efeito.getTipoDeEfeito() == "Debuff") {
-            if (this.areaDeEfeito == "Todos") {
+        } else if (efeito.getTipoDeEfeito().equals("Debuff")) {
+            if (this.areaDeEfeito.equals("Todos")) {
                 ArrayList<Inimigo> inimigos = tabuleiro.getInimigos();
                 for (Inimigo inimigo : inimigos) {
                     inimigo.aplicarEfeito(efeito);
                 }
-            } else if (this.areaDeEfeito == "Unico") {
+            } else if (this.areaDeEfeito.equals("Unico")) {
                 Inimigo inimigo = tabuleiro.escolherUmInimigo();
                 if (inimigo != null) {
                     inimigo.aplicarEfeito(efeito);

@@ -2,6 +2,13 @@ package org.jogo;
 
 import java.util.ArrayList;
 
+/**
+ * Representa uma entidade genérica do jogo, podendo ser herói ou inimigo.
+ *
+ * Possui atributos básicos como vida, escudo, efeitos ativos e métodos para
+ * receber dano, cura, escudo e efeitos. Também gerencia notificações de eventos
+ * que podem alterar seus efeitos.
+ */
 public abstract class Entidade {
     private String nome;
     private int vida;
@@ -9,6 +16,13 @@ public abstract class Entidade {
     private int escudo;
     private ArrayList<Efeito> efeitos;
 
+    /**
+     * Cria uma nova entidade com vida máxima e escudo inicial.
+     *
+     * @param nome       nome da entidade.
+     * @param vidaMaxima quantidade máxima de vida da entidade.
+     * @param escudo     quantidade inicial de escudo da entidade.
+     */
     public Entidade(String nome, int vidaMaxima, int escudo) {
         this.nome = nome;
         this.vidaMaxima = vidaMaxima;
@@ -17,8 +31,14 @@ public abstract class Entidade {
         this.efeitos = new ArrayList<Efeito>();
     }
 
-    // Sistema de dano verdadeiro. Basicamente reduz o escudo do dano e aplica
-    // o dano absoluto na vida do heroi caso o escudo for menor
+    /**
+     * Aplica dano à entidade considerando o escudo.
+     *
+     * O dano reduz primeiro o escudo. Caso o escudo não seja suficiente, o dano
+     * restante é aplicado à vida da entidade. A vida nunca fica abaixo de zero.
+     *
+     * @param dano valor de dano a ser recebido.
+     */
     public void receberDano(int dano) {
         int dano_verdadeiro = escudo - dano;
         if (dano_verdadeiro < 0) {
@@ -33,20 +53,42 @@ public abstract class Entidade {
         }
     }
 
+    /**
+     * Cura a entidade, respeitando o limite de vida máxima.
+     *
+     * @param cura quantidade de vida a ser restaurada.
+     */
     public void curar(int cura) {
         this.vida += cura;
         if (vida > vidaMaxima)
             vida = vidaMaxima;
     }
 
+    /**
+     * Adiciona escudo à entidade.
+     *
+     * @param escudoRecebido quantidade de escudo a ser adicionada.
+     */
     public void receberEscudo(int escudoRecebido) {
         escudo += escudoRecebido;
     }
 
+    /**
+     * Define o valor de escudo da entidade.
+     *
+     * @param escudoDefinido valor a ser definido como escudo.
+     */
     public void setarEscudo(int escudoDefinido) {
         escudo = escudoDefinido;
     }
 
+    /**
+     * Retorna um efeito já presente na entidade que tenha o mesmo nome do efeito
+     * recebido.
+     *
+     * @param efeitoRecebido efeito a ser buscado.
+     * @return efeito correspondente se encontrado, ou {@code null} caso contrário.
+     */
     private Efeito getEffect(Efeito efeitoRecebido) {
         for (Efeito efeitoPortado : this.efeitos) {
             if (efeitoPortado.getNome() == efeitoRecebido.getNome())
@@ -55,6 +97,14 @@ public abstract class Entidade {
         return null;
     }
 
+    /**
+     * Aplica um efeito à entidade.
+     *
+     * Se a entidade já possuir um efeito com o mesmo nome, os acúmulos são somados.
+     * Caso contrário, o efeito é adicionado à lista de efeitos ativos.
+     *
+     * @param efeitoRecebido efeito a ser aplicado.
+     */
     public void aplicarEfeito(Efeito efeitoRecebido) {
         Efeito efeitoPortado = this.getEffect(efeitoRecebido);
         if (efeitoPortado == null) {
@@ -65,6 +115,14 @@ public abstract class Entidade {
         }
     }
 
+    /**
+     * Notifica todos os efeitos da entidade sobre a ocorrência de um evento.
+     *
+     * Os efeitos podem se modificar ou expirar em função do evento. Efeitos que não
+     * estão mais ativos são removidos da lista.
+     *
+     * @param eventoOcorrido evento que foi disparado no jogo.
+     */
     public void notificarSeusEfeitos(Evento eventoOcorrido) {
         for (int i = efeitos.size() - 1; i >= 0; i--) {
             efeitos.get(i).receberNotificacao(eventoOcorrido);
@@ -74,12 +132,19 @@ public abstract class Entidade {
         }
     }
 
+    /**
+     * Remove todos os efeitos da entidade.
+     */
     public void limparEfeitos() {
-        for (int i = efeitos.size() - 1; i > 0; i--) {
-            efeitos.remove(i);
-        }
+        efeitos.clear();
     }
 
+    /**
+     * Verifica se a entidade ainda está viva.
+     *
+     * @return {@code true} se a vida da entidade for maior que zero, {@code false}
+     *         caso contrário.
+     */
     public boolean estaVivo() {
         if (vida <= 0) {
             return false;

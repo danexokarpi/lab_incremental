@@ -17,7 +17,7 @@ public class CartaDano extends Carta {
     }
 
     public boolean usar(Tabuleiro tabuleiro) {
-        if (areaDeEfeito == "Unico") {
+        if (areaDeEfeito.equals("Unico")) {
             Inimigo inimigo = tabuleiro.escolherUmInimigo();
             if (inimigo != null) {
                 inimigo.receberDano(dano);
@@ -26,7 +26,7 @@ public class CartaDano extends Carta {
             } else {
                 return false;
             }
-        } else if (areaDeEfeito == "Todos") {
+        } else if (areaDeEfeito.equals("Todos")) {
             ArrayList<Inimigo> inimigos = tabuleiro.getInimigos();
             for (Inimigo inimigo : inimigos) {
                 inimigo.receberDano(dano);
