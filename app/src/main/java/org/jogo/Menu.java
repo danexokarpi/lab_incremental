@@ -5,15 +5,25 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 /**
- * Classe que opera os comandos na tela do jogador.
+ * Classe responsável pela interação com o jogador via console.
  *
- * O Menu printa as informações do jogo na tela do terminal, assim como recebe
- * inputs
- * do jogador.
+ * O Menu centraliza toda a lógica de exibição de informações do jogo,
+ * leitura de entradas do usuário e geração de mensagens relacionadas às ações
+ * realizadas durante a partida.
  */
 public class Menu {
     private static Scanner scan = new Scanner(System.in);
 
+    /**
+     * Exibe o estado atual da batalha no console.
+     *
+     * Mostra informações do herói, inimigos e energia disponível.
+     *
+     * @param tabuleiro     estado atual do jogo.
+     * @param maoDoJogador  mão atual do jogador.
+     * @param energia       energia atual disponível.
+     * @param energiaMaxima energia máxima do jogador.
+     */
     public void status(Tabuleiro tabuleiro, MaoDoJogador maoDoJogador,
             int energia,
             int energiaMaxima) {
@@ -36,6 +46,16 @@ public class Menu {
         System.out.printf("%d/%d de energia disponível\n", energia, energiaMaxima);
     }
 
+    /**
+     * Cria uma mensagem descritiva de uma ação entre duas entidades.
+     *
+     * @param acao              identificador da ação.
+     * @param emissor           entidade que executou a ação.
+     * @param receptor          entidade que recebeu a ação.
+     * @param intensidadeDaAcao valor numérico da ação.
+     * @return mensagem formatada descrevendo a ação.
+     * @throws RuntimeException caso o tipo de ação seja inválido.
+     */
     public String criarMensagemDeAcao(char acao, Entidade emissor, Entidade receptor, int intensidadeDaAcao) {
         switch (acao) {
             case 'A':
@@ -52,22 +72,42 @@ public class Menu {
         }
     }
 
+    /**
+     * Cria uma mensagem descritiva baseada em um efeito aplicado a uma entidade.
+     *
+     * @param acao              identificador da ação.
+     * @param receptor          entidade afetada.
+     * @param intensidadeDaAcao intensidade do efeito.
+     * @param efeitoCausado     efeito aplicado.
+     * @return mensagem formatada descrevendo o efeito.
+     * @throws RuntimeException caso o efeito seja inválido.
+     */
     public String criarMensagemDeAcao(char acao, Entidade receptor, int intensidadeDaAcao, Efeito efeitoCausado) {
-        if (efeitoCausado.getNome() == "Veneno") {
+        if (efeitoCausado.getNome().equals("Veneno")) {
             return String.format("%s recebeu %d de dano de veneno\n", receptor.getNome(), intensidadeDaAcao);
-        } else if (efeitoCausado.getNome() == "Regeneração") {
+        } else if (efeitoCausado.getNome().equals("Regeneração")) {
             return String.format("%s recebeu %d de cura regenerativa\n", receptor.getNome(), intensidadeDaAcao);
         } else {
             throw new RuntimeException(String.format("Efeito '%s' inválido", efeitoCausado.getTipoDeEfeito()));
         }
     }
 
+    /**
+     * Exibe o histórico de ações realizadas durante o jogo.
+     *
+     * @param historico lista de mensagens representando as ações.
+     */
     public void historico(ArrayList<String> historico) {
         for (String acao : historico) {
             System.out.printf("%s\n", acao);
         }
     }
 
+    /**
+     * Exibe as opções de cartas disponíveis na mão do jogador.
+     *
+     * @param mao mão atual do jogador.
+     */
     public void escolhas(MaoDoJogador mao) {
         int i = 0;
         while (i < mao.getTamanho()) {
@@ -77,6 +117,11 @@ public class Menu {
         System.out.printf("%d - Encerrar Turno\n", i + 1);
     }
 
+    /**
+     * Exibe as opções de inimigos disponíveis para seleção.
+     *
+     * @param inimigos lista de inimigos.
+     */
     public void escolhasDeInimigos(ArrayList<Inimigo> inimigos) {
         int i = 0;
         for (Inimigo inimigo : inimigos) {
@@ -90,32 +135,58 @@ public class Menu {
         System.out.printf("%d - Cancelar\n", i + 1);
     }
 
+    /**
+     * Exibe mensagem de erro para escolha fora do intervalo válido.
+     */
     public void escolhaForaDeAlcance() {
         System.out.printf("ATENÇÃO: escolha uma opção dentre os números listados.\n");
     }
 
+    /**
+     * Exibe mensagem de erro para energia insuficiente.
+     */
     public void energiaInsuficiente() {
         System.out.printf(
                 "ENERGIA INSUFICIENTE: a carta selecionada possui custo de energia superior ao nível de energia atual.\n");
     }
 
+    /**
+     * Informa que o inimigo selecionado já está morto.
+     */
     public void inimigoEstaMorto() {
         System.out.printf(
                 "INIMIGO JÁ ESTÁ MORTO: o inimigo selecionado já foi derrotado, essa acao não terá efeito\n");
     }
 
+    /**
+     * Exibe mensagem de vitória do jogador.
+     */
     public void playerGanhou() {
         System.out.println("\nParabéns! Você GANHOU\n");
     }
 
+    /**
+     * Exibe mensagem de derrota do jogador.
+     */
     public void playerPerdeu() {
         System.out.println("\nQue pena! Você perdeu\n");
     }
 
+    /**
+     * Exibe mensagem de erro para entrada não numérica.
+     */
     public void estradaNaoNumerica() {
         System.out.println("\n ATENÇÂO: A escolha deve ser um número dentre os listados");
     }
 
+    /**
+     * Lê a escolha do jogador via entrada padrão.
+     *
+     * O método continua solicitando entrada até que um valor numérico válido seja
+     * fornecido.
+     *
+     * @return número escolhido pelo jogador.
+     */
     public int leEscolhaPlayer() {
         boolean inputValido = false;
         System.out.printf("Escolha: ");
@@ -131,6 +202,11 @@ public class Menu {
         return 0;
     }
 
+    /**
+     * Limpa a tela do console.
+     *
+     * Utiliza códigos ANSI para limpar a saída do terminal.
+     */
     public void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
