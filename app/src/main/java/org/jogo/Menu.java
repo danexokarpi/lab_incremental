@@ -111,7 +111,7 @@ public class Menu {
     public void escolhas(MaoDoJogador mao) {
         int i = 0;
         while (i < mao.getTamanho()) {
-            System.out.printf("%d - %s %s \n", i + 1, mao.getCarta(i).getNome(), mao.getCarta(i).getEfeitoCusto());
+            System.out.printf("%d - %s %s \n", i + 1, mao.getCarta(i).getNome(), mao.getCarta(i).getEfeitoCustoAoE());
             i++;
         }
         System.out.printf("%d - Encerrar Turno\n", i + 1);

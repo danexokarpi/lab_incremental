@@ -4,27 +4,28 @@ import java.util.ArrayList;
 
 public class CartaEfeito extends Carta {
     private FabricaDeEfeito fabricaDeEfeito;
-    private String areaDeEfeito;
 
     public CartaEfeito(String nome, String descricao, int custo, FabricaDeEfeito fabricaDeEfeito, String areaDeEfeito) {
-        super(nome, descricao, custo);
+        super(nome, descricao, custo, areaDeEfeito);
         this.fabricaDeEfeito = fabricaDeEfeito;
-        this.areaDeEfeito = areaDeEfeito;
     }
-
+    
     public boolean usar(Tabuleiro tabuleiro) {
         Efeito efeito = fabricaDeEfeito.criarEfeito();
 
         if (efeito.getTipoDeEfeito().equals("Buff")) {
             tabuleiro.getHeroi().aplicarEfeito(efeito);
             return true;
+
         } else if (efeito.getTipoDeEfeito().equals("Debuff")) {
-            if (this.areaDeEfeito.equals("Todos")) {
+            if (getAreaDeEfeito().equals("Todos")) {
                 ArrayList<Inimigo> inimigos = tabuleiro.getInimigos();
                 for (Inimigo inimigo : inimigos) {
                     inimigo.aplicarEfeito(efeito);
                 }
-            } else if (this.areaDeEfeito.equals("Unico")) {
+                return true;
+
+            } else if (getAreaDeEfeito().equals("Unico")) {
                 Inimigo inimigo = tabuleiro.escolherUmInimigo();
                 if (inimigo != null) {
                     inimigo.aplicarEfeito(efeito);
@@ -38,9 +39,9 @@ public class CartaEfeito extends Carta {
         return false;
     }
 
-    public String getEfeitoCusto() {
+    public String getEfeitoCustoAoE() {
         Efeito efeito = fabricaDeEfeito.criarEfeito();
-        return "(Causa - " + efeito.getNome() + " por " + efeito.getAcumulos() + " turnos) (Custo - " + getCusto()
+        return "(Causa - " + efeito.getNome() + " por " + efeito.getAcumulos() + " turnos) (Custo - " + getCusto() + ") " + "(Alvo - " + getAreaDeEfeito()
                 + ")";
     }
 }
