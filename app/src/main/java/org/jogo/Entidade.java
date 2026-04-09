@@ -107,12 +107,15 @@ public abstract class Entidade {
      */
     public void aplicarEfeito(Efeito efeitoRecebido) {
         Efeito efeitoPortado = this.getEffect(efeitoRecebido);
-        if (efeitoPortado == null) {
+        if (estaVivo()){
+            if (efeitoPortado == null) {
             this.efeitos.add(efeitoRecebido);
             efeitoRecebido.setDono(this);
         } else {
             efeitoPortado.somaAcumulos(efeitoRecebido.getAcumulos());
         }
+        }
+        
     }
 
     /**
@@ -134,7 +137,6 @@ public abstract class Entidade {
         }else if(!estaVivo()){
             limparEfeitos();
         }
-        
     }
 
     /**

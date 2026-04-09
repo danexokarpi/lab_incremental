@@ -30,10 +30,18 @@ public class Menu {
         Heroi heroi = tabuleiro.getHeroi();
         ArrayList<Inimigo> inimigos = tabuleiro.getInimigos();
         System.out.printf("=-=\n");
+        for (Efeito efeito : heroi.getEfeitos()){
+            System.out.printf(efeito.getNome() + " " + efeito.getAcumulos() + " ");
+        }
+        System.out.printf("\n");
         System.out.printf("%s (%d/%d) (%d de escudo)\n", heroi.getNome(),
                 heroi.getVida(), heroi.getVidaMaxima(), heroi.getEscudo());
-        System.out.printf("vs\n");
+        System.out.printf("\nvs\n");
         for (Inimigo inimigo : inimigos) {
+            for (Efeito efeito : inimigo.getEfeitos()){
+            System.out.printf(efeito.getNome() + " " + efeito.getAcumulos() + " ");
+            }
+            System.out.printf("\n");
             System.out.printf("%s (%d/%d) (%d de escudo)\n", inimigo.getNome(),
                     inimigo.getVida(), inimigo.getVidaMaxima(), inimigo.getEscudo());
             if (inimigo.estaVivo()) {
