@@ -1,8 +1,15 @@
 package org.jogo;
-
+import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
+import com.googlecode.lanterna.TextColor;
+import com.googlecode.lanterna.graphics.TextGraphics;
+import com.googlecode.lanterna.input.KeyStroke;
+import com.googlecode.lanterna.screen.Screen;
+import java.io.IOException;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 import java.util.ArrayList;
+
 
 /**
  * Classe responsável pela interação com o jogador via console.
@@ -13,6 +20,167 @@ import java.util.ArrayList;
  */
 public class Menu {
     private static Scanner scan = new Scanner(System.in);
+    private Screen screen;
+
+    private static final int xHeroi = 5;
+    private static final int yStatus = 2;
+    private static final int xLogs = 5;
+    private static final int yLogs = 20;
+    private static final int xAviso = 5;
+    private static final int yAviso = 34;
+    private static final int xEscolhas = 5;
+    private static final int yEscolhas = 35;
+
+    public void incializarTela(){
+        try{
+            DefaultTerminalFactory fabrica = new DefaultTerminalFactory();
+            this.screen = fabrica.createScreen();
+            this.screen.startScreen();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        
+    }
+    private void printarEntidade(Screen screen, int xBase, int yBase, Entidade entidade, Tabuleiro tabuleiro){
+        TextGraphics textG = screen.newTextGraphics();
+        String[] linhasAscci = entidade.getAscci().split("\n");
+
+        int larguraAscci = 0;
+        for (String linha : linhasAscci){
+            larguraAscci = Math.max(larguraAscci, linha.length());
+        }
+        
+        String nome = entidade.getNome();
+        String status = "Vida: " + entidade.getVida() + "(escudo " + entidade.getEscudo() + ")";
+        
+        textG.putString(xBase + (larguraAscci/2) - (nome.length() / 2), yBase, nome);
+        
+        textG.putString(xBase + (larguraAscci / 2) - (status.length() / 2), yBase + 1, status);
+
+        if(!entidade.getEfeitos().isEmpty()){
+            StringBuilder sb = new StringBuilder();
+            ArrayList<Efeito> efeitos = entidade.getEfeitos();
+            for(int i = 0; i < efeitos.size(); i++){
+                Efeito efeito = efeitos.get(i);
+                sb.append(efeito.getNome()).append(" ").append(efeito.getAcumulos());
+
+                if(i < efeitos.size() - 1){
+                    sb.append(" | ");
+                }
+            }
+            String linhaEfeitos = sb.toString();
+            textG.putString(xBase + (larguraAscci / 2) - (linhaEfeitos.length() / 2), yBase + 2, linhaEfeitos);
+        }
+
+        if(entidade instanceof Inimigo inimigo){
+            String proxAcao = "Irá " + inimigo.getProxAcao(tabuleiro);
+            textG.putString(xBase + (larguraAscci / 2) - (proxAcao.length()), yBase + 3, status);
+        }
+
+        for(int i = 0; i < linhasAscci.length; i++){
+            textG.putString(xBase, yBase + 4 + i, linhasAscci[i]);
+        }
+
+    }
+    public void desenharStatus(Tabuleiro tabuleiro, int energia, int energiaMaxima){
+        TextGraphics textG = screen.newTextGraphics();
+            
+        int incremento = 0;
+        printarEntidade(screen, xHeroi, yStatus, tabuleiro.getHeroi(), tabuleiro);
+
+        for(Inimigo inimigo : tabuleiro.getInimigos()){
+            incremento += 15;
+            printarEntidade(screen, xHeroi + incremento, yStatus, inimigo, tabuleiro);
+        }
+
+        String stringEnergia = energia + "/" + energiaMaxima + " de energia disponível" ;
+
+        textG.putString(xHeroi, yStatus + 16, stringEnergia);
+        
+    }
+    public void desenharLogs(ArrayList<String> historico){
+        TextGraphics textG = screen.newTextGraphics();
+        for(int i = 0; i < historico.size(); i++){
+            textG.putString(xLogs, yLogs + i, historico.get(i));
+        }
+    }
+    public void desenharAviso(String tipoAviso){
+        TextGraphics textG = screen.newTextGraphics();
+        switch(tipoAviso){
+            case "energiaInsuficiente" :
+                textG.putString(xAviso, yAviso, "ENERGIA INSUFICIENTE: a carta selecionada possui custo de energia superior ao nível de energia atual.");
+            case "inimigoEstaMorto" :
+                textG.putString(xAviso, yAviso, "INIMIGO JÁ ESTÁ MORTO: o inimigo selecionado já foi derrotado, essa ação não terá efeito");
+            default:
+        }
+    }
+    public void desenharSelecaoCartas(MaoDoJogador maoDoJogador, int posiçãoCursor){
+        TextGraphics textG = screen.newTextGraphics();
+        int espacamento = 5;
+        for(int i = 0; i < maoDoJogador.getTamanho(); i++){
+            Carta carta = maoDoJogador.getCarta(i);
+            String nome = carta.getNome();
+            String custoEfeitoAoE = carta.getEfeitoCustoAoE();
+            String descricao = carta.getDescricao();
+            int xEspacado = xEscolhas + espacamento;
+            int yEspacado = yEscolhas + 1;
+            textG.putString(xEspacado, yEscolhas, "Escolha sua ação:");
+            if(posiçãoCursor == i){
+                textG.setForegroundColor(TextColor.ANSI.GREEN);
+                textG.putString(xEspacado, yEscolhas, "-> " + carta.getNome());
+                desenharTextoCentralizado(textG, xEspacado, yEspacado, nome.length(), custoEfeitoAoE);
+                desenharFrasesCentralizadas(textG, xEspacado, yEspacado + 1, nome.length(), descricao);
+            }else{
+                textG.setForegroundColor(TextColor.ANSI.WHITE);
+                textG.putString(xEspacado, yEscolhas, "   " + carta.getNome());
+                desenharTextoCentralizado(textG, xEspacado, yEspacado, nome.length(), custoEfeitoAoE);
+                desenharFrasesCentralizadas(textG, xEspacado, yEspacado + 1, nome.length(), descricao);
+            }
+            espacamento += 5 ;
+        }
+        if(posiçãoCursor == maoDoJogador.getTamanho()){
+            textG.setForegroundColor(TextColor.ANSI.GREEN);
+            textG.putString(xEscolhas + espacamento, yEscolhas + 1, "Encerrar Turno");
+        }else{
+            textG.putString(xEscolhas + espacamento, yEscolhas + 1, "Encerrar Turno");
+        }
+        
+        
+    }
+
+    public void desligarTela(){
+        try{
+            screen.stopScreen();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void aplicarDesenho(){
+        try{
+            screen.refresh();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void limparDesenho(){
+        screen.clear();
+    }
+
+    public KeyStroke receberInputTeclado(){
+        try{
+            return screen.readInput();
+        }catch(IOException e){
+            e.printStackTrace();
+            return null;
+        }
+        
+    }
+
+
+
+
 
     /**
      * Exibe o estado atual da batalha no console.
@@ -24,9 +192,7 @@ public class Menu {
      * @param energia       energia atual disponível.
      * @param energiaMaxima energia máxima do jogador.
      */
-    public void status(Tabuleiro tabuleiro, MaoDoJogador maoDoJogador,
-            int energia,
-            int energiaMaxima) {
+    public void status(Tabuleiro tabuleiro, int energia, int energiaMaxima) {
         Heroi heroi = tabuleiro.getHeroi();
         ArrayList<Inimigo> inimigos = tabuleiro.getInimigos();
         System.out.printf("=-=\n");
@@ -45,7 +211,7 @@ public class Menu {
             System.out.printf("%s (%d/%d) (%d de escudo)\n", inimigo.getNome(),
                     inimigo.getVida(), inimigo.getVidaMaxima(), inimigo.getEscudo());
             if (inimigo.estaVivo()) {
-                System.out.printf("Irá %s\n\n", inimigo.imprimirProxAcao(tabuleiro));
+                System.out.printf("Irá %s\n\n", inimigo.getProxAcao(tabuleiro));
             }else{
                 System.out.printf("Está morto.\n\n");
             }
@@ -80,6 +246,41 @@ public class Menu {
         }
     }
 
+    public List<String> quebrarTexto(String texto, int larguraMaxima) {
+    List<String> linhas = new ArrayList<>();
+    String[] palavras = texto.split(" ");
+    StringBuilder linhaAtual = new StringBuilder();
+
+    for (String palavra : palavras) {
+        if (linhaAtual.length() + palavra.length() + 1 <= larguraMaxima) {
+            if (linhaAtual.length() > 0) {
+                linhaAtual.append(" ");
+            }
+            linhaAtual.append(palavra);
+        } else {
+            linhas.add(linhaAtual.toString());
+            linhaAtual = new StringBuilder(palavra);
+        }
+    }
+    if (linhaAtual.length() > 0) {
+        linhas.add(linhaAtual.toString());
+    }
+
+    return linhas;
+    }
+
+    public void desenharTextoCentralizado(TextGraphics tg, int xBase, int yBase, int larguraTotal, String texto){
+        int posicaoX = xBase + (larguraTotal / 2) - (texto.length() / 2);
+        tg.putString(posicaoX, yBase, texto);
+    }
+
+    public void desenharFrasesCentralizadas(TextGraphics tg, int xBase, int yBase, int larguraTotal, String textoLongo){
+        List<String> linhas = quebrarTexto(textoLongo, larguraTotal);
+        for(int i = 0; i < linhas.size(); i++){
+            desenharTextoCentralizado(tg, xBase, yBase + i, larguraTotal, linhas.get(i));
+        }
+    }
+    
     /**
      * Cria uma mensagem descritiva baseada em um efeito aplicado a uma entidade.
      *
@@ -109,20 +310,6 @@ public class Menu {
         for (String acao : historico) {
             System.out.printf("%s\n", acao);
         }
-    }
-
-    /**
-     * Exibe as opções de cartas disponíveis na mão do jogador.
-     *
-     * @param mao mão atual do jogador.
-     */
-    public void escolhas(MaoDoJogador mao) {
-        int i = 0;
-        while (i < mao.getTamanho()) {
-            System.out.printf("%d - %s %s \n", i + 1, mao.getCarta(i).getNome(), mao.getCarta(i).getEfeitoCustoAoE());
-            i++;
-        }
-        System.out.printf("%d - Encerrar Turno\n", i + 1);
     }
 
     /**
@@ -163,7 +350,7 @@ public class Menu {
      */
     public void inimigoEstaMorto() {
         System.out.printf(
-                "INIMIGO JÁ ESTÁ MORTO: o inimigo selecionado já foi derrotado, essa acao não terá efeito\n");
+                "INIMIGO JÁ ESTÁ MORTO: o inimigo selecionado já foi derrotado, essa ação não terá efeito\n");
     }
 
     /**
@@ -187,28 +374,7 @@ public class Menu {
         System.out.println("\n ATENÇÂO: A escolha deve ser um número dentre os listados");
     }
 
-    /**
-     * Lê a escolha do jogador via entrada padrão.
-     *
-     * O método continua solicitando entrada até que um valor numérico válido seja
-     * fornecido.
-     *
-     * @return número escolhido pelo jogador.
-     */
-    public int leEscolhaPlayer() {
-        boolean inputValido = false;
-        System.out.printf("Escolha: ");
-        while (!inputValido) {
-            try {
-                int escolhaPlayer = scan.nextInt();
-                return escolhaPlayer;
-            } catch (InputMismatchException e) {
-                scan.next();
 
-            }
-        }
-        return 0;
-    }
 
     /**
      * Limpa a tela do console.

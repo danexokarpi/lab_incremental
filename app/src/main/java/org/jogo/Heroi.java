@@ -16,8 +16,8 @@ public class Heroi extends Entidade {
      * @param vidaMaxima a quantidade máxima de vida que o herói pode ter
      * @param escudo     a quantidade inicial de escudo do herói
      */
-    public Heroi(String nome, int vidaMaxima, int escudo) {
-        super(nome, vidaMaxima, escudo);
+    public Heroi(String nome, int vidaMaxima, int escudo, String ascci) {
+        super(nome, vidaMaxima, escudo, ascci);
     }
 
 }

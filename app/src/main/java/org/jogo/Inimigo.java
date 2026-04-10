@@ -37,8 +37,8 @@ public class Inimigo extends Entidade {
      *                         do inimigo.
      */
     public Inimigo(String nome, int vidaMaxima, int escudo, int dano, int cura, int escudoAoProteger,
-            FabricaDeEfeito fabricaDeEfeito, char[] listaDeAcoes) {
-        super(nome, vidaMaxima, escudo);
+            FabricaDeEfeito fabricaDeEfeito, char[] listaDeAcoes, String ascci) {
+        super(nome, vidaMaxima, escudo, ascci);
         this.dano = dano;
         this.escudoAoProteger = escudoAoProteger;
         this.fabricaDeEfeito = fabricaDeEfeito;
@@ -89,9 +89,9 @@ public class Inimigo extends Entidade {
      *                  ação.
      * @return descrição textual da próxima ação do inimigo.
      */
-    public String imprimirProxAcao(Tabuleiro tabuleiro) {
+    public String getProxAcao(Tabuleiro tabuleiro) {
         this.proximoAlvo = acharAlvoValido(tabuleiro);
-        switch (proximaAcao) {
+            switch (proximaAcao) {
             case 'A':
                 return "Atacar: " + this.dano;
             case 'C':
@@ -103,7 +103,9 @@ public class Inimigo extends Entidade {
                 return "Causar " + efeito.getNome() + " " + efeito.getAcumulos() + " em " + proximoAlvo.getNome();
             default:
                 return "";
-        }
+            }
+        
+        
     }
 
     /**

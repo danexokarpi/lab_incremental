@@ -1,5 +1,8 @@
 package org.jogo;
+import com.googlecode.lanterna.input.KeyStroke;
+import com.googlecode.lanterna.input.KeyType;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -50,6 +53,7 @@ public class Tabuleiro {
         this.maoDoJogador = new MaoDoJogador(capacidadeDaMao);
         this.energiaMaxima = energiaMaxima;
         this.historicoDeAcoes = new ArrayList<String>();
+        menu.incializarTela();
     }
 
     /**
@@ -64,50 +68,59 @@ public class Tabuleiro {
      */
     private boolean jogadaDoPlayer() {
         boolean heroiEmTurno = true;
-        boolean escolhaEhValida = false;
-        int escolhaDeEncerrar = maoDoJogador.getTamanho() + 1;
-        menu.clearScreen();
-        menu.historico(historicoDeAcoes);
-        this.historicoDeAcoes.clear();
-        menu.status(this, maoDoJogador, energia, energiaMaxima);
-        while (!escolhaEhValida) {
-            menu.escolhas(maoDoJogador);
-            int escolhaPlayer = menu.leEscolhaPlayer();
+        boolean confirmou = false;
+        int escolhaDeEncerrar = maoDoJogador.getTamanho();
+        int posicaoCursor = 0;
+        String tipoDeAviso = "";
+        
+        while (!confirmou){
+            menu.limparDesenho();
+            menu.desenharStatus(this, energia, energiaMaxima);
+            menu.desenharLogs(historicoDeAcoes);
+            menu.desenharAviso(tipoDeAviso);
+            menu.desenharSelecaoCartas(maoDoJogador, posicaoCursor);
+            this.historicoDeAcoes.clear();
 
-            if (escolhaPlayer < 0 || escolhaPlayer > escolhaDeEncerrar) {
-                menu.clearScreen();
-                menu.status(this, maoDoJogador, energia, energiaMaxima);
-                menu.escolhaForaDeAlcance();
-                continue;
-            }
-            if (escolhaPlayer == escolhaDeEncerrar) {
+            menu.aplicarDesenho();
+
+            KeyStroke key = menu.receberInputTeclado();
+
+            if (key.getKeyType() == KeyType.ArrowRight){
+                posicaoCursor ++;
+                if (posicaoCursor > escolhaDeEncerrar){
+                    posicaoCursor = 0;
+                }
+            }else if (key.getKeyType() == KeyType.ArrowLeft){
+                posicaoCursor --;
+                if (posicaoCursor < 0){
+                    posicaoCursor = escolhaDeEncerrar;
+                }
+            }else if (key.getKeyType() == KeyType.Enter){
+                if(posicaoCursor == escolhaDeEncerrar){
                 maoDoJogador.descartarTudo(pilhaDeDescarte);
                 heroiEmTurno = false;
-                escolhaEhValida = true;
                 continue;
+                }
+                Carta cartaEscolhida = maoDoJogador.getCarta(posicaoCursor);
+            
+                if(cartaEscolhida.getCusto() > energia){
+                    tipoDeAviso = "energiaInsuficiente";
+                    continue;
+                }
+                if(cartaEscolhida.usar(this)){
+                    energia -= cartaEscolhida.getCusto();
+                    pilhaDeDescarte.push(cartaEscolhida);
+                    maoDoJogador.removeCarta(posicaoCursor);
+                    confirmou = true;
+                }else{
+                    continue;
+                }
             }
-
-            Carta cartaEscolhida = maoDoJogador.getCarta(escolhaPlayer - 1);
-
-            if (cartaEscolhida.getCusto() > energia) {
-                menu.clearScreen();
-                menu.status(this, maoDoJogador, energia, energiaMaxima);
-                menu.energiaInsuficiente();
-                continue;
-            }
-            if (cartaEscolhida.usar(this)) {
-                energia -= cartaEscolhida.getCusto();
-                pilhaDeDescarte.push(cartaEscolhida);
-                maoDoJogador.removeCarta(escolhaPlayer - 1);
-                escolhaEhValida = true;
-            } else {
-                menu.clearScreen();
-                menu.status(this, maoDoJogador, energia, energiaMaxima);
-                continue;
-            }
-
+            
         }
-        return heroiEmTurno;
+        }
+        
+    
     }
 
     /**
@@ -154,7 +167,7 @@ public class Tabuleiro {
             this.novoRound();
         }
         menu.clearScreen();
-        menu.status(this, maoDoJogador, energia, energiaMaxima);
+        menu.status(this, energia, energiaMaxima);
         if (heroi.estaVivo()) {
             menu.playerGanhou();
         } else {
@@ -176,13 +189,13 @@ public class Tabuleiro {
         boolean escolhaEhValida = false;
         int escolhaDeCancelar = inimigos.size() + 1;
         menu.clearScreen();
-        menu.status(this, maoDoJogador, energia, energiaMaxima);
+        menu.status(this, energia, energiaMaxima);
         while (!escolhaEhValida) {
             menu.escolhasDeInimigos(inimigos);
             int escolhaPlayer = menu.leEscolhaPlayer();
             if (escolhaPlayer < 0 || escolhaPlayer > escolhaDeCancelar) {
                 menu.clearScreen();
-                menu.status(this, maoDoJogador, energia, energiaMaxima);
+                menu.status(this, energia, energiaMaxima);
                 menu.escolhaForaDeAlcance();
                 continue;
             }
@@ -195,7 +208,7 @@ public class Tabuleiro {
                 return inimigos.get(escolhaPlayer - 1);
             } else if (!inimigos.get(escolhaPlayer - 1).estaVivo()) {
                 menu.clearScreen();
-                menu.status(this, maoDoJogador, energia, energiaMaxima);
+                menu.status(this, energia, energiaMaxima);
                 menu.inimigoEstaMorto();
             }
         }

@@ -14,6 +14,7 @@ public abstract class Entidade {
     private int vida;
     private int vidaMaxima;
     private int escudo;
+    private String ascci;
     private ArrayList<Efeito> efeitos;
 
     /**
@@ -23,11 +24,12 @@ public abstract class Entidade {
      * @param vidaMaxima quantidade máxima de vida da entidade.
      * @param escudo     quantidade inicial de escudo da entidade.
      */
-    public Entidade(String nome, int vidaMaxima, int escudo) {
+    public Entidade(String nome, int vidaMaxima, int escudo, String ascci) {
         this.nome = nome;
         this.vidaMaxima = vidaMaxima;
         this.escudo = escudo;
         this.vida = vidaMaxima;
+        this.ascci = ascci;
         this.efeitos = new ArrayList<Efeito>();
     }
 
@@ -180,4 +182,7 @@ public abstract class Entidade {
         return efeitos;
     }
 
+    public String getAscci(){
+        return ascci;
+    }
 }
