@@ -54,22 +54,22 @@ public class Inimigo extends Entidade {
      * efeito.
      * Ao final, seleciona aleatoriamente a próxima ação.
      *
-     * @param tabuleiro referência ao tabuleiro atual para registrar ações e obter
-     *                  alvos.
+     * @param batalha referência à batalha atual para registrar ações e obter
+     *                alvos.
      */
-    public void agir(Tabuleiro tabuleiro) {
+    public void agir(Batalha batalha) {
         switch (proximaAcao) {
             case 'A':
                 atacar(proximoAlvo);
-                tabuleiro.adicionarAoHistorico('A', this, proximoAlvo, dano);
+                batalha.adicionarAoHistorico('A', this, proximoAlvo, dano);
                 break;
             case 'C':
                 proximoAlvo.curar(cura);
-                tabuleiro.adicionarAoHistorico('C', this, proximoAlvo, cura);
+                batalha.adicionarAoHistorico('C', this, proximoAlvo, cura);
                 break;
             case 'E':
                 proximoAlvo.receberEscudo(escudoAoProteger);
-                tabuleiro.adicionarAoHistorico('E', this, proximoAlvo, escudoAoProteger);
+                batalha.adicionarAoHistorico('E', this, proximoAlvo, escudoAoProteger);
                 break;
             case 'U':
                 Efeito efeito = fabricaDeEfeito.criarEfeito();
@@ -85,12 +85,12 @@ public class Inimigo extends Entidade {
      * Antes de executar a ação, define o alvo válido e retorna uma string
      * descritiva da ação e do valor correspondente (dano, cura, escudo ou efeito).
      *
-     * @param tabuleiro referência ao tabuleiro atual para determinar o alvo da
-     *                  ação.
+     * @param batalha referência à batalha atual para determinar o alvo da
+     *                ação.
      * @return descrição textual da próxima ação do inimigo.
      */
-    public String imprimirProxAcao(Tabuleiro tabuleiro) {
-        this.proximoAlvo = acharAlvoValido(tabuleiro);
+    public String imprimirProxAcao(Batalha batalha) {
+        this.proximoAlvo = acharAlvoValido(batalha);
         switch (proximaAcao) {
             case 'A':
                 return "Atacar: " + this.dano;
@@ -112,21 +112,21 @@ public class Inimigo extends Entidade {
      * Para ações de dano ou debuff, o alvo geralmente é o herói. Para buffs, o alvo
      * é um inimigo aleatório. Para proteger-se e curar-se, o alvo é ele próprio.
      *
-     * @param tabuleiro referência ao tabuleiro para acessar o herói e inimigos.
+     * @param batalha referência à batalha para acessar o herói e inimigos.
      * @return entidade que será o alvo da ação, ou {@code null} se não houver alvo
      *         válido.
      */
-    private Entidade acharAlvoValido(Tabuleiro tabuleiro) {
+    private Entidade acharAlvoValido(Batalha batalha) {
         if (proximaAcao == 'U') {
             Efeito efeito = fabricaDeEfeito.criarEfeito();
             if (efeito.getTipoDeEfeito().equals("Buff")) {
-                ArrayList<Inimigo> inimigos = tabuleiro.getInimigos();
+                ArrayList<Inimigo> inimigos = batalha.getInimigos();
                 return inimigos.get(random.nextInt(inimigos.size()));
             } else if (efeito.getTipoDeEfeito().equals("Debuff")) {
-                return tabuleiro.getHeroi();
+                return batalha.getHeroi();
             }
         } else if (proximaAcao == 'A') {
-            return tabuleiro.getHeroi();
+            return batalha.getHeroi();
         } else if (proximaAcao == 'E' || proximaAcao == 'C') {
             return this;
         }

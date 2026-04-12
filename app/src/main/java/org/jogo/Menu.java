@@ -19,16 +19,16 @@ public class Menu {
      *
      * Mostra informações do herói, inimigos e energia disponível.
      *
-     * @param tabuleiro     estado atual do jogo.
+     * @param batalha       estado atual do jogo.
      * @param maoDoJogador  mão atual do jogador.
      * @param energia       energia atual disponível.
      * @param energiaMaxima energia máxima do jogador.
      */
-    public void status(Tabuleiro tabuleiro, MaoDoJogador maoDoJogador,
+    public void status(Batalha batalha, MaoDoJogador maoDoJogador,
             int energia,
             int energiaMaxima) {
-        Heroi heroi = tabuleiro.getHeroi();
-        ArrayList<Inimigo> inimigos = tabuleiro.getInimigos();
+        Heroi heroi = batalha.getHeroi();
+        ArrayList<Inimigo> inimigos = batalha.getInimigos();
         System.out.printf("=-=\n");
         System.out.printf("%s (%d/%d) (%d de escudo)\n", heroi.getNome(),
                 heroi.getVida(), heroi.getVidaMaxima(), heroi.getEscudo());
@@ -37,8 +37,8 @@ public class Menu {
             System.out.printf("%s (%d/%d) (%d de escudo)\n", inimigo.getNome(),
                     inimigo.getVida(), inimigo.getVidaMaxima(), inimigo.getEscudo());
             if (inimigo.estaVivo()) {
-                System.out.printf("Irá %s\n\n", inimigo.imprimirProxAcao(tabuleiro));
-            }else{
+                System.out.printf("Irá %s\n\n", inimigo.imprimirProxAcao(batalha));
+            } else {
                 System.out.printf("Está morto.\n\n");
             }
 

@@ -16,18 +16,18 @@ public class CartaDano extends Carta {
         return "(Dano - " + this.dano + ") (Custo - " + getCusto() + ")";
     }
 
-    public boolean usar(Tabuleiro tabuleiro) {
+    public boolean usar(Batalha batalha) {
         if (areaDeEfeito.equals("Unico")) {
-            Inimigo inimigo = tabuleiro.escolherUmInimigo();
+            Inimigo inimigo = batalha.escolherUmInimigo();
             if (inimigo != null) {
                 inimigo.receberDano(dano);
-                tabuleiro.adicionarAoHistorico('A', tabuleiro.getHeroi(), inimigo, dano);
+                batalha.adicionarAoHistorico('A', batalha.getHeroi(), inimigo, dano);
                 return true;
             } else {
                 return false;
             }
         } else if (areaDeEfeito.equals("Todos")) {
-            ArrayList<Inimigo> inimigos = tabuleiro.getInimigos();
+            ArrayList<Inimigo> inimigos = batalha.getInimigos();
             for (Inimigo inimigo : inimigos) {
                 inimigo.receberDano(dano);
             }

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Representa o estado e a lógica central de uma batalha no jogo.
  *
- * A classe Tabuleiro é responsável por gerenciar todos os elementos
+ * A classe Batalha é responsável por gerenciar todos os elementos
  * envolvidos em uma partida, incluindo:
  *
  * Herói e inimigos em combate
@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * Além disso, controla o fluxo da batalha, incluindo rounds, turnos do jogador,
  * turnos dos inimigos e aplicação de efeitos.
  */
-public class Tabuleiro {
+public class Batalha {
     private Menu menu;
     private Heroi heroi;
     private ArrayList<Inimigo> inimigos;
@@ -29,7 +29,7 @@ public class Tabuleiro {
     private ArrayList<String> historicoDeAcoes;
 
     /**
-     * Cria um novo tabuleiro com os elementos iniciais da batalha.
+     * Cria um novo batalha com os elementos iniciais da batalha.
      *
      * @param heroi            personagem controlado pelo jogador.
      * @param inimigos         lista de inimigos presentes na batalha.
@@ -37,7 +37,7 @@ public class Tabuleiro {
      * @param energiaMaxima    quantidade máxima de energia do jogador por turno.
      * @param capacidadeDaMao  número máximo de cartas na mão do jogador.
      */
-    public Tabuleiro(Heroi heroi, ArrayList<Inimigo> inimigos, ArrayList<Carta> cartasInventário,
+    public Batalha(Heroi heroi, ArrayList<Inimigo> inimigos, ArrayList<Carta> cartasInventário,
             int energiaMaxima, int capacidadeDaMao) {
         this.menu = new Menu();
         this.heroi = heroi;

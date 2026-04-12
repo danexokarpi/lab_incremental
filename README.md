@@ -61,7 +61,7 @@ O combate termina quando:
   -Veneno - Veneno da dano baseado na quantidade de stacks de veneno que se possuí, caso uma entidade tenha 3 stacks ele da 3 de dano ao dono todo fim de turno, de mesma forma, no fim do turno uma stack do veneno é     perdida
   -Regeneração - Regeneração cura baseado na quantidade de stacks de regeneração que se possui, caso uma entidade tenha 3 stacks ela cura 3 de vida para o dono todo fim de turno, de mesma forma, no fim do turno, uma stack é perdida.
 
-  -Ademais, utilizamos um sistema de subscriber e publisher para ativar os efeitos, tanto as entidades quanto os efeitos que elas possuem agem como subscribers, e a classe de tabuleiro age como publisher, assim que um evento ocorre o tabuleiro reporta para as entidades que então reportam para seus efeitos, consideramos isso mais adequado pois nesse caso quando um inimigo morre, todos os seus efeitos são denconsiderados e apagados.
+  -Ademais, utilizamos um sistema de subscriber e publisher para ativar os efeitos, tanto as entidades quanto os efeitos que elas possuem agem como subscribers, e a classe de batalha age como publisher, assim que um evento ocorre o batalha reporta para as entidades que então reportam para seus efeitos, consideramos isso mais adequado pois nesse caso quando um inimigo morre, todos os seus efeitos são denconsiderados e apagados.
 
 
 # Tecnologias Utilizadas

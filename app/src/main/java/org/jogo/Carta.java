@@ -11,7 +11,7 @@ public abstract class Carta {
         this.custo = custo;
     }
 
-    public abstract boolean usar(Tabuleiro tabuleiro);
+    public abstract boolean usar(Batalha batalha);
 
     public abstract String getEfeitoCusto();
 
