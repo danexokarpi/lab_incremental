@@ -4,11 +4,12 @@ public class CartaEscudo extends Carta {
     private int escudo;
 
     public CartaEscudo(String nome, String descricao, int custo, int escudo) {
-        super(nome, descricao, custo);
+        super(nome, descricao, custo, "Unico");
         this.escudo = escudo;
+    
     }
 
-    public String getEfeitoCusto() {
+    public String getEfeitoCustoAoE() {
         return "(Escudo - " + this.escudo + ") (Custo - " + getCusto() + ")";
     }
 

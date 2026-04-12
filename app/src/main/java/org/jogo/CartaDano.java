@@ -4,20 +4,14 @@ import java.util.ArrayList;
 
 public class CartaDano extends Carta {
     private int dano;
-    private String areaDeEfeito;
 
     public CartaDano(String nome, String descricao, int custo, int dano, String areaDeEfeito) {
-        super(nome, descricao, custo);
+        super(nome, descricao, custo, areaDeEfeito);
         this.dano = dano;
-        this.areaDeEfeito = areaDeEfeito;
-    }
-
-    public String getEfeitoCusto() {
-        return "(Dano - " + this.dano + ") (Custo - " + getCusto() + ")";
     }
 
     public boolean usar(Batalha batalha) {
-        if (areaDeEfeito.equals("Unico")) {
+        if (getAreaDeEfeito().equals("Unico")) {
             Inimigo inimigo = batalha.escolherUmInimigo();
             if (inimigo != null) {
                 inimigo.receberDano(dano);
@@ -26,13 +20,20 @@ public class CartaDano extends Carta {
             } else {
                 return false;
             }
-        } else if (areaDeEfeito.equals("Todos")) {
+        } else if (getAreaDeEfeito().equals("Todos")) {
             ArrayList<Inimigo> inimigos = batalha.getInimigos();
             for (Inimigo inimigo : inimigos) {
                 inimigo.receberDano(dano);
+                batalha.adicionarAoHistorico('A', batalha.getHeroi(), inimigo, dano);
             }
+            return true;
         }
         return false;
+    }
+
+    public String getEfeitoCustoAoE() {
+        return "(Dano - " + this.dano + ") (Custo - " + getCusto() + ") " + "(Alvo - " + getAreaDeEfeito()
+                + ")";
     }
 
     public int getDano() {

@@ -1,4 +1,8 @@
 package org.jogo;
+
+/**
+ * O efeito de regeneração, em todo fim de turno, concede vida a seu recepetor de acordo com a quantidade de stacks desse efeito que ele possui, e a cada turno uma stack é consumida.
+*/
 public class EfeitoRegeneracao extends Efeito {
 
     public EfeitoRegeneracao(int acumulos){
