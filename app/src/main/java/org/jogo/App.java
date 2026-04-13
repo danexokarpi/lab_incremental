@@ -87,7 +87,7 @@ public class App {
 
         ArrayList<Carta> baralho = criaBaralho();
 
-        Tabuleiro tabuleiro = new Tabuleiro(heroi, inimigos, baralho, energiaMaxima, 2);
+        Tabuleiro tabuleiro = new Tabuleiro(heroi, inimigos, baralho, energiaMaxima, 4);
         tabuleiro.novaBatalha();
     }
 

@@ -202,7 +202,7 @@ public class Menu {
 
         int numeroColunas = 2; //Possivel mudar para modularizar depois;
         int larguraPacote = largura / numeroColunas;
-        int alturaLinha = 7;
+        int alturaLinha = 5;
         
         int numeroLinhasNecessario = (int) Math.ceil((double) totalOpcoes / numeroColunas);
         int yBase = altura - (numeroLinhasNecessario * alturaLinha) - 1;
