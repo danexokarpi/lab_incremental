@@ -54,6 +54,13 @@ public abstract class Entidade {
             escudo = dano_verdadeiro;
         }
     }
+    
+    public void receberDanoVerdadeiro(int dano){
+        vida -= dano;
+        if(vida < 0){
+            vida = 0;
+        }
+    } 
 
     /**
      * Cura a entidade, respeitando o limite de vida máxima.
