@@ -42,11 +42,44 @@ public class App {
     }
 
     public static void main(String[] args) {
-        Heroi heroi = new Heroi("Capitão Cabra", 15, 0);
+        Heroi heroi = new Heroi("Capitão Cabra", 15, 0 , 
+                                "            +$;     X            \n" + //
+                                "           &X:                   \n" + //
+                                "           $;.  +         x  ;   \n" + //
+                                "          :X&;       + $&XX+;    \n" + //
+                                "    :&&&$&&X&x$&&&&X X+&&&&$     \n" + //
+                                "     X&&&&&$$;$ & .:  ++&X       \n" + //
+                                "       &&&&X+X  x .   :          \n" + //
+                                "           $&&$;X$+X X           \n" + //
+                                "           &$&&&$x; X            \n" + //
+                                "       x..&+$$&&xXXX:            \n" + //
+                                "    . + ;& +.X+&$&  & :          \n" + //
+                                "          &;:+&.   + x : x       \n" + //
+                                "                  &x+:x :    ");
         Inimigo inimigo1 = new Inimigo("Escorpião Gigante", 20, 0, 4, 0, 2, new FabricaDeEfeito("veneno", 3),
-                new char[] { 'A', 'E', 'U' });
+                new char[] { 'A', 'E', 'U' }, 
+                "                          \n" + //
+                "              .++%#+-     \n" + //
+                "              *+    *.    \n" + //
+                "                    .%    \n" + //
+                "                   .*=    \n" + //
+                "             .-.*-.+*     \n" + //
+                "         +* *@*.--+*%.    \n" + //
+                "     .:+. ..-:-+%#%#  #   \n" + //
+                "    .* + #:*++#%@:. *  =. \n" + //
+                "  -*        .+. : =  *    \n" + //
+                "           .----= .       \n" + //
+                "         =-.++. -         \n" + //
+                "       .=++               \n" + //
+                "                          \n" + //
+                "");
         Inimigo inimigo2 = new Inimigo("Barata Radioativa", 10, 0, 2, 0, 2, new FabricaDeEfeito(null, 0),
-                new char[] { 'A', 'E' });
+                new char[] { 'A', 'E' }, 
+                "        - @.                     \n" + //
+                "            %*@+=:$$ %           \n" + //
+                "               @@ *@@@@%         \n" + //
+                "             %    %#     =@      \n" + //
+                "            @      .       $     \n");
         ArrayList<Inimigo> inimigos = new ArrayList<>();
         inimigos.add(inimigo1);
         inimigos.add(inimigo2);
@@ -54,7 +87,7 @@ public class App {
 
         ArrayList<Carta> baralho = criaBaralho();
 
-        Tabuleiro tabuleiro = new Tabuleiro(heroi, inimigos, baralho, energiaMaxima, 2);
+        Tabuleiro tabuleiro = new Tabuleiro(heroi, inimigos, baralho, energiaMaxima, 4);
         tabuleiro.novaBatalha();
     }
 

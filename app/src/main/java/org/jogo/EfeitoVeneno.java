@@ -10,7 +10,7 @@ public class EfeitoVeneno extends Efeito {
 
     public void receberNotificacao(Evento eventoOcorrido){
         if (isAtivo() && eventoOcorrido == Evento.FimDoRound){
-            getDono().receberDano(getAcumulos());
+            getDono().receberDanoVerdadeiro(getAcumulos());
             subtrairAcumulo();
         }
     }
