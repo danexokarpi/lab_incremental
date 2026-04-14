@@ -43,24 +43,30 @@ public class App {
         return new ArrayList<Carta>(Arrays.asList(listaBaralho));
     }
 
+    private static ArrayList<Inimigo> criarInimigos() {
+        Inimigo inimigo1 = new Inimigo("Escorpião Gigante", 20, 0, 4, 0, 2, new FabricaDeEfeito("veneno", 3),
+                new char[] { 'A', 'E', 'U' });
+        Inimigo inimigo2 = new Inimigo("Barata Radioativa", 10, 0, 2, 0, 2, new FabricaDeEfeito(null, 0),
+                new char[] { 'A', 'E' });
+        ArrayList<Inimigo> inimigos = new ArrayList<Inimigo>();
+        inimigos.add(inimigo1);
+        inimigos.add(inimigo2);
+        return inimigos;
+
+    }
+
     public static void main(String[] args) {
         MenuPrincipal menuPrincipal = new MenuPrincipal();
         menuPrincipal.titulo();
 
         Heroi heroi = new Heroi("Capitão Cabra", 15, 0);
-        Inimigo inimigo1 = new Inimigo("Escorpião Gigante", 20, 0, 4, 0, 2, new FabricaDeEfeito("veneno", 3),
-                new char[] { 'A', 'E', 'U' });
-        Inimigo inimigo2 = new Inimigo("Barata Radioativa", 10, 0, 2, 0, 2, new FabricaDeEfeito(null, 0),
-                new char[] { 'A', 'E' });
-        ArrayList<Inimigo> inimigos = new ArrayList<>();
-        inimigos.add(inimigo1);
-        inimigos.add(inimigo2);
-        int energiaMaxima = 3;
-
+        ArrayList<Inimigo> inimigos = criarInimigos();
         ArrayList<Carta> baralho = criaBaralho();
+        int energiaMaxima = 3;
+        int maximoDeCartasNaMao = 2;
 
-        Batalha batalha = new Batalha(heroi, inimigos, baralho, energiaMaxima, 2);
-        batalha.novaBatalha();
+        Batalha batalha = new Batalha(heroi, inimigos, baralho, energiaMaxima, maximoDeCartasNaMao);
+        batalha.iniciarBatalha();
     }
 
 }

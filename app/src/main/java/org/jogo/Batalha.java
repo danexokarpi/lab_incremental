@@ -149,7 +149,7 @@ public class Batalha {
      * O método executa rounds sucessivos até que uma das condições de término
      * seja atendida: o herói ser derrotado ou todos os inimigos serem eliminados.
      */
-    public void novaBatalha() {
+    public void iniciarBatalha() {
         while (heroi.estaVivo() && !todosInimigosMortos()) {
             this.novoRound();
         }
