@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class Mapa {
 
     private ArrayList<NoMapa> listaDeNos;
-    private ArrayList<Batalha> listaDeBatalhas;
+    private ArrayList<Tabuleiro> listaDeTabuleiros;
 
     public Mapa(String arquivoDoMapa) {
         InputStream esqueletoDoMapa = MenuPrincipal.class.getResourceAsStream("/esqueletoDoMapa.txt");
@@ -28,8 +28,8 @@ public class Mapa {
         scannerMapa.close();
     }
 
-    public Batalha getBatalha(int idNo) {
-        return listaDeBatalhas.get(idNo);
+    public Tabuleiro getTabuleiro(int idNo) {
+        return listaDeTabuleiros.get(idNo);
     }
 
 }
