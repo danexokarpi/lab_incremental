@@ -8,6 +8,10 @@ public class FabricaDeEfeito {
     private int acumulos;
     private String nomeDoEfeito;
 
+
+
+    protected FabricaDeEfeito(){}
+    
     /**
      * Construtor da fábrica.
      *

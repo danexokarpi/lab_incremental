@@ -13,7 +13,7 @@ public class CartaEscudo extends Carta {
         return "(Escudo - " + this.escudo + ") (Custo - " + getCusto() + ")";
     }
 
-    public boolean usar(Tabuleiro tabuleiro) {
+    public boolean usar(Batalha tabuleiro) {
         tabuleiro.getHeroi().receberEscudo(escudo);
         tabuleiro.adicionarAoHistorico('E', tabuleiro.getHeroi(), tabuleiro.getHeroi(), escudo);
         return true;

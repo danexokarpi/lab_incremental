@@ -10,7 +10,7 @@ public class CartaEfeito extends Carta {
         this.fabricaDeEfeito = fabricaDeEfeito;
     }
     
-    public boolean usar(Tabuleiro tabuleiro) {
+    public boolean usar(Batalha tabuleiro) {
         Efeito efeito = fabricaDeEfeito.criarEfeito();
 
         if (efeito.getTipoDeEfeito().equals("Buff")) {

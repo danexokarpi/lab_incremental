@@ -23,13 +23,8 @@ import java.util.ArrayList;
  * realizadas durante a partida.
  */
 public class Menu {
-    private static Scanner scan = new Scanner(System.in);
     private Screen screen;
 
-    private static final int xHeroi = 5;
-    private static final int yStatus = 2;
-    private static final int xLogs = 5;
-    private static final int yLogs = 20;
     private static final int xAviso = 5;
     private static final int yAviso = 34;
     private static final int xEscolhas = 5;
@@ -65,10 +60,10 @@ public class Menu {
         textG.putString(x, y, texto);
     }
 
-    private void printarEntidade(int centroX, int yBase, Entidade entidade, Tabuleiro tabuleiro){
+    private void printarEntidade(int centroX, int yBase, Entidade entidade, Batalha tabuleiro){
         TextGraphics textG = screen.newTextGraphics();
         textG.setForegroundColor(TextColor.ANSI.GREEN);
-        String[] linhasAscci = entidade.getAscci().split("\n");
+        String[] linhasAscci = entidade.getAscii().split("\n");
 
         int larguraAscci = 0;
         for (String linha : linhasAscci){
@@ -111,7 +106,7 @@ public class Menu {
         }
 
     }
-    public void desenharStatus(Tabuleiro tabuleiro){
+    public void desenharStatus(Batalha tabuleiro){
         int largura = getLargura();
         int y = 1;
 
