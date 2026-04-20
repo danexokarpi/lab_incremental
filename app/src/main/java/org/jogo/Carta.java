@@ -6,6 +6,9 @@ public abstract class Carta {
     private int custo;
     private String areaDeEfeito;
 
+
+    protected Carta(){}
+
     public Carta(String nome, String descricao, int custo, String areaDeEfeito) {
         this.nome = nome;
         this.descricao = descricao;
@@ -13,7 +16,7 @@ public abstract class Carta {
         this.areaDeEfeito = areaDeEfeito;
     }
 
-    public abstract boolean usar(Tabuleiro tabuleiro);
+    public abstract boolean usar(Batalha tabuleiro);
 
     public abstract String getEfeitoCustoAoE();
 

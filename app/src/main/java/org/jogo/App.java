@@ -42,6 +42,9 @@ public class App {
     }
 
     public static void main(String[] args) {
+        System.out.println("O Gradle está rodando nesta pasta: " + System.getProperty("user.dir"));
+        GerenciadorDeJson gerenciador = new GerenciadorDeJson();
+
         Heroi heroi = new Heroi("Capitão Cabra", 15, 0 , 
                                 "            +$;     X            \n" + //
                                 "           &X:                   \n" + //
@@ -83,11 +86,16 @@ public class App {
         ArrayList<Inimigo> inimigos = new ArrayList<>();
         inimigos.add(inimigo1);
         inimigos.add(inimigo2);
-        int energiaMaxima = 3;
+        
+        DadosDoSave dados = gerenciador.carregarSave();
 
-        ArrayList<Carta> baralho = criaBaralho();
+        ArrayList<Carta> cartasDoJogo = criaBaralho();
 
-        Tabuleiro tabuleiro = new Tabuleiro(heroi, inimigos, baralho, energiaMaxima, 4);
+        heroi.setarVida(dados.vida);
+        int energiaMaxima = dados.energiaMaxima; 
+        ArrayList<Carta> baralho = dados.inventarioHeroi;
+
+        Batalha tabuleiro = new Batalha(heroi, inimigos, baralho, energiaMaxima, 4);
         tabuleiro.novaBatalha();
     }
 

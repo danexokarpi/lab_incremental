@@ -37,7 +37,7 @@ public class PilhaDeCompra {
      *                        de compra.
      */
     public void reabastecerMao(MaoDoJogador maoDoJogador, PilhaDeDescarte pilhaDeDescarte) {
-        while (!maoDoJogador.estaCheia()) {
+        while (!maoDoJogador.estaCheia() && !this.isEmpty()) {
             if (this.isEmpty()) {
                 pilhaDeDescarte.reabastecerCompra(this);
             }

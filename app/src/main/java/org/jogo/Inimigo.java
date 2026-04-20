@@ -57,7 +57,7 @@ public class Inimigo extends Entidade {
      * @param tabuleiro referência ao tabuleiro atual para registrar ações e obter
      *                  alvos.
      */
-    public void agir(Tabuleiro tabuleiro) {
+    public void agir(Batalha tabuleiro) {
         switch (proximaAcao) {
             case 'A':
                 atacar(proximoAlvo);
@@ -89,7 +89,7 @@ public class Inimigo extends Entidade {
      *                  ação.
      * @return descrição textual da próxima ação do inimigo.
      */
-    public String getProxAcao(Tabuleiro tabuleiro) {
+    public String getProxAcao(Batalha tabuleiro) {
         this.proximoAlvo = acharAlvoValido(tabuleiro);
             switch (proximaAcao) {
             case 'A':
@@ -118,7 +118,7 @@ public class Inimigo extends Entidade {
      * @return entidade que será o alvo da ação, ou {@code null} se não houver alvo
      *         válido.
      */
-    private Entidade acharAlvoValido(Tabuleiro tabuleiro) {
+    protected Entidade acharAlvoValido(Batalha tabuleiro) {
         if (proximaAcao == 'U') {
             Efeito efeito = fabricaDeEfeito.criarEfeito();
             if (efeito.getTipoDeEfeito().equals("Buff")) {
@@ -153,4 +153,10 @@ public class Inimigo extends Entidade {
         return this.dano;
     }
 
+    public void setProximaAcao(char acao) {
+            this.proximaAcao = acao;
+        }
+    public void setProximoAlvo(Entidade alvo){
+        this.proximoAlvo = alvo;
+    }
 }

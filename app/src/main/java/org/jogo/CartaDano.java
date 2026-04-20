@@ -10,7 +10,7 @@ public class CartaDano extends Carta {
         this.dano = dano;
     }
 
-    public boolean usar(Tabuleiro tabuleiro) {
+    public boolean usar(Batalha tabuleiro) {
         if (getAreaDeEfeito().equals("Unico")) {
             Inimigo inimigo = tabuleiro.escolherUmInimigo();
             if (inimigo != null) {

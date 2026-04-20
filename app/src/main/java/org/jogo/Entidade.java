@@ -14,8 +14,10 @@ public abstract class Entidade {
     private int vida;
     private int vidaMaxima;
     private int escudo;
-    private String ascci;
-    private ArrayList<Efeito> efeitos;
+    private String ascii;
+    private transient ArrayList<Efeito> efeitos;
+
+    protected Entidade(){}
 
     /**
      * Cria uma nova entidade com vida máxima e escudo inicial.
@@ -29,8 +31,8 @@ public abstract class Entidade {
         this.vidaMaxima = vidaMaxima;
         this.escudo = escudo;
         this.vida = vidaMaxima;
-        this.ascci = ascci;
-        this.efeitos = new ArrayList<Efeito>();
+        this.ascii = ascci;
+        this.efeitos = new ArrayList<>();
     }
 
     /**
@@ -91,6 +93,10 @@ public abstract class Entidade {
         escudo = escudoDefinido;
     }
 
+    public void setarVida(int vida){
+        this.vida = vida;
+    }
+
     /**
      * Retorna um efeito já presente na entidade que tenha o mesmo nome do efeito
      * recebido.
@@ -98,7 +104,7 @@ public abstract class Entidade {
      * @param efeitoRecebido efeito a ser buscado.
      * @return efeito correspondente se encontrado, ou {@code null} caso contrário.
      */
-    private Efeito getEffect(Efeito efeitoRecebido) {
+    private Efeito getEfeito(Efeito efeitoRecebido) {
         for (Efeito efeitoPortado : this.efeitos) {
             if (efeitoPortado.getNome() == efeitoRecebido.getNome())
                 return efeitoPortado;
@@ -115,7 +121,7 @@ public abstract class Entidade {
      * @param efeitoRecebido efeito a ser aplicado.
      */
     public void aplicarEfeito(Efeito efeitoRecebido) {
-        Efeito efeitoPortado = this.getEffect(efeitoRecebido);
+        Efeito efeitoPortado = this.getEfeito(efeitoRecebido);
         if (estaVivo()){
             if (efeitoPortado == null) {
             this.efeitos.add(efeitoRecebido);
@@ -186,10 +192,13 @@ public abstract class Entidade {
     }
 
     public ArrayList<Efeito> getEfeitos() {
-        return efeitos;
+        if(this.efeitos == null){
+            this.efeitos = new ArrayList<>();
+        }
+        return this.efeitos;
     }
 
-    public String getAscci(){
-        return ascci;
+    public String getAscii(){
+        return ascii;
     }
 }

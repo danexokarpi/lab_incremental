@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * Além disso, controla o fluxo da batalha, incluindo rounds, turnos do jogador,
  * turnos dos inimigos e aplicação de efeitos.
  */
-public class Tabuleiro {
+public class Batalha {
     private Menu menu;
     private Heroi heroi;
     private ArrayList<Inimigo> inimigos;
@@ -40,7 +40,7 @@ public class Tabuleiro {
      * @param energiaMaxima    quantidade máxima de energia do jogador por turno.
      * @param capacidadeDaMao  número máximo de cartas na mão do jogador.
      */
-    public Tabuleiro(Heroi heroi, ArrayList<Inimigo> inimigos, ArrayList<Carta> cartasInventário,
+    public Batalha(Heroi heroi, ArrayList<Inimigo> inimigos, ArrayList<Carta> cartasInventário,
             int energiaMaxima, int capacidadeDaMao) {
         this.menu = new Menu();
         this.heroi = heroi;
@@ -345,7 +345,7 @@ public class Tabuleiro {
      * @return {@code true} se todos os inimigos estiverem mortos; {@code false}
      *         caso contrário.
      */
-    private boolean todosInimigosMortos() {
+    public boolean todosInimigosMortos() {
         for (Inimigo inimigo : inimigos) {
             if (inimigo.estaVivo()) {
                 return false;

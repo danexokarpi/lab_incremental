@@ -9,6 +9,7 @@ plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
     id 'java'
+    id 'jacoco'
 }
 
 repositories {
@@ -20,11 +21,11 @@ dependencies {
     // Use JUnit Jupiter for testing.
     testImplementation libs.junit.jupiter
 
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+
     implementation 'com.google.code.gson:gson:2.10.1'
 
     implementation 'com.googlecode.lanterna:lanterna:3.1.1'
-
-    implementation 'com.google.code.gson:gson-extras:2.8.5'
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
@@ -48,8 +49,17 @@ application {
 tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
 }
 
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = false
+        csv.required = false
+        html.required = true
+    }
+}
 run {
     standardInput = System.in
 }

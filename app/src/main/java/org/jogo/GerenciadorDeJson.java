@@ -4,8 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.FileWriter;
 import java.io.FileReader;
+import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+
 
 
 public class GerenciadorDeJson {
@@ -23,19 +24,19 @@ public class GerenciadorDeJson {
                                     .registerTypeAdapterFactory(criarAdaptadorDeCartas())
                                     .create();
                                     
-        try (FileWriter writer = new FileWriter("save.json")){
+        try (FileWriter writer = new FileWriter("saveAtual.json")){
             gson.toJson(dados, writer);
         } catch (IOException e){
             e.printStackTrace();
         }
     }
 
-    public DadosDoSave carregarSave(){
+    private DadosDoSave carregarSaveAtual(){
         Gson gson = new GsonBuilder()
                     .registerTypeAdapterFactory(criarAdaptadorDeCartas())
                     .create();
 
-        try(FileReader reader = new FileReader("save.json")){
+        try(FileReader reader = new FileReader("saveAtual.json")){
             DadosDoSave dadosCarregados = gson.fromJson(reader, DadosDoSave.class);
 
             return dadosCarregados;
@@ -45,16 +46,27 @@ public class GerenciadorDeJson {
         }
     }
 
-    public BancoDeDadosDoJogo carregarDadosDoJogo(){
+    private DadosDoSave carregarSaveInicial(){
         Gson gson = new GsonBuilder()
-                        .registerTypeAdapterFactory(criarAdaptadorDeCartas())
-                        .create();
-        try(FileReader reader = new FileReader("dadosDojogo.json")){
-            BancoDeDadosDoJogo banco = gson.fromJson(reader, BancoDeDadosDoJogo.class);
-            return banco;
-        } catch(IOException e){
+                    .registerTypeAdapterFactory(criarAdaptadorDeCartas())
+                    .create();
+
+        try(FileReader reader = new FileReader("saveInicial.json")){
+            DadosDoSave dadosCarregados = gson.fromJson(reader, DadosDoSave.class);
+
+            return dadosCarregados;
+        } catch(IOException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public DadosDoSave carregarSave(){
+        File arquivoDeSaveAtual = new File("saveAtual.json");
+        if (!arquivoDeSaveAtual.exists()){
+        return carregarSaveInicial();
+        } else {
+            return carregarSaveAtual();
         }
     }
 
