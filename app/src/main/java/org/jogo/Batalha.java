@@ -1,4 +1,5 @@
 package org.jogo;
+
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 
@@ -71,58 +72,53 @@ public class Batalha {
         boolean confirmou = false;
         int posicaoCursor = 0;
         String tipoDeAviso = "";
-        
-        
-        while (!confirmou){
+
+        while (!confirmou) {
             menu.limparDesenho();
             menu.desenharStatus(this);
             menu.desenharLogs(historicoDeAcoes);
             menu.desenharAviso(tipoDeAviso);
             menu.desenharSelecaoCartas(maoDoJogador, posicaoCursor, energia, energiaMaxima);
             int escolhaDeEncerrar = maoDoJogador.getTamanho();
-            
 
             menu.aplicarDesenho();
 
             KeyStroke key = menu.receberInputTeclado();
 
-            if (key.getKeyType() == KeyType.ArrowRight){
-                posicaoCursor ++;
-                if (posicaoCursor > escolhaDeEncerrar){
+            if (key.getKeyType() == KeyType.ArrowRight) {
+                posicaoCursor++;
+                if (posicaoCursor > escolhaDeEncerrar) {
                     posicaoCursor = 0;
                 }
-            }else if (key.getKeyType() == KeyType.ArrowLeft){
-                posicaoCursor --;
-                if (posicaoCursor < 0){
+            } else if (key.getKeyType() == KeyType.ArrowLeft) {
+                posicaoCursor--;
+                if (posicaoCursor < 0) {
                     posicaoCursor = escolhaDeEncerrar;
                 }
-            }else if (key.getKeyType() == KeyType.Enter){
-                if(posicaoCursor == escolhaDeEncerrar){
-                maoDoJogador.descartarTudo(pilhaDeDescarte);
-                confirmou = true;
-                heroiEmTurno = false;
-                continue;
+            } else if (key.getKeyType() == KeyType.Enter) {
+                if (posicaoCursor == escolhaDeEncerrar) {
+                    maoDoJogador.descartarTudo(pilhaDeDescarte);
+                    confirmou = true;
+                    heroiEmTurno = false;
+                    continue;
                 }
                 Carta cartaEscolhida = maoDoJogador.getCarta(posicaoCursor);
-                if(cartaEscolhida.getCusto() > energia){
+                if (cartaEscolhida.getCusto() > energia) {
                     tipoDeAviso = "energiaInsuficiente";
                     continue;
                 }
-                if(cartaEscolhida.usar(this)){
+                if (cartaEscolhida.usar(this)) {
                     energia -= cartaEscolhida.getCusto();
                     pilhaDeDescarte.push(cartaEscolhida);
                     maoDoJogador.removeCarta(posicaoCursor);
-                }else{
+                } else {
                     continue;
                 }
             }
-            
+
         }
         return heroiEmTurno;
     }
-        
-    
-    
 
     /**
      * Executa a lógica de um novo round no jogo.
@@ -166,33 +162,33 @@ public class Batalha {
      * seja atendida: o herói ser derrotado ou todos os inimigos serem eliminados.
      */
     public void novaBatalha() {
-    while (heroi.estaVivo() && !todosInimigosMortos()) {
-        this.novoRound();
-    }
-    boolean esperandoInput = true;
+        while (heroi.estaVivo() && !todosInimigosMortos()) {
+            this.novoRound();
+        }
+        boolean esperandoInput = true;
 
-    while (esperandoInput) {
-        menu.limparDesenho();
-        menu.desenharStatus(this);
-        menu.desenharLogs(historicoDeAcoes);
+        while (esperandoInput) {
+            menu.limparDesenho();
+            menu.desenharStatus(this);
+            menu.desenharLogs(historicoDeAcoes);
 
-        if (heroi.estaVivo()) {
-            menu.desenharMensagemFinal("VITÓRIA! Pressione ENTER para sair");
-        } else {
-            menu.desenharMensagemFinal("DERROTA! Pressione ENTER para sair");
+            if (heroi.estaVivo()) {
+                menu.desenharMensagemFinal("VITÓRIA! Pressione ENTER para sair");
+            } else {
+                menu.desenharMensagemFinal("DERROTA! Pressione ENTER para sair");
+            }
+
+            menu.aplicarDesenho();
+
+            KeyStroke key = menu.receberInputTeclado();
+
+            if (key.getKeyType() == KeyType.Enter) {
+                esperandoInput = false;
+            }
         }
 
-        menu.aplicarDesenho();
-
-        KeyStroke key = menu.receberInputTeclado();
-
-        if (key.getKeyType() == KeyType.Enter) {
-            esperandoInput = false;
-        }
+        menu.desligarTela();
     }
-
-    menu.desligarTela();
-}
 
     /**
      * Permite ao jogador escolher um inimigo válido para interação durante o turno.
@@ -205,8 +201,8 @@ public class Batalha {
      *         cancelada.
      */
     public Inimigo escolherUmInimigo() {
-    int posicaoCursor = 0;
-    int opcaoCancelar = inimigos.size();
+        int posicaoCursor = 0;
+        int opcaoCancelar = inimigos.size();
 
         while (true) {
             menu.limparDesenho();
@@ -222,14 +218,12 @@ public class Batalha {
                 if (posicaoCursor > opcaoCancelar) {
                     posicaoCursor = 0;
                 }
-            } 
-            else if (key.getKeyType() == KeyType.ArrowLeft) {
+            } else if (key.getKeyType() == KeyType.ArrowLeft) {
                 posicaoCursor--;
                 if (posicaoCursor < 0) {
                     posicaoCursor = opcaoCancelar;
                 }
-            } 
-            else if (key.getKeyType() == KeyType.Enter) {
+            } else if (key.getKeyType() == KeyType.Enter) {
 
                 if (posicaoCursor == opcaoCancelar) {
                     return null;
