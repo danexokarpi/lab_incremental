@@ -1,9 +1,5 @@
-package org;
+package org.jogo;
 
-import org.jogo.Menu;
-import org.jogo.Efeito;
-import org.jogo.Entidade;
-import org.jogo.Evento;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

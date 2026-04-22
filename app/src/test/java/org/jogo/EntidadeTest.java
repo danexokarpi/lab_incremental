@@ -1,13 +1,7 @@
-package org;
+package org.jogo;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-
-import org.jogo.Efeito;
-import org.jogo.Entidade;
-import org.jogo.Evento;
-import org.jogo.FabricaDeEfeito;
-
 public class EntidadeTest {
     //Como a Entidade é abstrata precisamos criar uma dummy para testar
     static class EntidadeTeste extends Entidade {

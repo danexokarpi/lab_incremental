@@ -41,11 +41,24 @@ ou, usando o gradlew:
 
 Isso iniciará o programa e o sistema de combate será executado no terminal.
 
+# Como rodar os testes do projeto
+```bash
+./gradlew test
+```
+
+Após isso basta entrar nos arquivos locais e abrir o index.html que será criado dentro da pasta JaCoCo!
+
 # Como Jogar
+
+No mapa:
+
+- Escolha, com as setas de para cima e para baixo, qual fase você quer entrar
+- Ao entrar em uma fase, um combate irá iniciar
+- Se você vencer esse combate você entrará no mapa novamente para escolher a próxima fase
 
 Durante o combate:
 
-- O jogador possui um **baralho de cartas** (Agora introduzido como ações que podem ser escolhidas ao digitar seu respectivo número)
+- O jogador possui um **baralho de cartas** (Agora introduzido como ações que podem ser escolhidas pelas setinhas do MOUSE (QUE INCRÍVEL!!!!!!))
 - No início de cada turno, cartas são compradas para a **mão**
 - Cada carta possui um **custo de energia**
 - O jogador pode usar cartas enquanto tiver energia disponível
@@ -63,14 +76,29 @@ O combate termina quando:
 
   -Ademais, utilizamos um sistema de subscriber e publisher para ativar os efeitos, tanto as entidades quanto os efeitos que elas possuem agem como subscribers, e a classe de tabuleiro age como publisher, assim que um evento ocorre o tabuleiro reporta para as entidades que então reportam para seus efeitos, consideramos isso mais adequado pois nesse caso quando um inimigo morre, todos os seus efeitos são denconsiderados e apagados.
 
+# Mecânica de salvamento
+
+O jogo é salvo logo quando uma nova fase é iniciada, conservando a vida do jogador, sua energia máxima, suas cartas e sua posição no mapa.
+Caso você perca, seu progresso é perdido, obrigando-o a iniciar o jogo do início.
+
+P.S.: Um sistema de ganho de novas cartas durante o jogo AINDA não foi implementado, deixando o jogador limitado a uma pequena quantidade de cartas durante o jogo.
+
+# Quanto aos Testes
+-Nós decidimos usar a biblioteca Mockito pois ela permite a rápida e fácil execução de comandos que outrora seriam impossíveis de se realizar com bibliotecas padrões de java. Isso fez com que a implementação de testes mais importantes e precisos fosse possível, assegurando a qualidade do código!
 
 # Tecnologias Utilizadas
-
 - Java 25
 - Visual Studio Code
 - Neovim
+- JaCoCo
+- Mockito
 - Git e GitHub
 - Gradle e Gradlew
+- ChatGPT e Deepseek (para documentações)
+
+# Vem já já
+
+-Iremos refazer o iconico gif do jogo rodando assim que possível!
 
 # Autores
 

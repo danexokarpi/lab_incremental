@@ -42,8 +42,8 @@ public class Batalha {
      * @param capacidadeDaMao  número máximo de cartas na mão do jogador.
      */
     public Batalha(Heroi heroi, ArrayList<Inimigo> inimigos, ArrayList<Carta> cartasInventário,
-            int energiaMaxima, int capacidadeDaMao) {
-        this.menu = new Menu();
+            int energiaMaxima, int capacidadeDaMao, Menu menu) {
+        this.menu = menu;
         this.heroi = heroi;
         this.inimigos = inimigos;
         this.entidadesEmJogo = new ArrayList<Entidade>();
@@ -54,7 +54,6 @@ public class Batalha {
         this.maoDoJogador = new MaoDoJogador(capacidadeDaMao);
         this.energiaMaxima = energiaMaxima;
         this.historicoDeAcoes = new ArrayList<String>();
-        menu.incializarTela();
     }
 
     /**
@@ -161,21 +160,23 @@ public class Batalha {
      * O método executa rounds sucessivos até que uma das condições de término
      * seja atendida: o herói ser derrotado ou todos os inimigos serem eliminados.
      */
-    public void novaBatalha() {
+    public boolean novaBatalha() {
         while (heroi.estaVivo() && !todosInimigosMortos()) {
             this.novoRound();
         }
         boolean esperandoInput = true;
-
+        boolean venceuABatalha = false;
         while (esperandoInput) {
             menu.limparDesenho();
             menu.desenharStatus(this);
             menu.desenharLogs(historicoDeAcoes);
 
             if (heroi.estaVivo()) {
-                menu.desenharMensagemFinal("VITÓRIA! Pressione ENTER para sair");
+                menu.desenharMensagemFinalBatalha("VITÓRIA! Pressione ENTER para sair");
+                venceuABatalha = true;
             } else {
-                menu.desenharMensagemFinal("DERROTA! Pressione ENTER para sair");
+                menu.desenharMensagemFinalBatalha("DERROTA! Pressione ENTER para sair");
+                venceuABatalha = false;
             }
 
             menu.aplicarDesenho();
@@ -186,8 +187,8 @@ public class Batalha {
                 esperandoInput = false;
             }
         }
-
-        menu.desligarTela();
+        heroi.limparEfeitos();
+        return venceuABatalha;
     }
 
     /**

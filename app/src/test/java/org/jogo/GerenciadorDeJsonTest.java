@@ -1,4 +1,4 @@
-package org;
+package org.jogo;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
-import org.jogo.GerenciadorDeJson;
-import org.jogo.DadosDoSave;
 
 public class GerenciadorDeJsonTest {
 

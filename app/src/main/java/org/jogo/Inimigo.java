@@ -58,6 +58,9 @@ public class Inimigo extends Entidade {
      *                  alvos.
      */
     public void agir(Batalha tabuleiro) {
+        if(this.proximoAlvo == null){
+            this.proximoAlvo = acharAlvoValido(tabuleiro);
+        }
         switch (proximaAcao) {
             case 'A':
                 atacar(proximoAlvo);

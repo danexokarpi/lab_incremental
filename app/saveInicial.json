@@ -1,6 +1,7 @@
 {
   "vida": 15,
   "energiaMaxima": 3,
+  "posicaoNoMapa": 0,
   "inventarioHeroi": [
     {
       "tipo_carta": "Dano",
