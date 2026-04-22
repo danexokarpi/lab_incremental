@@ -62,7 +62,7 @@ public class GameManager {
         
         boolean ganhou = false;
         while (!mapa.ehUltimoNo(posicaoNoMapa) && !ganhou) {
-            //Batalha batalhaAtual = mapa.getBatalha(posicaoNoMapa);
+            Batalha batalhaAtual = mapa.getBatalha(posicaoNoMapa);
             ganhou = true;
             if (!ganhou) {
                 menu.limparDesenho();
