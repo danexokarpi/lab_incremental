@@ -1,0 +1,33 @@
+{
+  "vida": 15,
+  "energiaMaxima": 3,
+  "inventarioHeroi": [
+    {
+      "tipo_carta": "Dano",
+      "dano": 3,
+      "nome": "Revolver",
+      "descricao": "O bom o velho conquistador do Oeste.",
+      "custo": 1,
+      "areaDeEfeito": "Unico"
+    },
+    {
+      "tipo_carta": "Efeito",
+      "fabricaDeEfeito": {
+        "acumulos": 3,
+        "nomeDoEfeito": "regeneracao"
+      },
+      "nome": "Stimpack",
+      "descricao": "Uma grande dose de seilá o que direto nas suas veias, vai curar quase qualquer ferida, menos as psicológicas.",
+      "custo": 2,
+      "areaDeEfeito": "Unico"
+    },
+    {
+      "tipo_carta": "Escudo",
+      "escudo": 2,
+      "nome": "Escudo Eletromagnético Pequeno",
+      "descricao": "Crie um campo magnético em volta de si, bloqueia quase todo tipo de dano",
+      "custo": 1
+    }
+  ],
+  "posicaoNoMapa": 2
+}
