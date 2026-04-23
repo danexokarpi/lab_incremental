@@ -151,7 +151,7 @@ public class Batalha {
             }
         }
 
-        notificarEvento(Evento.FimDoRound);
+        notificarEvento(EventoDeBatalha.FimDoRound);
     }
 
     /**
@@ -251,7 +251,7 @@ public class Batalha {
      * @param eventoOcorrido o evento que será propagado para todas as entidades em
      *                       jogo.
      */
-    public void notificarEvento(Evento eventoOcorrido) {
+    public void notificarEvento(EventoDeBatalha eventoOcorrido) {
         for (Entidade entidade : entidadesEmJogo) {
             entidade.notificarSeusEfeitos(eventoOcorrido);
         }

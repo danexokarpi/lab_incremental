@@ -10,7 +10,8 @@ public class MenuTest {
 
     private Menu menu;
 
-    /* *
+    /*
+     * *
      * CLASSES FALSAS PARA ISOLAMENTO
      * Simulamos entidades e efeitos genéricos apenas para testar as strings.
      */
@@ -18,7 +19,7 @@ public class MenuTest {
         private String nomeFalso;
 
         public EntidadeFalsa(String nome) {
-            super(nome, 10, 0, "S"); 
+            super(nome, 10, 0, "S");
             this.nomeFalso = nome;
         }
 
@@ -28,7 +29,8 @@ public class MenuTest {
         }
 
         @Override
-        public void aplicarEfeito(Efeito efeito) { }
+        public void aplicarEfeito(Efeito efeito) {
+        }
     }
 
     static class EfeitoFalso extends Efeito {
@@ -45,22 +47,31 @@ public class MenuTest {
         }
 
         @Override
-        public int getAcumulos() { return 1; }
+        public int getAcumulos() {
+            return 1;
+        }
+
         @Override
-        public String getTipoDeEfeito() { return "Falso"; }
+        public String getTipoDeEfeito() {
+            return "Falso";
+        }
+
         @Override
-        public void receberNotificacao(Evento eventoOcorrido) { }
+        public void receberNotificacao(EventoDeBatalha eventoOcorrido) {
+        }
     }
 
-    /* *
+    /*
+     * *
      * PREPARAÇÃO ANTES DE CADA TESTE
      */
     @BeforeEach
     public void setUp() {
-        menu = new Menu(); 
+        menu = new Menu();
     }
 
-    /* *
+    /*
+     * *
      * TESTES DO ALGORITMO DE QUEBRA DE TEXTO
      */
     @Test
@@ -75,8 +86,8 @@ public class MenuTest {
     @Test
     public void testQuebrarTexto_TextoLongoQuebraCorretamente() {
         String texto = "Causa dano e aplica veneno no inimigo";
-        int larguraMaxima = 15; 
-        
+        int larguraMaxima = 15;
+
         List<String> resultado = menu.quebrarTexto(texto, larguraMaxima);
 
         // O que esperamos baseado na sua lógica:
@@ -89,7 +100,8 @@ public class MenuTest {
         assertEquals("no inimigo", resultado.get(2));
     }
 
-    /* *
+    /*
+     * *
      * TESTES DA GERAÇÃO DE MENSAGENS (AÇÕES)
      */
     @Test
@@ -105,7 +117,7 @@ public class MenuTest {
     @Test
     public void testCriarMensagemDeAcao_Cura() {
         EntidadeFalsa heroi = new EntidadeFalsa("Mago");
-        EntidadeFalsa nulo = new EntidadeFalsa("Ninguém"); 
+        EntidadeFalsa nulo = new EntidadeFalsa("Ninguém");
 
         String mensagem = menu.criarMensagemDeAcao('U', nulo, heroi, 10);
 
@@ -123,7 +135,8 @@ public class MenuTest {
         assertEquals("Ação do tipo 'X' inválida", erro.getMessage());
     }
 
-    /* *
+    /*
+     * *
      * TESTES DA GERAÇÃO DE MENSAGENS (EFEITOS)
      */
     @Test
@@ -139,7 +152,7 @@ public class MenuTest {
     @Test
     public void testCriarMensagemDeAcao_EfeitoInvalidoGeraErro() {
         EntidadeFalsa inimigo = new EntidadeFalsa("Goblin");
-        EfeitoFalso efeitoEstranho = new EfeitoFalso("Choque"); 
+        EfeitoFalso efeitoEstranho = new EfeitoFalso("Choque");
 
         assertThrows(RuntimeException.class, () -> {
             menu.criarMensagemDeAcao('E', inimigo, 5, efeitoEstranho);

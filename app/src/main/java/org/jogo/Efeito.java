@@ -117,5 +117,5 @@ public abstract class Efeito {
      *
      * @param eventoOcorrido Evento que ocorreu na batalha.
      */
-    public abstract void receberNotificacao(Evento eventoOcorrido);
+    public abstract void receberNotificacao(EventoDeBatalha eventoOcorrido);
 }

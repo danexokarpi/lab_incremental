@@ -7,7 +7,7 @@ package org.jogo;
  * Estes eventos são utilizados para notificar efeitos ativos nas entidades,
  * permitindo que eles reajam de acordo com o tipo de evento.
  */
-public enum Evento {
+public enum EventoDeBatalha {
     FimDoRound,
     FimDoTurnoDoJogador,
     FimDoTurnoDeUmaEntidade,

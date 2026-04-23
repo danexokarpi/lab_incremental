@@ -17,7 +17,8 @@ public abstract class Entidade {
     private String ascii;
     private transient ArrayList<Efeito> efeitos;
 
-    protected Entidade(){}
+    protected Entidade() {
+    }
 
     /**
      * Cria uma nova entidade com vida máxima e escudo inicial.
@@ -56,13 +57,13 @@ public abstract class Entidade {
             escudo = dano_verdadeiro;
         }
     }
-    
-    public void receberDanoVerdadeiro(int dano){
+
+    public void receberDanoVerdadeiro(int dano) {
         vida -= dano;
-        if(vida < 0){
+        if (vida < 0) {
             vida = 0;
         }
-    } 
+    }
 
     /**
      * Cura a entidade, respeitando o limite de vida máxima.
@@ -93,7 +94,7 @@ public abstract class Entidade {
         escudo = escudoDefinido;
     }
 
-    public void setarVida(int vida){
+    public void setarVida(int vida) {
         this.vida = vida;
     }
 
@@ -122,34 +123,34 @@ public abstract class Entidade {
      */
     public void aplicarEfeito(Efeito efeitoRecebido) {
         Efeito efeitoPortado = this.getEfeito(efeitoRecebido);
-        if (estaVivo()){
+        if (estaVivo()) {
             if (efeitoPortado == null) {
-            this.efeitos.add(efeitoRecebido);
-            efeitoRecebido.setDono(this);
-        } else {
-            efeitoPortado.somaAcumulos(efeitoRecebido.getAcumulos());
+                this.efeitos.add(efeitoRecebido);
+                efeitoRecebido.setDono(this);
+            } else {
+                efeitoPortado.somaAcumulos(efeitoRecebido.getAcumulos());
+            }
         }
-        }
-        
+
     }
 
     /**
      * Notifica todos os efeitos da entidade viva sobre a ocorrência de um evento.
-     *  
+     * 
      * Os efeitos podem se modificar ou expirar em função do evento. Efeitos que não
      * estão mais ativos são removidos da lista.
      *
      * @param eventoOcorrido evento que foi disparado no jogo.
      */
-    public void notificarSeusEfeitos(Evento eventoOcorrido){
-        if(estaVivo()){
-            for (int i = efeitos.size()-1; i >= 0; i --){
+    public void notificarSeusEfeitos(EventoDeBatalha eventoOcorrido) {
+        if (estaVivo()) {
+            for (int i = efeitos.size() - 1; i >= 0; i--) {
                 efeitos.get(i).receberNotificacao(eventoOcorrido);
-                if (!efeitos.get(i).isAtivo()){
+                if (!efeitos.get(i).isAtivo()) {
                     efeitos.remove(i);
                 }
             }
-        }else if(!estaVivo()){
+        } else if (!estaVivo()) {
             limparEfeitos();
         }
     }
@@ -192,13 +193,13 @@ public abstract class Entidade {
     }
 
     public ArrayList<Efeito> getEfeitos() {
-        if(this.efeitos == null){
+        if (this.efeitos == null) {
             this.efeitos = new ArrayList<>();
         }
         return this.efeitos;
     }
 
-    public String getAscii(){
+    public String getAscii() {
         return ascii;
     }
 }
