@@ -46,7 +46,8 @@ public class GameManager {
 
     /**
      * Inicia o loop principal do jogo.
-     * Aguarda input do jogador na tela de título e executa as batalhas sequencialmente.
+     * Aguarda input do jogador na tela de título e executa as batalhas
+     * sequencialmente.
      */
     private void iniciarJogo() {
         boolean esperandoInput = true;
@@ -55,15 +56,15 @@ public class GameManager {
             menu.desenharTitulo();
             menu.aplicarDesenho();
             KeyStroke key = menu.receberInputTeclado();
-            if (key != null){
+            if (key != null) {
                 esperandoInput = false;
             }
         }
-        
-        boolean ganhou = false;
-        while (!mapa.ehUltimoNo(posicaoNoMapa) && !ganhou) {
+
+        boolean ganhou;
+        while (!mapa.ehUltimoNo(posicaoNoMapa)) {
             Batalha batalhaAtual = mapa.getBatalha(posicaoNoMapa);
-            ganhou = true;
+            ganhou = batalhaAtual.novaBatalha();
             if (!ganhou) {
                 menu.limparDesenho();
                 menu.desenharMensagemFinal("Você Perdeu! Seu Save será apagado, até mais!");
@@ -72,7 +73,7 @@ public class GameManager {
                 gerenciador.apagarSaveAtual();
                 menu.desligarTela();
             }
-            
+
             posicaoNoMapa = escolhaDeProximaPosicao();
             DadosDoSave dadosNovos = new DadosDoSave(heroi.getVida(), energiaMaxima, baralho, posicaoNoMapa);
             gerenciador.salvar(dadosNovos);
@@ -81,20 +82,20 @@ public class GameManager {
         ganhou = ultimaBatalha.novaBatalha();
         if (!ganhou) {
             menu.limparDesenho();
-                menu.desenharMensagemFinal("Você Perdeu! Seu Save será apagado, até mais!");
-                menu.aplicarDesenho();
-                menu.esperarFeedback();
-                gerenciador.apagarSaveAtual();
-                menu.desligarTela();
-            }else{
-                menu.limparDesenho();
-                menu.desenharMensagemFinal("Você Ganhou! Parabéns\nAgora você pode apreveitar tudo que se pode fazer em um deserto desolado!");
-                menu.aplicarDesenho();
-                menu.esperarFeedback();
-                menu.desligarTela();
-            }
-        
-        
+            menu.desenharMensagemFinal("Você Perdeu! Seu Save será apagado, até mais!");
+            menu.aplicarDesenho();
+            menu.esperarFeedback();
+            gerenciador.apagarSaveAtual();
+            menu.desligarTela();
+        } else {
+            menu.limparDesenho();
+            menu.desenharMensagemFinal(
+                    "Você Ganhou! Parabéns\nAgora você pode apreveitar tudo que se pode fazer em um deserto desolado!");
+            menu.aplicarDesenho();
+            menu.esperarFeedback();
+            menu.desligarTela();
+        }
+
     }
 
     /**
@@ -106,7 +107,7 @@ public class GameManager {
         ArrayList<Integer> opcoesDeCaminho = mapa.getOpcoesDeCaminho(posicaoNoMapa);
         int opcao = 0;
         boolean escolhaConfirmada = false;
-        while(!escolhaConfirmada) {
+        while (!escolhaConfirmada) {
             menu.limparDesenho();
             menu.desenharMapa();
             menu.desenharPersonagemNoMapa(opcoesDeCaminho.get(opcao));
@@ -131,7 +132,6 @@ public class GameManager {
         int posicaoEscolhida = opcoesDeCaminho.get(opcao);
         return posicaoEscolhida;
     }
-
 
     /**
      * Cria e configura o herói principal do jogo.
