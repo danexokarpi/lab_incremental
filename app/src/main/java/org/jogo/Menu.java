@@ -161,17 +161,17 @@ public class Menu {
      */
     public void desenharPersonagemNoMapa(int posicao) {
         Integer[][] coordenadas = {{60, 20}, // 0
-                    {65, 17}, //1
-                    {65, 23}, //2
-                    {71, 17}, //3
-                    {71, 20}, //4
-                    {71, 26}, //5
-                    {77, 20}, //6
-                    {77, 26}, //7
-                    {83, 20}, //8
-                    {83, 26}, //9
-                    {89, 20} //10
-                    };
+                                    {65, 17}, //1
+                                    {65, 23}, //2
+                                    {71, 17}, //3
+                                    {71, 20}, //4
+                                    {71, 26}, //5
+                                    {77, 20}, //6
+                                    {77, 26}, //7
+                                    {83, 20}, //8
+                                    {83, 26}, //9
+                                    {89, 20} //10
+                                    };
         ArrayList<Integer[]> listaDeCoordenadas = new ArrayList(Arrays.asList(coordenadas));
         TextGraphics textG = screen.newTextGraphics();
         textG.setForegroundColor(TextColor.ANSI.GREEN_BRIGHT);
@@ -405,6 +405,94 @@ public class Menu {
             textG.setForegroundColor(TextColor.ANSI.GREEN);
         }
         desenharCentralizado(textG, centroEncerramento, yEncerramento, "Encerrar");
+    }
+
+    public void desenharBauFechado() {
+        try (Scanner scannerMapa = new Scanner(new File("baufechado.txt"))) {
+
+            TextGraphics textG = screen.newTextGraphics();
+            textG.setForegroundColor(TextColor.ANSI.GREEN);
+
+            List<String> linhas = new ArrayList<>();
+            while (scannerMapa.hasNextLine()) {
+                linhas.add(scannerMapa.nextLine());
+            }
+            int maxWidth = 0;
+            for (String linha : linhas) {
+                if (linha.length() > maxWidth) {
+                    maxWidth = linha.length();
+                }
+            }
+
+            int alturaMapa = linhas.size();
+
+            int xCentro = getLargura() / 2;
+            int yCentro = getAltura() / 2;
+
+            int xInicio = xCentro - maxWidth / 2;
+            int yInicio = yCentro - alturaMapa / 2;
+
+            if (xInicio < 0) xInicio = 0;
+            if (yInicio < 0) yInicio = 0;
+
+            for (int i = 0; i < linhas.size(); i++) {
+                String linha = linhas.get(i);
+
+
+                linha = String.format("%-" + maxWidth + "s", linha);
+
+                textG.putString(xInicio, yInicio + i, linha);
+            }
+
+            textG.setForegroundColor(TextColor.ANSI.DEFAULT);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void desenharBauAberto() {
+        try (Scanner scannerMapa = new Scanner(new File("bauaberto.txt"))) {
+
+            TextGraphics textG = screen.newTextGraphics();
+            textG.setForegroundColor(TextColor.ANSI.GREEN);
+
+            List<String> linhas = new ArrayList<>();
+            while (scannerMapa.hasNextLine()) {
+                linhas.add(scannerMapa.nextLine());
+            }
+            int maxWidth = 0;
+            for (String linha : linhas) {
+                if (linha.length() > maxWidth) {
+                    maxWidth = linha.length();
+                }
+            }
+
+            int alturaMapa = linhas.size();
+
+            int xCentro = getLargura() / 2;
+            int yCentro = getAltura() / 2;
+
+            int xInicio = xCentro - maxWidth / 2;
+            int yInicio = yCentro - alturaMapa / 2;
+
+            if (xInicio < 0) xInicio = 0;
+            if (yInicio < 0) yInicio = 0;
+
+            for (int i = 0; i < linhas.size(); i++) {
+                String linha = linhas.get(i);
+
+
+                linha = String.format("%-" + maxWidth + "s", linha);
+
+                textG.putString(xInicio, yInicio + i, linha);
+            }
+
+            textG.setForegroundColor(TextColor.ANSI.DEFAULT);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
