@@ -10,7 +10,6 @@ import com.googlecode.lanterna.input.KeyType;
 
 import java.util.ArrayList;
 
-
 public class BatalhaTest {
 
     private Menu menuMock;
@@ -23,11 +22,11 @@ public class BatalhaTest {
 
     private Batalha criarBatalhaPadrao() {
         Heroi heroi = new Heroi("Herói Teste", 100, 0, "H");
-        
+
         ArrayList<Inimigo> inimigos = new ArrayList<>();
-        inimigos.add(new Inimigo("Barata", 10, 0, 2, 0, 2, new FabricaDeEfeito(null, 0), new char[] {'A'}, "I"));
-        inimigos.add(new Inimigo("Abobora", 10, 0, 2, 0, 2, new FabricaDeEfeito(null, 0), new char[] {'A'}, "I"));
-        
+        inimigos.add(new Inimigo("Barata", 10, 0, 2, 0, 2, new FabricaDeEfeito(null, 0), new char[] { 'A' }, "I"));
+        inimigos.add(new Inimigo("Abobora", 10, 0, 2, 0, 2, new FabricaDeEfeito(null, 0), new char[] { 'A' }, "I"));
+
         ArrayList<Carta> inventario = new ArrayList<>();
 
         int energiaMaxima = 3;
@@ -58,7 +57,7 @@ public class BatalhaTest {
     public void testTodosInimigosMortosRetornaTrueSeNinguemEstiverVivo() {
         Batalha batalha = criarBatalhaPadrao();
         for (Inimigo inimigo : batalha.getInimigos()) {
-            inimigo.receberDano(1000); 
+            inimigo.receberDano(1000);
         }
         assertTrue(batalha.todosInimigosMortos(), "Todos os inimigos receberam dano letal, deve retornar true.");
     }
@@ -69,7 +68,6 @@ public class BatalhaTest {
     public void testEscolherUmInimigoValido() {
         Batalha batalha = criarBatalhaPadrao();
 
-        
         when(menuMock.receberInputTeclado()).thenReturn(new KeyStroke(KeyType.Enter));
 
         Inimigo escolhido = batalha.escolherUmInimigo();
@@ -83,8 +81,8 @@ public class BatalhaTest {
         Batalha batalha = criarBatalhaPadrao();
 
         when(menuMock.receberInputTeclado())
-            .thenReturn(new KeyStroke(KeyType.ArrowLeft))
-            .thenReturn(new KeyStroke(KeyType.Enter));
+                .thenReturn(new KeyStroke(KeyType.ArrowLeft))
+                .thenReturn(new KeyStroke(KeyType.Enter));
 
         Inimigo escolhido = batalha.escolherUmInimigo();
 
@@ -94,14 +92,13 @@ public class BatalhaTest {
     @Test
     public void testEscolherUmInimigoMortoExibeAviso() {
         Batalha batalha = criarBatalhaPadrao();
-        
-    
+
         batalha.getInimigos().get(0).receberDano(1000);
 
         when(menuMock.receberInputTeclado())
-            .thenReturn(new KeyStroke(KeyType.Enter))
-            .thenReturn(new KeyStroke(KeyType.ArrowLeft))
-            .thenReturn(new KeyStroke(KeyType.Enter));
+                .thenReturn(new KeyStroke(KeyType.Enter))
+                .thenReturn(new KeyStroke(KeyType.ArrowLeft))
+                .thenReturn(new KeyStroke(KeyType.Enter));
 
         batalha.escolherUmInimigo();
 
@@ -112,12 +109,9 @@ public class BatalhaTest {
     public void testNovoRoundEncerrarTurnoDireto() {
         Batalha batalha = criarBatalhaPadrao();
 
-        
         when(menuMock.receberInputTeclado()).thenReturn(new KeyStroke(KeyType.Enter));
 
-
         batalha.novoRound();
-
 
         verify(menuMock, atLeastOnce()).desenharStatus(batalha);
     }
@@ -127,12 +121,14 @@ public class BatalhaTest {
         Batalha batalha = criarBatalhaPadrao();
 
         for (Inimigo inimigo : batalha.getInimigos()) {
-            inimigo.receberDano(1000); 
+            inimigo.receberDano(1000);
         }
 
         when(menuMock.receberInputTeclado()).thenReturn(new KeyStroke(KeyType.Enter));
 
-        boolean venceu = batalha.novaBatalha();
+        batalha.iniciar();
+        
+        boolean venceu = batalha.ganhou();
 
         assertTrue(venceu, "Deveria retornar true indicando vitória");
         verify(menuMock).desenharMensagemFinalBatalha(contains("VITÓRIA"));
