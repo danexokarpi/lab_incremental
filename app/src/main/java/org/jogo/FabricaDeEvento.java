@@ -2,14 +2,14 @@ package org.jogo;
 
 import java.util.ArrayList;
 
-public class FabricaDeBatalha {
+public class FabricaDeEvento {
     private Heroi heroi;
     private ArrayList<Carta> baralho;
     private int energiaMaxima;
     private int capacidadeDaMao;
     private Menu menu;
 
-    public FabricaDeBatalha(Heroi heroi, ArrayList<Carta> baralho, int energiaMaxima, int capacidadeDaMao, Menu menu) {
+    public FabricaDeEvento(Heroi heroi, ArrayList<Carta> baralho, int energiaMaxima, int capacidadeDaMao, Menu menu) {
         this.heroi = heroi;
         this.baralho = baralho;
         this.energiaMaxima = energiaMaxima;

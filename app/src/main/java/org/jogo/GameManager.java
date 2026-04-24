@@ -26,11 +26,7 @@ public class GameManager {
     private Menu menu;
     private static int posicaoNoMapa;
 
-    /**
-     * Carrega um jogo existente a partir dos dados salvos.
-     * Inicializa o estado do jogo, configura o menu e inicia o loop principal.
-     */
-    public void carregarJogo() {
+    public GameManager() {
         System.out.println("O Gradle está rodando nesta pasta: " + System.getProperty("user.dir"));
         heroi.setarVida(dados.vida);
         this.energiaMaxima = dados.energiaMaxima;
@@ -38,18 +34,17 @@ public class GameManager {
         this.posicaoNoMapa = dados.posicaoNoMapa;
         this.capacidadeDaMao = 4;
         this.menu = new Menu();
-        FabricaDeBatalha fabricaDeBatalha = new FabricaDeBatalha(heroi, baralho, energiaMaxima, capacidadeDaMao, menu);
-        this.mapa = new Mapa(fabricaDeBatalha);
+        FabricaDeEvento fabricaDeEvento = new FabricaDeEvento(heroi, baralho, energiaMaxima, capacidadeDaMao, menu);
+        this.mapa = new Mapa(fabricaDeEvento);
+    }
+
+    public void carregarJogo() {
         menu.incializarTela();
+        tituloDoJogo();
         iniciarJogo();
     }
 
-    /**
-     * Inicia o loop principal do jogo.
-     * Aguarda input do jogador na tela de título e executa as batalhas
-     * sequencialmente.
-     */
-    private void iniciarJogo() {
+    private void tituloDoJogo() {
         boolean esperandoInput = true;
         while (esperandoInput) {
             menu.limparDesenho();
@@ -60,42 +55,49 @@ public class GameManager {
                 esperandoInput = false;
             }
         }
+    }
 
-        boolean ganhou;
-        while (!mapa.ehUltimoNo(posicaoNoMapa)) {
-            Batalha batalhaAtual = mapa.getBatalha(posicaoNoMapa);
-            ganhou = batalhaAtual.novaBatalha();
-            if (!ganhou) {
-                menu.limparDesenho();
-                menu.desenharMensagemFinal("Você Perdeu! Seu Save será apagado, até mais!");
-                menu.aplicarDesenho();
-                menu.esperarFeedback();
-                gerenciador.apagarSaveAtual();
-                menu.desligarTela();
+    /**
+     * Inicia o loop principal do jogo.
+     * Inicializa os eventos do mapa sequencialmente de acordo com as escolhas do
+     * player, até final do jogo (tanto nos casos de derrota, quanto de vitória)
+     */
+    private void iniciarJogo() {
+        boolean visitouUltimoNo = false;
+        while (!visitouUltimoNo) {
+            Evento eventoAtual = mapa.getEvento(posicaoNoMapa);
+            eventoAtual.iniciar();
+            if (!eventoAtual.ganhou()) {
+                acabarJogoPerdido();
+                return;
             }
-
+            if (mapa.ehUltimoNo(posicaoNoMapa)) {
+                visitouUltimoNo = true;
+                continue;
+            }
             posicaoNoMapa = escolhaDeProximaPosicao();
             DadosDoSave dadosNovos = new DadosDoSave(heroi.getVida(), energiaMaxima, baralho, posicaoNoMapa);
             gerenciador.salvar(dadosNovos);
         }
-        Batalha ultimaBatalha = mapa.getBatalha(posicaoNoMapa);
-        ganhou = ultimaBatalha.novaBatalha();
-        if (!ganhou) {
-            menu.limparDesenho();
-            menu.desenharMensagemFinal("Você Perdeu! Seu Save será apagado, até mais!");
-            menu.aplicarDesenho();
-            menu.esperarFeedback();
-            gerenciador.apagarSaveAtual();
-            menu.desligarTela();
-        } else {
-            menu.limparDesenho();
-            menu.desenharMensagemFinal(
-                    "Você Ganhou! Parabéns\nAgora você pode apreveitar tudo que se pode fazer em um deserto desolado!");
-            menu.aplicarDesenho();
-            menu.esperarFeedback();
-            menu.desligarTela();
-        }
+        acabarJogoGanho();
+    }
 
+    private void acabarJogoPerdido() {
+        menu.limparDesenho();
+        menu.desenharMensagemFinal("Você Perdeu! Seu Save será apagado, até mais!");
+        menu.aplicarDesenho();
+        menu.esperarFeedback();
+        gerenciador.apagarSaveAtual();
+        menu.desligarTela();
+    }
+
+    private void acabarJogoGanho() {
+        menu.limparDesenho();
+        menu.desenharMensagemFinal(
+                "Você ganhou! Parabéns\nAgora você pode apreveitar tudo que se pode fazer em um deserto desolado!");
+        menu.aplicarDesenho();
+        menu.esperarFeedback();
+        menu.desligarTela();
     }
 
     /**

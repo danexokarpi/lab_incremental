@@ -6,43 +6,54 @@ import java.util.Scanner;
 import java.io.File;
 
 /**
- * Representa o mapa do jogo, contendo todos os nós (posições) e suas respectivas batalhas.
+ * Representa o mapa do jogo, contendo todos os nós (posições) e suas
+ * respectivas batalhas.
  * 
- * <p>Esta classe é responsável por carregar a estrutura do mapa a partir de um arquivo
+ * <p>
+ * Esta classe é responsável por carregar a estrutura do mapa a partir de um
+ * arquivo
  * texto, onde cada linha define os filhos (conexões) de um nó. Cada nó no mapa
- * possui uma batalha associada, cuja dificuldade (número de inimigos) é determinada
- * pela posição do nó no mapa.</p>
+ * possui uma batalha associada, cuja dificuldade (número de inimigos) é
+ * determinada
+ * pela posição do nó no mapa.
+ * </p>
  * 
- * <p>A estrutura do mapa é carregada do arquivo "esqueletoDoMapa.txt", onde cada linha
- * contém os identificadores dos nós filhos separados por espaços. A primeira linha
- * corresponde ao nó 0, a segunda ao nó 1, e assim sucessivamente.</p>
+ * <p>
+ * A estrutura do mapa é carregada do arquivo "esqueletoDoMapa.txt", onde cada
+ * linha
+ * contém os identificadores dos nós filhos separados por espaços. A primeira
+ * linha
+ * corresponde ao nó 0, a segunda ao nó 1, e assim sucessivamente.
+ * </p>
  */
 public class Mapa {
 
     private ArrayList<NoMapa> listaDeNos;
-    private ArrayList<Batalha> listaDeBatalhas;
+    private ArrayList<Evento> listaDeEventos;
 
     /**
      * Constrói um novo mapa a partir de um arquivo de definição.
      * 
-     * <p>Lê o arquivo "esqueletoDoMapa.txt" linha por linha, criando um nó
+     * <p>
+     * Lê o arquivo "esqueletoDoMapa.txt" linha por linha, criando um nó
      * e uma batalha para cada linha. As conexões entre nós são definidas
      * pelos números presentes em cada linha. Um nó final é aquele que não
-     * possui filhos.</p>
+     * possui filhos.
+     * </p>
      * 
-     * @param fabricaDeBatalha fábrica utilizada para criar as batalhas de cada nó
+     * @param fabricaDeEvento fábrica utilizada para criar as batalhas de cada nó
      */
-    public Mapa(FabricaDeBatalha fabricaDeBatalha) {
+    public Mapa(FabricaDeEvento fabricaDeEvento) {
         listaDeNos = new ArrayList<NoMapa>();
-        listaDeBatalhas = new ArrayList<Batalha>();
+        listaDeEventos = new ArrayList<Evento>();
 
-        try(Scanner scannerMapa = new Scanner(new File("esqueletoDoMapa.txt"))) {
+        try (Scanner scannerMapa = new Scanner(new File("esqueletoDoMapa.txt"))) {
             int index = 0;
             while (scannerMapa.hasNextLine()) {
                 NoMapa noAtual = new NoMapa(index);
-                Batalha batalhaDoNoAtual = fabricaDeBatalha.criaBatalha(quantidadeDeInimigosPeloIndex(index));
+                Evento batalhaDoNoAtual = fabricaDeEvento.criaBatalha(quantidadeDeInimigosPeloIndex(index));
                 listaDeNos.add(noAtual);
-                listaDeBatalhas.add(batalhaDoNoAtual);
+                listaDeEventos.add(batalhaDoNoAtual);
                 String[] filhosDoNo = scannerMapa.nextLine().split(" ");
                 for (String filho : filhosDoNo) {
                     noAtual.addFilho(Integer.parseInt(filho));
@@ -51,11 +62,10 @@ public class Mapa {
             }
             scannerMapa.close();
             NoMapa ultimoNo = new NoMapa(index);
-            Batalha batalhaDoUltimoNo = fabricaDeBatalha.criaBatalha(quantidadeDeInimigosPeloIndex(index));
+            Evento batalhaDoUltimoNo = fabricaDeEvento.criaBatalha(quantidadeDeInimigosPeloIndex(index));
             listaDeNos.add(ultimoNo);
-            listaDeBatalhas.add(batalhaDoUltimoNo); 
-        }
-        catch(Exception exception) {
+            listaDeEventos.add(batalhaDoUltimoNo);
+        } catch (Exception exception) {
             exception.printStackTrace();
         }
 
@@ -64,9 +74,11 @@ public class Mapa {
     /**
      * Calcula a quantidade de inimigos para um nó baseado em seu índice.
      * 
-     * <p>A fórmula utilizada é: ((índice + 1) / 5) + 1, garantindo que
+     * <p>
+     * A fórmula utilizada é: ((índice + 1) / 5) + 1, garantindo que
      * a dificuldade aumente progressivamente conforme o jogador avança
-     * no mapa.</p>
+     * no mapa.
+     * </p>
      * 
      * @param index índice do nó no mapa
      * @return número de inimigos que devem estar presentes na batalha do nó
@@ -81,15 +93,17 @@ public class Mapa {
      * @param idNo identificador do nó (posição no mapa)
      * @return batalha correspondente ao nó informado
      */
-    public Batalha getBatalha(int idNo) {
-        return listaDeBatalhas.get(idNo);
+    public Evento getEvento(int idNo) {
+        return listaDeEventos.get(idNo);
     }
 
     /**
      * Verifica se um determinado nó é o último do mapa.
      * 
-     * <p>Um nó é considerado o último quando não possui filhos,
-     * ou seja, quando não há caminhos disponíveis a partir dele.</p>
+     * <p>
+     * Um nó é considerado o último quando não possui filhos,
+     * ou seja, quando não há caminhos disponíveis a partir dele.
+     * </p>
      * 
      * @param idNo identificador do nó a ser verificado
      * @return true se o nó não possui filhos, false caso contrário

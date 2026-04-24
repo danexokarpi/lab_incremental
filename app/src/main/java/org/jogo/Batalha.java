@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * Além disso, controla o fluxo da batalha, incluindo rounds, turnos do jogador,
  * turnos dos inimigos e aplicação de efeitos.
  */
-public class Batalha {
+public class Batalha extends Evento {
     private Menu menu;
     private Heroi heroi;
     private ArrayList<Inimigo> inimigos;
@@ -54,6 +54,7 @@ public class Batalha {
         this.maoDoJogador = new MaoDoJogador(capacidadeDaMao);
         this.energiaMaxima = energiaMaxima;
         this.historicoDeAcoes = new ArrayList<String>();
+        setGanhou(false);
     }
 
     /**
@@ -160,12 +161,11 @@ public class Batalha {
      * O método executa rounds sucessivos até que uma das condições de término
      * seja atendida: o herói ser derrotado ou todos os inimigos serem eliminados.
      */
-    public boolean novaBatalha() {
+    public void iniciar() {
         while (heroi.estaVivo() && !todosInimigosMortos()) {
             this.novoRound();
         }
         boolean esperandoInput = true;
-        boolean venceuABatalha = false;
         while (esperandoInput) {
             menu.limparDesenho();
             menu.desenharStatus(this);
@@ -173,10 +173,10 @@ public class Batalha {
 
             if (heroi.estaVivo()) {
                 menu.desenharMensagemFinalBatalha("VITÓRIA! Pressione ENTER para sair");
-                venceuABatalha = true;
+                setGanhou(true);
             } else {
                 menu.desenharMensagemFinalBatalha("DERROTA! Pressione ENTER para sair");
-                venceuABatalha = false;
+                setGanhou(false);
             }
 
             menu.aplicarDesenho();
@@ -188,7 +188,6 @@ public class Batalha {
             }
         }
         heroi.limparEfeitos();
-        return venceuABatalha;
     }
 
     /**
