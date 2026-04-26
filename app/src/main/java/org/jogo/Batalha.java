@@ -5,6 +5,7 @@ import com.googlecode.lanterna.input.KeyType;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Representa o estado e a lógica central de uma batalha no jogo.
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 public class Batalha extends Evento {
     private Menu menu;
     private Heroi heroi;
+    private Random random = new Random();
     private ArrayList<Inimigo> inimigos;
     private ArrayList<Entidade> entidadesEmJogo;
     private PilhaDeCompra pilhaDeCompra;
@@ -41,18 +43,18 @@ public class Batalha extends Evento {
      * @param energiaMaxima    quantidade máxima de energia do jogador por turno.
      * @param capacidadeDaMao  número máximo de cartas na mão do jogador.
      */
-    public Batalha(Heroi heroi, ArrayList<Inimigo> inimigos, ArrayList<Carta> cartasInventário,
-            int energiaMaxima, int capacidadeDaMao, Menu menu) {
+    public Batalha(Heroi heroi, ArrayList<Inimigo> inimigos,
+            int capacidadeDaMao, Menu menu) {
         this.menu = menu;
         this.heroi = heroi;
         this.inimigos = inimigos;
         this.entidadesEmJogo = new ArrayList<Entidade>();
         entidadesEmJogo.add(heroi);
         entidadesEmJogo.addAll(inimigos);
-        this.pilhaDeCompra = new PilhaDeCompra(cartasInventário);
+        this.pilhaDeCompra = new PilhaDeCompra(heroi.getInventario());
         this.pilhaDeDescarte = new PilhaDeDescarte();
         this.maoDoJogador = new MaoDoJogador(capacidadeDaMao);
-        this.energiaMaxima = energiaMaxima;
+        this.energiaMaxima = heroi.getEnegiaMaxima();
         this.historicoDeAcoes = new ArrayList<String>();
         setGanhou(false);
     }
@@ -77,8 +79,7 @@ public class Batalha extends Evento {
             menu.limparDesenho();
             menu.desenharStatus(this);
             menu.desenharLogs(historicoDeAcoes);
-            menu.desenharAviso(tipoDeAviso);
-            menu.desenharSelecaoCartas(maoDoJogador, posicaoCursor, energia, energiaMaxima);
+            menu.desenharSelecaoCartas(maoDoJogador, posicaoCursor, energia, energiaMaxima, tipoDeAviso);
             int escolhaDeEncerrar = maoDoJogador.getTamanho();
 
             menu.aplicarDesenho();
@@ -188,6 +189,20 @@ public class Batalha extends Evento {
             }
         }
         heroi.limparEfeitos();
+        menu.limparDesenho();
+        menu.desenharBauFechado();
+        menu.aplicarDesenho();
+        KeyStroke key = menu.receberInputTeclado();
+        if(key != null){
+            menu.limparDesenho();
+            int ouroGanho = definirOuroRecebido();
+            heroi.alterarOuro(ouroGanho);
+            menu.desenharBauAberto(ouroGanho);
+            menu.aplicarDesenho();
+            menu.receberInputTeclado();
+        }
+        menu.limparDesenho();
+        
     }
 
     /**
@@ -203,12 +218,13 @@ public class Batalha extends Evento {
     public Inimigo escolherUmInimigo() {
         int posicaoCursor = 0;
         int opcaoCancelar = inimigos.size();
+        String tipoDeAviso = "";
 
         while (true) {
             menu.limparDesenho();
             menu.desenharStatus(this);
             menu.desenharLogs(historicoDeAcoes);
-            menu.desenharSelecaoInimigos(inimigos, posicaoCursor);
+            menu.desenharSelecaoInimigos(inimigos, posicaoCursor, tipoDeAviso);
             menu.aplicarDesenho();
 
             KeyStroke key = menu.receberInputTeclado();
@@ -232,7 +248,7 @@ public class Batalha extends Evento {
                 Inimigo inimigo = inimigos.get(posicaoCursor);
 
                 if (!inimigo.estaVivo()) {
-                    menu.desenharAviso("inimigoEstaMorto");
+                    tipoDeAviso = "inimigoEstaMorto";
                     continue;
                 }
 
@@ -288,6 +304,10 @@ public class Batalha extends Evento {
             Efeito efeito) {
         String mensagemDaAcao = menu.criarMensagemDeAcao(acao, receptor, intensidadeDaAcao, efeito);
         this.historicoDeAcoes.add(mensagemDaAcao);
+    }
+
+    public int definirOuroRecebido(){
+        return random.nextInt(10, 35);
     }
 
     public Heroi getHeroi() {

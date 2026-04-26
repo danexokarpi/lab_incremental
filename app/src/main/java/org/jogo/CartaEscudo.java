@@ -3,8 +3,8 @@ package org.jogo;
 public class CartaEscudo extends Carta {
     private int escudo;
 
-    public CartaEscudo(String nome, String descricao, int custo, int escudo) {
-        super(nome, descricao, custo, "Unico");
+    public CartaEscudo(String nome, String descricao, int custo, int escudo, int preco) {
+        super(nome, descricao, custo, "Unico", preco);
         this.escudo = escudo;
     
     }
