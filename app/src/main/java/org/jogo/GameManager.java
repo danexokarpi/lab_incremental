@@ -18,9 +18,9 @@ public class GameManager {
 
     private static GerenciadorDeJson gerenciador = new GerenciadorDeJson();
     private static DadosDoSave dados = gerenciador.carregarSave();
-    private static Heroi heroi = criaHeroi();
-    private static int energiaMaxima;
-    private static ArrayList<Carta> baralho;
+    private Heroi heroi = criaHeroi();
+    private int energiaMaxima;
+    private int ouro;
     private static int capacidadeDaMao;
     private static Mapa mapa;
     private Menu menu;
@@ -29,12 +29,16 @@ public class GameManager {
     public GameManager() {
         System.out.println("O Gradle está rodando nesta pasta: " + System.getProperty("user.dir"));
         heroi.setarVida(dados.vida);
+        heroi.setarVidaMaxima(dados.vidaMaxima);
+        heroi.setarInventário(dados.inventarioHeroi);
         this.energiaMaxima = dados.energiaMaxima;
-        this.baralho = dados.inventarioHeroi;
+        heroi.setarEnegiaMaxima(energiaMaxima);
+        this.ouro = dados.ouro;
+        heroi.setarOuro(ouro);
         this.posicaoNoMapa = dados.posicaoNoMapa;
         this.capacidadeDaMao = 4;
         this.menu = new Menu();
-        FabricaDeEvento fabricaDeEvento = new FabricaDeEvento(heroi, baralho, energiaMaxima, capacidadeDaMao, menu);
+        FabricaDeEvento fabricaDeEvento = new FabricaDeEvento(heroi, capacidadeDaMao, menu);
         this.mapa = new Mapa(fabricaDeEvento);
     }
 
@@ -67,6 +71,7 @@ public class GameManager {
         while (!visitouUltimoNo) {
             Evento eventoAtual = mapa.getEvento(posicaoNoMapa);
             eventoAtual.iniciar();
+            System.out.println(heroi.getEnegiaMaxima());
             if (!eventoAtual.ganhou()) {
                 acabarJogoPerdido();
                 return;
@@ -76,7 +81,7 @@ public class GameManager {
                 continue;
             }
             posicaoNoMapa = escolhaDeProximaPosicao();
-            DadosDoSave dadosNovos = new DadosDoSave(heroi.getVida(), energiaMaxima, baralho, posicaoNoMapa);
+            DadosDoSave dadosNovos = new DadosDoSave(heroi.getVida(), heroi.getVidaMaxima(), heroi.getEnegiaMaxima(), heroi.getOuro(), heroi.getInventario(), posicaoNoMapa);
             gerenciador.salvar(dadosNovos);
         }
         acabarJogoGanho();
@@ -140,8 +145,8 @@ public class GameManager {
      * 
      * @return instância do herói configurada
      */
-    private static Heroi criaHeroi() {
-        return new Heroi("Capitão Cabra", 15, 0,
+    private Heroi criaHeroi() {
+        return new Heroi("Capitão Cabra", 15, 0, 0, 0,
                 "" + //
                         "            +$;     X            \n" + //
                         "           &X:                   \n" + //

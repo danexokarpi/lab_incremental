@@ -51,7 +51,10 @@ public class Mapa {
             int index = 0;
             while (scannerMapa.hasNextLine()) {
                 NoMapa noAtual = new NoMapa(index);
+                    //DEBBUGING PESADO LEMBRAR DE APAGAR LEMBRAR
                 Evento batalhaDoNoAtual = fabricaDeEvento.criaBatalha(quantidadeDeInimigosPeloIndex(index));
+                Evento loja = fabricaDeEvento.criaLoja();
+                Evento escolha = fabricaDeEvento.criaEscolha();
                 listaDeNos.add(noAtual);
                 listaDeEventos.add(batalhaDoNoAtual);
                 String[] filhosDoNo = scannerMapa.nextLine().split(" ");
