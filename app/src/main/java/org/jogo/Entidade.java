@@ -94,8 +94,16 @@ public abstract class Entidade {
         escudo = escudoDefinido;
     }
 
+    public void setarVidaMaxima(int vidaMaxima){
+        this.vidaMaxima = vidaMaxima;
+    }
+
     public void setarVida(int vida) {
         this.vida = vida;
+    }
+
+    public void alterarVidaMaxima(int i) {
+        this.vidaMaxima += i;
     }
 
     /**
