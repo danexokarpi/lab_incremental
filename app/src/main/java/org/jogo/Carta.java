@@ -5,15 +5,17 @@ public abstract class Carta {
     private String descricao;
     private int custo;
     private String areaDeEfeito;
+    private int preco;
 
 
     protected Carta(){}
 
-    public Carta(String nome, String descricao, int custo, String areaDeEfeito) {
+    public Carta(String nome, String descricao, int custo, String areaDeEfeito, int preco) {
         this.nome = nome;
         this.descricao = descricao;
         this.custo = custo;
         this.areaDeEfeito = areaDeEfeito;
+        this.preco = preco;
     }
 
     public abstract boolean usar(Batalha tabuleiro);
@@ -36,4 +38,7 @@ public abstract class Carta {
         return custo;
     }
 
+    public int getPreco(){
+        return preco;
+    }
 }

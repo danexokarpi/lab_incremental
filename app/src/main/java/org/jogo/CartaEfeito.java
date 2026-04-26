@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class CartaEfeito extends Carta {
     private FabricaDeEfeito fabricaDeEfeito;
 
-    public CartaEfeito(String nome, String descricao, int custo, FabricaDeEfeito fabricaDeEfeito, String areaDeEfeito) {
-        super(nome, descricao, custo, areaDeEfeito);
+    public CartaEfeito(String nome, String descricao, int custo, FabricaDeEfeito fabricaDeEfeito, String areaDeEfeito, int preco) {
+        super(nome, descricao, custo, areaDeEfeito, preco);
         this.fabricaDeEfeito = fabricaDeEfeito;
     }
     

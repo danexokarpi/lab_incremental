@@ -122,10 +122,10 @@ public class Menu {
             while (scannerMapa.hasNextLine()) {
                 linhas.add(scannerMapa.nextLine());
             }
-            int maxWidth = 0;
+            int larguraMaxima = 0;
             for (String linha : linhas) {
-                if (linha.length() > maxWidth) {
-                    maxWidth = linha.length();
+                if (linha.length() > larguraMaxima) {
+                    larguraMaxima = linha.length();
                 }
             }
 
@@ -134,7 +134,7 @@ public class Menu {
             int xCentro = getLargura() / 2;
             int yCentro = getAltura() / 2;
 
-            int xInicio = xCentro - maxWidth / 2;
+            int xInicio = xCentro - larguraMaxima / 2;
             int yInicio = yCentro - alturaMapa / 2;
 
             if (xInicio < 0)
@@ -145,7 +145,7 @@ public class Menu {
             for (int i = 0; i < linhas.size(); i++) {
                 String linha = linhas.get(i);
 
-                linha = String.format("%-" + maxWidth + "s", linha);
+                linha = String.format("%-" + larguraMaxima + "s", linha);
 
                 textG.putString(xInicio, yInicio + i, linha);
             }
@@ -164,18 +164,18 @@ public class Menu {
      *                personagem
      */
     public void desenharPersonagemNoMapa(int posicao) {
-        Integer[][] coordenadas = { { 60, 20 }, // 0
-                { 65, 17 }, // 1
-                { 65, 23 }, // 2
-                { 71, 17 }, // 3
-                { 71, 20 }, // 4
-                { 71, 26 }, // 5
-                { 77, 20 }, // 6
-                { 77, 26 }, // 7
-                { 83, 20 }, // 8
-                { 83, 26 }, // 9
-                { 89, 20 } // 10
-        };
+        Integer[][] coordenadas = {{60, 20}, // 0
+                                    {65, 17}, //1
+                                    {65, 23}, //2
+                                    {71, 17}, //3
+                                    {71, 20}, //4
+                                    {71, 26}, //5
+                                    {77, 20}, //6
+                                    {77, 26}, //7
+                                    {83, 20}, //8
+                                    {83, 26}, //9
+                                    {89, 20} //10
+                                    };
         ArrayList<Integer[]> listaDeCoordenadas = new ArrayList(Arrays.asList(coordenadas));
         TextGraphics textG = screen.newTextGraphics();
         textG.setForegroundColor(TextColor.ANSI.GREEN_BRIGHT);
@@ -200,11 +200,6 @@ public class Menu {
         TextGraphics textG = screen.newTextGraphics();
         textG.setForegroundColor(TextColor.ANSI.GREEN);
         String[] linhasAscci = entidade.getAscii().split("\n");
-
-        int larguraAscci = 0;
-        for (String linha : linhasAscci) {
-            larguraAscci = Math.max(larguraAscci, linha.length());
-        }
 
         String nome = entidade.getNome();
         String status = "Vida: " + entidade.getVida() + "(escudo " + entidade.getEscudo() + ")";
@@ -316,24 +311,29 @@ public class Menu {
             }
         }
     }
-
+    
     /**
      * Exibe um aviso específico na posição pré-definida da tela.
      * 
      * @param tipoAviso tipo do aviso ("energiaInsuficiente" ou "inimigoEstaMorto")
      */
-    public void desenharAviso(String tipoAviso) {
+    public void desenharAviso(String tipoAviso, int x, int y) {
         TextGraphics textG = screen.newTextGraphics();
         textG.setForegroundColor(TextColor.ANSI.GREEN);
 
         switch (tipoAviso) {
             case "energiaInsuficiente":
-                textG.putString(xAviso, yAviso,
-                        "ENERGIA INSUFICIENTE: a carta selecionada possui custo de energia superior ao nível de energia atual.");
+                desenharCentralizado(textG, x, y, "ENERGIA INSUFICIENTE: a carta selecionada possui custo de energia superior ao nível de energia atual.");
                 break;
             case "inimigoEstaMorto":
-                textG.putString(xAviso, yAviso,
-                        "INIMIGO JÁ ESTÁ MORTO: o inimigo selecionado já foi derrotado, essa ação não terá efeito");
+                desenharCentralizado(textG, x, y, "INIMIGO JÁ ESTÁ MORTO: o inimigo selecionado já foi derrotado, essa ação não terá efeito");
+                break;
+            case "ouroInsuficiente":
+                List<String> trechosEncaixados = quebrarTexto("FALTA OURO: Desculpa viajante, eu não posso te dar ouro, talvez você devesse voltar quando estiver hmm..... mais rico", 50);
+                for(String trecho : trechosEncaixados){
+                    textG.putString(x, y, trecho);
+                    y++;
+                }
                 break;
             default:
                 break;
@@ -350,7 +350,7 @@ public class Menu {
      * @param energia       energia atual do jogador
      * @param energiaMaxima energia máxima do jogador
      */
-    public void desenharSelecaoCartas(MaoDoJogador maoDoJogador, int cursor, int energia, int energiaMaxima) {
+    public void desenharSelecaoCartas(MaoDoJogador maoDoJogador, int cursor, int energia, int energiaMaxima, String tipodDeAviso) {
         TextGraphics textG = screen.newTextGraphics();
         textG.setForegroundColor(TextColor.ANSI.GREEN);
 
@@ -368,7 +368,7 @@ public class Menu {
         int yBase = altura - (numeroLinhasNecessario * alturaLinha) - 1;
 
         String texto = energia + "/" + energiaMaxima + " energia";
-
+        desenharAviso(tipodDeAviso, largura / 2, yBase - 3);
         desenharCentralizado(textG, largura / 2, yBase - 2, "Escolha sua ação");
         desenharCentralizado(textG, largura / 2, yBase - 1, texto);
 
@@ -413,6 +413,392 @@ public class Menu {
         }
         desenharCentralizado(textG, centroEncerramento, yEncerramento, "Encerrar");
     }
+
+    public void desenharBauFechado() {
+        try (Scanner scannerMapa = new Scanner(new File("baufechado.txt"))) {
+
+            TextGraphics textG = screen.newTextGraphics();
+            textG.setForegroundColor(TextColor.ANSI.GREEN);
+
+            List<String> linhas = new ArrayList<>();
+            while (scannerMapa.hasNextLine()) {
+                linhas.add(scannerMapa.nextLine());
+            }
+            int larguraMaxima = 0;
+            for (String linha : linhas) {
+                if (linha.length() > larguraMaxima) {
+                    larguraMaxima = linha.length();
+                }
+            }
+
+            int alturaMapa = linhas.size();
+
+            int xCentro = getLargura() / 2;
+            int yCentro = getAltura() / 2;
+
+            int xInicio = xCentro - larguraMaxima / 2;
+            int yInicio = yCentro - alturaMapa / 2;
+
+            if (xInicio < 0) xInicio = 0;
+            if (yInicio < 0) yInicio = 0;
+            int i;
+            for (i = 0; i < linhas.size(); i++) {
+                String linha = linhas.get(i);
+
+
+                linha = String.format("%-" + larguraMaxima + "s", linha);
+
+                textG.putString(xInicio, yInicio + i, linha);
+            }
+            desenharCentralizado(textG, xCentro, yInicio + i + 2, "Um Baú!!!!! Precione qualquer tecla para abri-lo");
+            textG.setForegroundColor(TextColor.ANSI.DEFAULT);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void desenharBauAberto(int quantidadeOuro) {
+        try (Scanner scannerMapa = new Scanner(new File("bauaberto.txt"))) {
+
+            TextGraphics textG = screen.newTextGraphics();
+            textG.setForegroundColor(TextColor.ANSI.GREEN);
+
+            List<String> linhas = new ArrayList<>();
+            while (scannerMapa.hasNextLine()) {
+                linhas.add(scannerMapa.nextLine());
+            }
+            int larguraMaxima = 0;
+            for (String linha : linhas) {
+                if (linha.length() > larguraMaxima) {
+                    larguraMaxima = linha.length();
+                }
+            }
+
+            int alturaMapa = linhas.size();
+
+            int xCentro = getLargura() / 2;
+            int yCentro = getAltura() / 2;
+
+            int xInicio = xCentro - larguraMaxima / 2;
+            int yInicio = yCentro - alturaMapa / 2;
+
+            if (xInicio < 0) xInicio = 0;
+            if (yInicio < 0) yInicio = 0;
+
+            for (int i = 0; i < linhas.size(); i++) {
+                String linha = linhas.get(i);
+                linha = String.format("%-" + larguraMaxima + "s", linha);
+                textG.putString(xInicio, yInicio + i, linha);
+            }
+
+            String mensagemOuro = "Você achou " + quantidadeOuro + " de ouro!";
+            int xMensagem = xCentro - (mensagemOuro.length() / 2);
+            int yMensagem = yInicio + alturaMapa + 2; 
+
+            if (xMensagem < 0) xMensagem = 0;
+
+            textG.putString(xMensagem, yMensagem, mensagemOuro);
+
+            textG.setForegroundColor(TextColor.ANSI.DEFAULT);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void desenharLojista(String tipoDeAviso, int ouro){
+        try(Scanner scannerLojista = new Scanner(new File("lojista.txt"))){
+            TextGraphics textG = screen.newTextGraphics();
+            
+            List<String> linhas = new ArrayList<>();
+            while (scannerLojista.hasNextLine()) {
+                linhas.add(scannerLojista.nextLine());
+            }
+
+            int larguraMaxima = 0;
+            for (String linha : linhas) {
+                if (linha.length() > larguraMaxima) {
+                    larguraMaxima = linha.length();
+                }
+            }
+            
+            
+            int x = 4;
+            int y = 4;
+            
+            textG.setForegroundColor(TextColor.ANSI.GREEN);
+            int centroAscci = x + larguraMaxima / 2;
+            desenharCentralizado(textG, centroAscci, y - 2, "Criatura Encapuzada");
+
+            
+            for(String linha : linhas){
+                textG.putString(x, y, linha);
+                y++;
+            }
+            
+            List<String> trechosEncaixados = quebrarTexto("Olá viajante, sinta-se a vontade para comprar qualquer coisa que precisar!", larguraMaxima);
+            for(String trecho : trechosEncaixados){
+                textG.putString(x, y, trecho);
+                y++;
+            }
+
+            desenharAviso(tipoDeAviso, x, y+2);
+            
+            desenharCentralizado(textG, centroAscci, y + 10, "Você tem: " + ouro + " ouros");
+    
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        
+    }
+
+    public void desenharEstoqueLoja(ArrayList<Carta> estoque, int cursor) {
+        TextGraphics textG = screen.newTextGraphics();
+        textG.setForegroundColor(TextColor.ANSI.GREEN);
+
+        int largura = getLargura();
+        
+        int xInicioDireita = largura / 2;
+        int larguraDisponivel = largura / 2;
+        
+        int numeroColunas = 2;
+        int larguraPacote = larguraDisponivel / numeroColunas; 
+        int alturaLinha = 10;
+        
+        int larguraSeguraTexto = larguraPacote - 4; 
+        
+        int totalOpcoes = estoque.size() + 2; 
+        int linhasPorColuna = (int) Math.ceil((double) totalOpcoes / numeroColunas);
+        if (linhasPorColuna == 0) linhasPorColuna = 1; 
+
+        int yBase = 4; 
+
+        desenharCentralizado(textG, xInicioDireita + (larguraDisponivel / 2), yBase - 3, "--- ESTOQUE DO LOJISTA ---");
+
+        for (int i = 0; i < estoque.size(); i++) {
+            Carta carta = estoque.get(i);
+            String nome = carta.getNome();
+            String efeitoCustoAoE = carta.getEfeitoCustoAoE();
+            String descricao = carta.getDescricao();
+            String preco = String.valueOf(carta.getPreco());
+
+            int colunaAtual = i / linhasPorColuna; 
+            int linhaAtual = i % linhasPorColuna;
+
+            int centro = xInicioDireita + (larguraPacote * colunaAtual) + (larguraPacote / 2);
+            int yAtual = yBase + (linhaAtual * alturaLinha);
+            
+            if (cursor == i) {
+                textG.setForegroundColor(TextColor.ANSI.GREEN_BRIGHT);
+                desenharCentralizado(textG, centro, yAtual - 2, "↓");
+            } else {
+                textG.setForegroundColor(TextColor.ANSI.GREEN);
+            }
+            
+            desenharCentralizado(textG, centro, yAtual - 1, "Preço: " + preco + " Ouros");
+            
+            int linhaOffset = 0;
+
+            List<String> linhasNome = quebrarTexto(nome, larguraSeguraTexto);
+            for (String ln : linhasNome) {
+                desenharCentralizado(textG, centro, yAtual + linhaOffset, ln);
+                linhaOffset++;
+            }
+            
+            List<String> linhasEfeito = quebrarTexto(efeitoCustoAoE, larguraSeguraTexto);
+            for (String le : linhasEfeito) {
+                desenharCentralizado(textG, centro, yAtual + linhaOffset, le);
+                linhaOffset++;
+            }
+
+            List<String> linhasDesc = quebrarTexto(descricao, larguraSeguraTexto);
+            for (String ld : linhasDesc) {
+                desenharCentralizado(textG, centro, yAtual + linhaOffset, ld);
+                linhaOffset++;
+            }
+        }
+
+        // Opção Remover (segue a mesma matemática da grade)
+        int indexRemover = estoque.size();
+        int colRemover = indexRemover / linhasPorColuna;
+        int linRemover = indexRemover % linhasPorColuna;
+        int centroRemover = xInicioDireita + (larguraPacote * colRemover) + (larguraPacote / 2);
+        int yRemover = yBase + (linRemover * alturaLinha);
+
+        if (cursor == indexRemover) {
+            textG.setForegroundColor(TextColor.ANSI.GREEN_BRIGHT);
+            desenharCentralizado(textG, centroRemover, yRemover - 2, "↓");
+        } else {
+            textG.setForegroundColor(TextColor.ANSI.GREEN);
+        }
+        desenharCentralizado(textG, centroRemover, yRemover - 1, "Preço: 10 Ouros");
+        desenharCentralizado(textG, centroRemover, yRemover, "Remover uma carta");
+
+        int indexSair = estoque.size() + 1;
+        int colSair = indexSair / linhasPorColuna;
+        int linSair = indexSair % linhasPorColuna;
+        int centroSair = xInicioDireita + (larguraPacote * colSair) + (larguraPacote / 2);
+        int ySair = yBase + (linSair * alturaLinha);
+
+        if (cursor == indexSair) {
+            textG.setForegroundColor(TextColor.ANSI.GREEN_BRIGHT);
+            desenharCentralizado(textG, centroSair, ySair - 1, "↓");
+        } else {
+            textG.setForegroundColor(TextColor.ANSI.GREEN);
+        }
+        desenharCentralizado(textG, centroSair, ySair, "Sair da Loja");
+    }
+
+    public void desenharLoja(ArrayList<Carta> estoque, int cursor, String tipoDeAviso, int ouro){
+        desenharLojista(tipoDeAviso, ouro);
+        desenharEstoqueLoja(estoque, cursor);
+    }
+
+    public void desenharRemocaoCartas(ArrayList<Carta> inventario, int cursor) {
+        TextGraphics textG = screen.newTextGraphics();
+        textG.setForegroundColor(TextColor.ANSI.GREEN);
+
+        int largura = getLargura();
+        int numeroColunas = 5; 
+        int larguraPacote = largura / numeroColunas;
+        int alturaLinha = 10;
+        int larguraSeguraTexto = larguraPacote - 4;
+        
+        int yBase = 5;
+
+        desenharCentralizado(textG, largura / 2, yBase - 3, "--- ESCOLHA UMA CARTA PARA REMOVER ---");
+
+        for (int i = 0; i < inventario.size(); i++) {
+            Carta carta = inventario.get(i);
+            String nome = carta.getNome();
+            String efeitoCustoAoE = carta.getEfeitoCustoAoE();
+            String descricao = carta.getDescricao();
+
+            int colunaAtual = i % numeroColunas; 
+            int linhaAtual = i / numeroColunas;
+
+            int centro = (larguraPacote * colunaAtual) + (larguraPacote / 2);
+            int yAtual = yBase + (linhaAtual * alturaLinha);
+
+            if (cursor == i) {
+                textG.setForegroundColor(TextColor.ANSI.GREEN_BRIGHT);
+                desenharCentralizado(textG, centro, yAtual - 2, "↓");
+            } else {
+                textG.setForegroundColor(TextColor.ANSI.GREEN);
+            }
+            
+            int linhaOffset = -1;
+
+            List<String> linhasNome = quebrarTexto(nome, larguraSeguraTexto);
+            for (String ln : linhasNome) {
+                desenharCentralizado(textG, centro, yAtual + linhaOffset, ln);
+                linhaOffset++;
+            }
+            
+            List<String> linhasEfeito = quebrarTexto(efeitoCustoAoE, larguraSeguraTexto);
+            for (String le : linhasEfeito) {
+                desenharCentralizado(textG, centro, yAtual + linhaOffset, le);
+                linhaOffset++;
+            }
+
+            List<String> linhasDesc = quebrarTexto(descricao, larguraSeguraTexto);
+            for (String ld : linhasDesc) {
+                desenharCentralizado(textG, centro, yAtual + linhaOffset, ld);
+                linhaOffset++;
+            }
+        }
+
+        int indexCancelar = inventario.size();
+        int colunaCancelar = indexCancelar % numeroColunas;
+        int linhaCancelar = indexCancelar / numeroColunas;
+        
+        int centroCancelar = (larguraPacote * colunaCancelar) + (larguraPacote / 2);
+        int yCancelar = yBase + (linhaCancelar * alturaLinha);
+
+        if (cursor == indexCancelar) {
+            textG.setForegroundColor(TextColor.ANSI.GREEN_BRIGHT);
+            desenharCentralizado(textG, centroCancelar, yCancelar - 2, "↓");
+        } else {
+            textG.setForegroundColor(TextColor.ANSI.GREEN);
+        }
+        desenharCentralizado(textG, centroCancelar, yCancelar - 1, "Cancelar");
+    }
+
+    public void desenharEventoAmbulancia(int cursor) {
+        TextGraphics textG = screen.newTextGraphics();
+        int centro = getLargura() / 2;
+        int yInicioArte = 3;
+        int yFinalDaArte = yInicioArte;
+
+        try (Scanner scannerAmbulancia = new Scanner(new File("ambulancia.txt"))) {
+            textG.setForegroundColor(TextColor.ANSI.GREEN);
+
+            List<String> linhas = new ArrayList<>();
+            while (scannerAmbulancia.hasNextLine()) {
+                linhas.add(scannerAmbulancia.nextLine());
+            }
+            
+            int larguraMaxima = 0;
+            for (String linha : linhas) {
+                if (linha.length() > larguraMaxima) {
+                    larguraMaxima = linha.length();
+                }
+            }
+
+            int xInicio = centro - larguraMaxima / 2;
+            if (xInicio < 0) xInicio = 0;
+
+            for (int i = 0; i < linhas.size(); i++) {
+                String linha = linhas.get(i);
+                linha = String.format("%-" + larguraMaxima + "s", linha);
+                textG.putString(xInicio, yInicioArte + i, linha);
+            }
+            
+            yFinalDaArte = yInicioArte + linhas.size();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            yFinalDaArte = yInicioArte + 5;
+        }
+
+        int yTextos = yFinalDaArte + 2; 
+        String textoInicial = "Na sua caminhada você encontra uma ambulância abandonada, dentro dela você acha stimpacks de alta potência e inaladores de Jet experimental";
+        String perguntarAcao = "O que gostaria de fazer?";
+        
+        textG.setForegroundColor(TextColor.ANSI.GREEN);
+        List<String> linhas = quebrarTexto(textoInicial, 80);
+        for(String linha : linhas){
+            desenharCentralizado(textG, centro, yTextos, linha);
+            yTextos++;
+        }
+        desenharCentralizado(textG, centro, yTextos + 2, perguntarAcao);
+
+        int yOpcoes = yTextos + 8; 
+        int centroEsquerda = getLargura() / 4;
+        int centroDireita = (getLargura() / 4) * 3;
+
+        if (cursor == 0) {
+            textG.setForegroundColor(TextColor.ANSI.GREEN_BRIGHT);
+            desenharCentralizado(textG, centroEsquerda, yOpcoes - 1, "↓");
+        } else {
+            textG.setForegroundColor(TextColor.ANSI.GREEN);
+        }
+        desenharCentralizado(textG, centroEsquerda, yOpcoes, "Injetar Stimpack de Alta Potência (+15 Vida Máxima)");
+
+        if (cursor == 1) {
+            textG.setForegroundColor(TextColor.ANSI.GREEN_BRIGHT);
+            desenharCentralizado(textG, centroDireita, yOpcoes - 1, "↓");
+        } else {
+            textG.setForegroundColor(TextColor.ANSI.GREEN);
+        }
+        desenharCentralizado(textG, centroDireita, yOpcoes, "Inalar Jet Experimental (+1 Energia Máxima)");
+
+        textG.setForegroundColor(TextColor.ANSI.DEFAULT);
+    }
+    
+
 
     /**
      * Encerra a tela do Lanterna.
@@ -550,7 +936,7 @@ public class Menu {
      *
      * @param inimigos lista de inimigos.
      */
-    public void desenharSelecaoInimigos(ArrayList<Inimigo> inimigos, int cursor) {
+    public void desenharSelecaoInimigos(ArrayList<Inimigo> inimigos, int cursor, String TipoDeAviso) {
         TextGraphics textG = screen.newTextGraphics();
         textG.setForegroundColor(TextColor.ANSI.GREEN);
 
@@ -562,7 +948,7 @@ public class Menu {
         int totalInimigos = inimigos.size();
         int totalOpcoes = totalInimigos + 1;
         int larguraPacote = largura / totalOpcoes;
-
+        desenharAviso(TipoDeAviso, largura / 2, yBase - 3);
         desenharCentralizado(textG, largura / 2, yBase - 2, "Escolha seu Alvo:");
 
         for (int i = 0; i < inimigos.size(); i++) {

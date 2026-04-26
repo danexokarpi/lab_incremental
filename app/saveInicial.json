@@ -1,6 +1,8 @@
 {
   "vida": 15,
+  "vidaMaxima": 15,
   "energiaMaxima": 3,
+  "ouro": 10,
   "posicaoNoMapa": 0,
   "inventarioHeroi": [
     {

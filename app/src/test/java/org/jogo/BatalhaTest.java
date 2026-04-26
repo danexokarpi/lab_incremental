@@ -126,7 +126,9 @@ public class BatalhaTest {
 
         when(menuMock.receberInputTeclado()).thenReturn(new KeyStroke(KeyType.Enter));
 
-        boolean venceu = batalha.iniciar();
+        batalha.iniciar();
+        
+        boolean venceu = batalha.ganhou();
 
         assertTrue(venceu, "Deveria retornar true indicando vitória");
         verify(menuMock).desenharMensagemFinalBatalha(contains("VITÓRIA"));

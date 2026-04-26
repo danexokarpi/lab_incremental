@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class CartaDano extends Carta {
     private int dano;
 
-    public CartaDano(String nome, String descricao, int custo, int dano, String areaDeEfeito) {
-        super(nome, descricao, custo, areaDeEfeito);
+    public CartaDano(String nome, String descricao, int custo, int dano, String areaDeEfeito, int preco) {
+        super(nome, descricao, custo, areaDeEfeito, preco);
         this.dano = dano;
     }
 
