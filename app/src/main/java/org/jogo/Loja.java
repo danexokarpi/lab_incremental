@@ -12,7 +12,7 @@ public class Loja extends Evento {
     private FabricaDeCartas fabricaDeCartas = new FabricaDeCartas();
     private Heroi heroi;
 
-    public Loja(Heroi heroi, Menu menu){
+    public Loja(Heroi heroi, Menu menu) {
         this.heroi = heroi;
         this.inventario = heroi.getInventario();
         this.menu = menu;
@@ -20,17 +20,18 @@ public class Loja extends Evento {
     }
 
     public void iniciar() {
-        for(int i = 0; i < 5; i++){
+        for (int i = 0; i < 5; i++) {
             estoque.add(fabricaDeCartas.getCartaAleatoria());
         }
         escolherOpcao(estoque);
 
     }
-    public void escolherOpcao(ArrayList<Carta> estoque){
+
+    public void escolherOpcao(ArrayList<Carta> estoque) {
         int cursor = 0;
         String tipoDeAviso = "";
         boolean confirmou = false;
-        while(!confirmou){
+        while (!confirmou) {
             int escolhaRemoverCarta = estoque.size();
             int escolhaSairDaLoja = estoque.size() + 1;
             menu.limparDesenho();
@@ -52,30 +53,31 @@ public class Loja extends Evento {
                 if (cursor == escolhaSairDaLoja) {
                     confirmou = true;
                     continue;
-                } else if (cursor == escolhaRemoverCarta) {
+                }
+                if (cursor == escolhaRemoverCarta) {
                     ComandoRemoverCarta comandoRemover = new ComandoRemoverCarta(heroi);
-                    if (comandoRemover.podeExecutar()){
+                    if (comandoRemover.podeExecutar()) {
                         comandoRemover.setarIndexCarta(escolherCartaParaRemover());
                         comandoRemover.executar();
-                    }else{
+                    } else {
                         tipoDeAviso = "ouroInsuficiente";
                     }
                 } else {
                     ComandoComprarCarta comandoComprar = new ComandoComprarCarta(heroi, cursor, estoque);
-                    if (comandoComprar.podeExecutar()){
+                    if (comandoComprar.podeExecutar()) {
                         comandoComprar.executar();
-                    }else{
+                    } else {
                         tipoDeAviso = "ouroInsuficiente";
                     }
                 }
-            }   
+            }
         }
     }
 
-    public int escolherCartaParaRemover(){
+    public int escolherCartaParaRemover() {
         int cursor = 0;
         int escolhaSairRemocao = inventario.size();
-        while(true){
+        while (true) {
             menu.limparDesenho();
             menu.desenharRemocaoCartas(inventario, cursor);
             menu.aplicarDesenho();
@@ -95,11 +97,10 @@ public class Loja extends Evento {
             } else if (key.getKeyType() == KeyType.Enter) {
                 if (cursor == escolhaSairRemocao) {
                     return -1;
-                }else{
+                } else {
                     return cursor;
                 }
             }
         }
     }
 }
-

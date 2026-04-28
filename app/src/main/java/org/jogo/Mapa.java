@@ -36,9 +36,9 @@ public class Mapa {
      * 
      * <p>
      * Lê o arquivo "esqueletoDoMapa.txt" linha por linha, criando um nó
-     * e uma batalha para cada linha. As conexões entre nós são definidas
+     * e um evento para cada linha. As conexões entre nós são definidas
      * pelos números presentes em cada linha. Um nó final é aquele que não
-     * possui filhos.
+     * possui filhos. O nó final possui sempre como evento uma batalha.
      * </p>
      * 
      * @param fabricaDeEvento fábrica utilizada para criar as batalhas de cada nó
@@ -51,12 +51,9 @@ public class Mapa {
             int index = 0;
             while (scannerMapa.hasNextLine()) {
                 NoMapa noAtual = new NoMapa(index);
-                    //DEBBUGING PESADO LEMBRAR DE APAGAR LEMBRAR
-                Evento batalhaDoNoAtual = fabricaDeEvento.criaBatalha(quantidadeDeInimigosPeloIndex(index));
-                Evento loja = fabricaDeEvento.criaLoja();
-                Evento escolha = fabricaDeEvento.criaEscolha();
+                Evento eventoDoNoAtual = fabricaDeEvento.criaEventoAleatorio(quantidadeDeInimigosPeloIndex(index));
                 listaDeNos.add(noAtual);
-                listaDeEventos.add(batalhaDoNoAtual);
+                listaDeEventos.add(eventoDoNoAtual);
                 String[] filhosDoNo = scannerMapa.nextLine().split(" ");
                 for (String filho : filhosDoNo) {
                     noAtual.addFilho(Integer.parseInt(filho));

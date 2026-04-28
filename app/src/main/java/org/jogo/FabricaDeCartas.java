@@ -40,4 +40,22 @@ public class FabricaDeCartas {
         return cartas.get(random.nextInt(cartas.size() - 1));
     }
 
+    public Carta getCartaEspecialAleatoria() {
+        List<Carta> cartas = List.of(
+                new CartaDano("Granada",
+                        "3,2,1....KABUMMM!!!!!!.", 3, 4, "Todos", 8),
+                new CartaDano("Mina Antipessoal",
+                        "Ótima para OBLITERAR um indivídue em específico, manual de intruções não incluido", 3, 12,
+                        "Unico", 12),
+                new CartaEfeito("Stimpack",
+                        "Uma grande dose de seilá o que direto nas suas veias, vai curar quase qualquer ferida," +
+                                "menos as psicológicas",
+                        2, new FabricaDeEfeito("regeneracao", 3), "Unico", 15),
+                new CartaEfeito("Frasco de Veneno",
+                        "Um pequeno fraco com veneno concentrado, lance apenas em inimigos!",
+                        2, new FabricaDeEfeito("veneno", 3), "Unico", 9));
+        return cartas.get(random.nextInt(cartas.size() - 1));
+
+    }
+
 }

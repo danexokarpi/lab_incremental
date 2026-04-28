@@ -5,11 +5,11 @@ import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 
 public class Escolha extends Evento {
-    private Random random = new Random();
+    private static Random random = new Random();
     private Menu menu;
     private Heroi heroi;
 
-    public Escolha(Menu menu, Heroi heroi){
+    public Escolha(Menu menu, Heroi heroi) {
         this.menu = menu;
         this.heroi = heroi;
         setGanhou(true);
@@ -22,41 +22,65 @@ public class Escolha extends Evento {
                 iniciarAcharAmbulancia();
                 break;
             case 1:
-                iniciarBBB(); // iniciar tipo de escolha 'BBB'
+                iniciarAtaqueDeAranhaEscondida();
                 break;
         }
     }
 
     public void iniciarAcharAmbulancia() {
         int cursor = 0;
-        while(true){
+        while (true) {
             menu.limparDesenho();
             menu.desenharEventoAmbulancia(cursor);
             menu.aplicarDesenho();
             KeyStroke key = menu.receberInputTeclado();
-            if(key.getKeyType() == KeyType.ArrowRight){
-                cursor ++;
-                if (cursor > 1){
+            if (key.getKeyType() == KeyType.ArrowRight) {
+                cursor++;
+                if (cursor > 1) {
                     cursor = 0;
                 }
-            }else if(key.getKeyType() == KeyType.ArrowLeft){
+            } else if (key.getKeyType() == KeyType.ArrowLeft) {
                 cursor--;
-                if (cursor < 0){
+                if (cursor < 0) {
                     cursor = 1;
                 }
-            }else if (key.getKeyType() == KeyType.Enter){
-                if (cursor == 0){
+            } else if (key.getKeyType() == KeyType.Enter) {
+                if (cursor == 0) {
                     heroi.alterarVidaMaxima(15);
-                }else if (cursor == 1){
+                } else if (cursor == 1) {
                     heroi.alterarEnergiaMaxima(1);
                 }
                 break;
             }
         }
-        
     }
 
-    public void iniciarBBB() {
-
+    public void iniciarAtaqueDeAranhaEscondida() {
+        int cursor = 0;
+        while (true) {
+            menu.limparDesenho();
+            menu.desenharEventoAranhaEscondida(cursor);
+            menu.aplicarDesenho();
+            KeyStroke key = menu.receberInputTeclado();
+            if (key.getKeyType() == KeyType.ArrowRight) {
+                cursor++;
+                if (cursor > 1) {
+                    cursor = 0;
+                }
+            } else if (key.getKeyType() == KeyType.ArrowLeft) {
+                cursor--;
+                if (cursor < 0) {
+                    cursor = 1;
+                }
+            } else if (key.getKeyType() == KeyType.Enter) {
+                if (cursor == 0) {
+                    heroi.receberDano(heroi.getVidaMaxima() / 3);
+                } else if (cursor == 1) {
+                    int indexDaRemocao = random.nextInt(heroi.getInventario().size());
+                    heroi.getInventario().remove(indexDaRemocao);
+                }
+                break;
+            }
+        }
     }
 }
