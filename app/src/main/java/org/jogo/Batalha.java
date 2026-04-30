@@ -1,11 +1,10 @@
 package org.jogo;
 
-import com.googlecode.lanterna.input.KeyStroke;
-import com.googlecode.lanterna.input.KeyType;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+
+import com.googlecode.lanterna.input.KeyStroke;
+import com.googlecode.lanterna.input.KeyType;
 
 /**
  * Representa o estado e a lógica central de uma batalha no jogo.
@@ -51,10 +50,8 @@ public class Batalha extends Evento {
         this.entidadesEmJogo = new ArrayList<Entidade>();
         entidadesEmJogo.add(heroi);
         entidadesEmJogo.addAll(inimigos);
-        this.pilhaDeCompra = new PilhaDeCompra(heroi.getInventario());
         this.pilhaDeDescarte = new PilhaDeDescarte();
         this.maoDoJogador = new MaoDoJogador(capacidadeDaMao);
-        this.energiaMaxima = heroi.getEnegiaMaxima();
         this.historicoDeAcoes = new ArrayList<String>();
         setGanhou(false);
     }
@@ -163,6 +160,8 @@ public class Batalha extends Evento {
      * seja atendida: o herói ser derrotado ou todos os inimigos serem eliminados.
      */
     public void iniciar() {
+        this.energiaMaxima = heroi.getEnegiaMaxima();
+        this.pilhaDeCompra = new PilhaDeCompra(heroi.getInventario());
         while (heroi.estaVivo() && !todosInimigosMortos()) {
             this.novoRound();
         }
@@ -188,20 +187,22 @@ public class Batalha extends Evento {
                 esperandoInput = false;
             }
         }
-        heroi.limparEfeitos();
-        menu.limparDesenho();
-        menu.desenharBauFechado();
-        menu.aplicarDesenho();
-        KeyStroke key = menu.receberInputTeclado();
-        if(key != null){
+        if(ganhou()){
+            heroi.limparEfeitos();
             menu.limparDesenho();
-            int ouroGanho = definirOuroRecebido();
-            heroi.alterarOuro(ouroGanho);
-            menu.desenharBauAberto(ouroGanho);
+            menu.desenharBauFechado();
             menu.aplicarDesenho();
-            menu.receberInputTeclado();
+            KeyStroke key = menu.receberInputTeclado();
+            if(key != null){
+                menu.limparDesenho();
+                int ouroGanho = definirOuroRecebido();
+                heroi.alterarOuro(ouroGanho);
+                menu.desenharBauAberto(ouroGanho);
+                menu.aplicarDesenho();
+                menu.receberInputTeclado();
+            }
+            menu.limparDesenho();
         }
-        menu.limparDesenho();
         
     }
 
