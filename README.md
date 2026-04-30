@@ -82,7 +82,11 @@ O jogo é salvo logo quando uma nova fase é iniciada, conservando a vida do jog
 Caso você perca, seu progresso é perdido, obrigando-o a iniciar o jogo do início.
 
 P.S.: Um sistema de ganho de novas cartas durante o jogo AINDA não foi implementado, deixando o jogador limitado a uma pequena quantidade de cartas durante o jogo.
-
+ 
+# Mecânica de Eventos
+-Todos os eventos menos a batalha final são completamente aleatórios, assim temos o evento de escolha Ambulancia Abandonada, que faz com que você escolha um status para aumentar do seu heroi. Ademais, os eventos para aumentar a variedade do jogo foram a Loja e a Fogueira, onde ambos usam o desing command para o seu funcionamento, ou seja, ao invés de usar vários métodos, apenas criamos as classes dos comandos escolhidos e usamos o método executar delas.
+-Assim, na loja você pode comprar cartas novas ou remover cartas que você possui, sempre gastando ouro (VEJA OQUE O VENDEDOR FALA QUANDO VOCÊ ESTÁ SEM OURO)
+-Já a fogueira faz com que você possa ganhar uma carta boa, ou que você descanse, oque regenera vida.
 # Quanto aos Testes
 -Nós decidimos usar a biblioteca Mockito pois ela permite a rápida e fácil execução de comandos que outrora seriam impossíveis de se realizar com bibliotecas padrões de java. Isso fez com que a implementação de testes mais importantes e precisos fosse possível, assegurando a qualidade do código!
 
