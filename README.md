@@ -92,7 +92,7 @@ P.S.: Um sistema de ganho de novas cartas durante o jogo AINDA não foi implemen
 
 # Diagrama UML
 
-<img width="10580" height="3669" alt="diagram" src="https://github.com/user-attachments/assets/0cc3e11e-6ebe-4420-9a45-505ad33a1891" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/11457adb-e9d5-47b0-888d-e52836b32d8f" />
 
 
 # Tecnologias Utilizadas
