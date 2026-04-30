@@ -31,7 +31,7 @@ public class MaoDoJogadorTest {
     }
 
     private Carta criarCartaTeste(String nome) {
-        return new CartaDano(nome, "Descrição genérica", 1, 2, "Unico");
+        return new CartaDano(nome, "Descrição genérica", 1, 2, "Unico", 0);
     }
 
     // ------------------------------------------------------------------------

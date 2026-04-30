@@ -46,7 +46,11 @@ public class Escolha extends Evento {
                 }
             } else if (key.getKeyType() == KeyType.Enter) {
                 if (cursor == 0) {
+                    float fracao = heroi.getVida()/heroi.getVidaMaxima();
                     heroi.alterarVidaMaxima(15);
+                    float vidaNova = heroi.getVidaMaxima() * fracao;
+                    int vidaConvertida = (int) vidaNova;
+                    heroi.setarVida(vidaConvertida);
                 } else if (cursor == 1) {
                     heroi.alterarEnergiaMaxima(1);
                 }

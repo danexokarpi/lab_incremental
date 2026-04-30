@@ -23,22 +23,21 @@ public class Fogueira extends Evento {
 
     public void iniciar() {
         int cursor = 0;
-        String tipoDeAviso = "";
         int escolhaDescansar = 0;
         int escolhaPegarCarta = 1;
         boolean confirmou = false;
         while (!confirmou) {
             menu.limparDesenho();
-            menu.desenharFogueira(cursor);
+            menu.desenharFogueira(cursor, cartaDeOpcao);
             menu.aplicarDesenho();
             KeyStroke key = menu.receberInputTeclado();
 
-            if (key.getKeyType() == KeyType.ArrowDown) {
+            if (key.getKeyType() == KeyType.ArrowRight) {
                 cursor++;
                 if (cursor > escolhaPegarCarta) {
                     cursor = 0;
                 }
-            } else if (key.getKeyType() == KeyType.ArrowUp) {
+            } else if (key.getKeyType() == KeyType.ArrowLeft) {
                 cursor--;
                 if (cursor < 0) {
                     cursor = escolhaPegarCarta;

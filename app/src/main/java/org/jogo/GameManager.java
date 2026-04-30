@@ -71,7 +71,6 @@ public class GameManager {
         while (!visitouUltimoNo) {
             Evento eventoAtual = mapa.getEvento(posicaoNoMapa);
             eventoAtual.iniciar();
-            System.out.println(heroi.getEnegiaMaxima());
             if (!eventoAtual.ganhou()) {
                 acabarJogoPerdido();
                 return;
