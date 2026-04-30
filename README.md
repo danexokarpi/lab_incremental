@@ -90,6 +90,10 @@ P.S.: Um sistema de ganho de novas cartas durante o jogo AINDA não foi implemen
 # Quanto aos Testes
 -Nós decidimos usar a biblioteca Mockito pois ela permite a rápida e fácil execução de comandos que outrora seriam impossíveis de se realizar com bibliotecas padrões de java. Isso fez com que a implementação de testes mais importantes e precisos fosse possível, assegurando a qualidade do código!
 
+# Diagrama UML
+
+<img width="300" height="104" alt="diagram" src="https://github.com/user-attachments/assets/1084539d-5a23-477e-8c0c-4861a549fc1b" />
+
 # Tecnologias Utilizadas
 - Java 25
 - Visual Studio Code
@@ -98,7 +102,7 @@ P.S.: Um sistema de ganho de novas cartas durante o jogo AINDA não foi implemen
 - Mockito
 - Git e GitHub
 - Gradle e Gradlew
-- ChatGPT e Deepseek (para documentações)
+- ChatGPT e Deepseek (para documentações e diagrama UML)
 
 # Vem já já
 
