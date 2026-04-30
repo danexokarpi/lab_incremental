@@ -3,6 +3,9 @@ package org.jogo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.contains;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 import com.googlecode.lanterna.input.KeyStroke;
@@ -14,25 +17,21 @@ public class BatalhaTest {
 
     private Menu menuMock;
 
-    // Esse método garante que antes de cada @Test, teremos um menu limpinho
     @BeforeEach
     public void setup() {
         menuMock = mock(Menu.class);
     }
 
     private Batalha criarBatalhaPadrao() {
-        Heroi heroi = new Heroi("Herói Teste", 100, 0, "H");
+        Heroi heroi = new Heroi("Herói Teste", 100, 0, 0, 0, "H");
 
         ArrayList<Inimigo> inimigos = new ArrayList<>();
         inimigos.add(new Inimigo("Barata", 10, 0, 2, 0, 2, new FabricaDeEfeito(null, 0), new char[] { 'A' }, "I"));
         inimigos.add(new Inimigo("Abobora", 10, 0, 2, 0, 2, new FabricaDeEfeito(null, 0), new char[] { 'A' }, "I"));
 
-        ArrayList<Carta> inventario = new ArrayList<>();
-
-        int energiaMaxima = 3;
         int capacidadeMao = 5;
 
-        return new Batalha(heroi, inimigos, inventario, energiaMaxima, capacidadeMao, menuMock);
+        return new Batalha(heroi, inimigos, capacidadeMao, menuMock);
     }
 
     @Test
@@ -41,8 +40,6 @@ public class BatalhaTest {
 
         assertNotNull(batalha.getHeroi(), "O herói não pode ser nulo.");
         assertEquals(2, batalha.getInimigos().size(), "Devem haver 2 inimigos na batalha.");
-        assertEquals(3, batalha.getEnergiaMaxima(), "A energia máxima deve ser 3.");
-        assertNotNull(batalha.getPilhaDeCompra(), "Pilha de compra deve ser criada.");
         assertNotNull(batalha.getPilhaDeDescarte(), "Pilha de descarte deve ser criada.");
         assertNotNull(batalha.getMaoDoJogador(), "Mão do jogador deve ser criada.");
     }
@@ -61,8 +58,6 @@ public class BatalhaTest {
         }
         assertTrue(batalha.todosInimigosMortos(), "Todos os inimigos receberam dano letal, deve retornar true.");
     }
-
-    // --- TESTES COM MOCKITO ---
 
     @Test
     public void testEscolherUmInimigoValido() {
@@ -101,13 +96,21 @@ public class BatalhaTest {
                 .thenReturn(new KeyStroke(KeyType.Enter));
 
         batalha.escolherUmInimigo();
-
-        verify(menuMock).desenharAviso("inimigoEstaMorto");
+        ArrayList mockList = mock(ArrayList.class);
+        verify(menuMock, atLeastOnce()).desenharSelecaoInimigos(mockList, anyInt(), eq("inimigoEstaMorto"));
     }
 
     @Test
-    public void testNovoRoundEncerrarTurnoDireto() {
+    public void testNovoRoundEncerrarTurnoDireto() throws Exception {
         Batalha batalha = criarBatalhaPadrao();
+
+        java.lang.reflect.Field pilhaField = Batalha.class.getDeclaredField("pilhaDeCompra");
+        pilhaField.setAccessible(true);
+        pilhaField.set(batalha, new PilhaDeCompra(new ArrayList<>()));
+
+        java.lang.reflect.Field energiaField = Batalha.class.getDeclaredField("energiaMaxima");
+        energiaField.setAccessible(true);
+        energiaField.set(batalha, 3);
 
         when(menuMock.receberInputTeclado()).thenReturn(new KeyStroke(KeyType.Enter));
 

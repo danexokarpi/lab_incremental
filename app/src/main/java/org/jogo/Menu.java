@@ -627,8 +627,6 @@ public class Menu {
                 linhaOffset++;
             }
         }
-
-        // Opção Remover (segue a mesma matemática da grade)
         int indexRemover = estoque.size();
         int colRemover = indexRemover / linhasPorColuna;
         int linRemover = indexRemover % linhasPorColuna;
@@ -734,28 +732,100 @@ public class Menu {
         desenharCentralizado(textG, centroCancelar, yCancelar - 1, "Cancelar");
     }
 
-    public void desenharFogueira(int cursor) {
-        /*
-         * desenho: fogueira.txt
-         *
-         * enunciado: O sol já se pôs e você encontra uma velha barraca abandonada. Ao
-         * lado dela, há uma pilha de entulhos.
-         *
-         * cursor == 0: Descansar na barraca até o amanhecer
-         * cursor == 1: Passar a noite construindo uma engenhoca de entulhos
-         */
+    public void desenharFogueira(int cursor, Carta cartaRecebida) {
+        TextGraphics textG = screen.newTextGraphics();
+        String nome = cartaRecebida.getNome();
+        String efeitoCustoArea = cartaRecebida.getEfeitoCustoAoE();
+        String descricao = cartaRecebida.getDescricao();
+        List<String> descricaoQuebrada = quebrarTexto(descricao, 30);
+        int centro = getLargura() / 2;
+        int yInicioArte = 0;
+        int yFinalDaArte = yInicioArte;
+
+        try (Scanner scannerFogueira = new Scanner(new File("fogueira.txt"))) {
+            textG.setForegroundColor(TextColor.ANSI.GREEN);
+
+            List<String> linhas = new ArrayList<>();
+            while (scannerFogueira.hasNextLine()) {
+                linhas.add(scannerFogueira.nextLine());
+            }
+
+            int larguraMaxima = 0;
+            for (String linha : linhas) {
+                if (linha.length() > larguraMaxima) {
+                    larguraMaxima = linha.length();
+                }
+            }
+
+            int xInicio = centro - larguraMaxima / 2;
+            if (xInicio < 0)
+                xInicio = 0;
+
+            for (int i = 0; i < linhas.size(); i++) {
+                String linha = linhas.get(i);
+                linha = String.format("%-" + larguraMaxima + "s", linha);
+                textG.putString(xInicio, yInicioArte + i, linha);
+            }
+
+            yFinalDaArte = yInicioArte + linhas.size();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            yFinalDaArte = yInicioArte + 5;
+        }
+
+        int yTextos = yFinalDaArte + 1;
+        String textoInicial = "O sol já se pôs e você encontra uma velha barraca abandonada. Ao lado dela, há uma pilha de entulhos.";
+        String perguntarAcao = "O que gostaria de fazer?";
+
+        textG.setForegroundColor(TextColor.ANSI.GREEN);
+        List<String> linhas = quebrarTexto(textoInicial, 80);
+        for (String linha : linhas) {
+            desenharCentralizado(textG, centro, yTextos, linha);
+            yTextos++;
+        }
+        desenharCentralizado(textG, centro, yTextos + 2, perguntarAcao);
+
+        int yOpcoes = yTextos + 4;
+        int centroEsquerda = getLargura() / 4;
+        int centroDireita = (getLargura() / 4) * 3;
+
+        if (cursor == 0) {
+            textG.setForegroundColor(TextColor.ANSI.GREEN_BRIGHT);
+            desenharCentralizado(textG, centroEsquerda, yOpcoes - 1, "↓");
+        } else {
+            textG.setForegroundColor(TextColor.ANSI.GREEN);
+        }
+        desenharCentralizado(textG, centroEsquerda, yOpcoes, "Dormir na Barraca ao lado da fogueira (Recupera toda sua vida)");
+
+        if (cursor == 1) {
+            textG.setForegroundColor(TextColor.ANSI.GREEN_BRIGHT);
+            desenharCentralizado(textG, centroDireita, yOpcoes - 1, "↓");
+        } else {
+            textG.setForegroundColor(TextColor.ANSI.GREEN);
+        }
+        desenharCentralizado(textG, centroDireita, yOpcoes, "Passar a noite criando um novo equipamento com os estulhos");
+        desenharCentralizado(textG, centroDireita, ++yOpcoes, "(Ganhará a seguinte carta)");
+        yOpcoes++;
+        desenharCentralizado(textG, centroDireita, ++yOpcoes, nome);
+
+        for(int i = 0; i < descricaoQuebrada.size(); i++){
+            desenharCentralizado(textG, centroDireita, yOpcoes + i + 1, descricaoQuebrada.get(i));
+        }
+        textG.setForegroundColor(TextColor.ANSI.DEFAULT);
     }
 
-    public void desenharRegeneracaoNaFogueira() {
+    public void desenharRegeneracaoNaFogueira(int x, int y) {
         /*
          * Apesar do vento seco e do sentimento de solidão, você consegue dormir à
          * noite.
          *
          * Sua vida foi recuperada ao máximo
          */
+
     }
 
-    public void desenharCartaNaFogueira(Carta cartaRecebida) {
+    public void desenharCartaNaFogueira(Carta cartaRecebida, int x, int y) {
         /*
          * Depois de uma longa noite de trabalho, você consegue bolar uma baita
          * engenhoca com todo aquele entulho.

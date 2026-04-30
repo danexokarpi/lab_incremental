@@ -17,13 +17,12 @@ public class CartaDanoTest {
         batalhaMock = mock(Batalha.class);
         heroiMock = mock(Heroi.class);
         
-        // Sempre que o tabuleiro pedir o herói para o historico, devolve o mock
         when(batalhaMock.getHeroi()).thenReturn(heroiMock);
     }
 
     @Test
     public void testConstrutorEGetters() {
-        CartaDano carta = new CartaDano("Ataque Básico", "Causa dano", 1, 10, "Unico");
+        CartaDano carta = new CartaDano("Ataque Básico", "Causa dano", 1, 10, "Unico", 0);
 
         assertEquals("Ataque Básico", carta.getNome());
         assertEquals("Causa dano", carta.getDescricao());
@@ -34,7 +33,7 @@ public class CartaDanoTest {
 
     @Test
     public void testGetEfeitoCustoAoE() {
-        CartaDano carta = new CartaDano("Corte", "Causa dano com espada", 2, 15, "Unico");
+        CartaDano carta = new CartaDano("Corte", "Causa dano com espada", 2, 15, "Unico", 0);
         
         String esperado = "(Dano - 15) (Custo - 2) (Alvo - Unico)";
         assertEquals(esperado, carta.getEfeitoCustoAoE());
@@ -42,15 +41,14 @@ public class CartaDanoTest {
 
     @Test
     public void testUsarCartaAreaUnicoComSucesso() {
-        CartaDano carta = new CartaDano("Ataque", "Dano", 1, 10, "Unico");
+        CartaDano carta = new CartaDano("Ataque", "Dano", 1, 10, "Unico", 0);
         Inimigo inimigoMock = mock(Inimigo.class);
 
-        // Jogador escolhe um inimigo válido
         when(batalhaMock.escolherUmInimigo()).thenReturn(inimigoMock);
 
         boolean usou = carta.usar(batalhaMock);
 
-        assertTrue(usou, "A carta deveria retornar true ao ser usada com sucesso.");
+        assertTrue(usou);
         
         verify(inimigoMock, times(1)).receberDano(10);
         
@@ -59,59 +57,50 @@ public class CartaDanoTest {
 
     @Test
     public void testUsarCartaAreaUnicoCanceladaPeloJogador() {
-        CartaDano carta = new CartaDano("Ataque", "Dano", 1, 10, "Unico");
+        CartaDano carta = new CartaDano("Ataque", "Dano", 1, 10, "Unico", 0);
 
-        // Jogador apertou em cancelar
         when(batalhaMock.escolherUmInimigo()).thenReturn(null);
 
         boolean usou = carta.usar(batalhaMock);
 
-        assertFalse(usou, "A carta deveria retornar false pois o uso foi cancelado.");
+        assertFalse(usou);
         
-        // Garante que não tentou registrar no histórico
         verify(batalhaMock, never()).adicionarAoHistorico(anyChar(), any(), any(), anyInt());
     }
 
     @Test
     public void testUsarCartaAreaTodos() {
-        CartaDano carta = new CartaDano("Terremoto", "Dano em área", 3, 20, "Todos");
+        CartaDano carta = new CartaDano("Terremoto", "Dano em área", 3, 20, "Todos", 0);
         
-        // Lista com 2 inimigos mockados
         Inimigo inimigoMock1 = mock(Inimigo.class);
         Inimigo inimigoMock2 = mock(Inimigo.class);
         ArrayList<Inimigo> listaInimigos = new ArrayList<>();
         listaInimigos.add(inimigoMock1);
         listaInimigos.add(inimigoMock2);
 
-        //Tabuleiro retorna a lista Mockada
         when(batalhaMock.getInimigos()).thenReturn(listaInimigos);
 
         boolean usou = carta.usar(batalhaMock);
 
-        assertTrue(usou, "A carta AoE deveria retornar true ao ser usada.");
+        assertTrue(usou);
 
-        // Verifica o dano recebido
         verify(inimigoMock1, times(1)).receberDano(20);
         verify(inimigoMock2, times(1)).receberDano(20);
 
-        // Verifica se gerou o histórico para ambos
         verify(batalhaMock, times(1)).adicionarAoHistorico('A', heroiMock, inimigoMock1, 20);
         verify(batalhaMock, times(1)).adicionarAoHistorico('A', heroiMock, inimigoMock2, 20);
         
-        // Garante que o método de escolher UM inimigo nunca foi chamado
         verify(batalhaMock, never()).escolherUmInimigo();
     }
 
     @Test
     public void testUsarCartaAreaDeEfeitoInvalida() {
-        // Criamos uma carta com uma área de efeito errada
-        CartaDano carta = new CartaDano("Bug", "Dano falho", 1, 10, "Aleatorio");
+        CartaDano carta = new CartaDano("Bug", "Dano falho", 1, 10, "Aleatorio", 0);
 
         boolean usou = carta.usar(batalhaMock);
 
-        assertFalse(usou, "A carta deveria retornar false se a área de efeito for desconhecida.");
+        assertFalse(usou);
         
-        // Garante que não chamou os métodos de alvo
         verify(batalhaMock, never()).escolherUmInimigo();
         verify(batalhaMock, never()).getInimigos();
     }
