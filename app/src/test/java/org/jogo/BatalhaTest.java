@@ -3,6 +3,7 @@ package org.jogo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.ArgumentMatchers.eq;
@@ -85,20 +86,20 @@ public class BatalhaTest {
     }
 
     @Test
-    public void testEscolherUmInimigoMortoExibeAviso() {
-        Batalha batalha = criarBatalhaPadrao();
+public void testEscolherUmInimigoMortoExibeAviso() {
+    Batalha batalha = criarBatalhaPadrao();
 
-        batalha.getInimigos().get(0).receberDano(1000);
+    batalha.getInimigos().get(0).receberDano(1000);
 
-        when(menuMock.receberInputTeclado())
-                .thenReturn(new KeyStroke(KeyType.Enter))
-                .thenReturn(new KeyStroke(KeyType.ArrowLeft))
-                .thenReturn(new KeyStroke(KeyType.Enter));
+    when(menuMock.receberInputTeclado())
+            .thenReturn(new KeyStroke(KeyType.Enter))
+            .thenReturn(new KeyStroke(KeyType.ArrowLeft))
+            .thenReturn(new KeyStroke(KeyType.Enter));
 
-        batalha.escolherUmInimigo();
-        ArrayList mockList = mock(ArrayList.class);
-        verify(menuMock, atLeastOnce()).desenharSelecaoInimigos(mockList, anyInt(), eq("inimigoEstaMorto"));
-    }
+    batalha.escolherUmInimigo();
+
+    verify(menuMock, atLeastOnce()).desenharSelecaoInimigos(any(), anyInt(), eq("inimigoEstaMorto"));
+}
 
     @Test
     public void testNovoRoundEncerrarTurnoDireto() throws Exception {

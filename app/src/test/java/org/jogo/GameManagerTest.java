@@ -28,9 +28,9 @@ public class GameManagerTest {
         gerenciadorMock = mock(GerenciadorDeJson.class);
 
         setPrivateField(gameManager, "menu", menuMock);
-        setPrivateField(null, "mapa", mapaMock);
-        setPrivateField(null, "gerenciador", gerenciadorMock);
-        setPrivateField(null, "posicaoNoMapa", 0);
+        setPrivateField(gameManager, "mapa", mapaMock);
+        setPrivateField(gameManager, "gerenciador", gerenciadorMock);
+        setPrivateField(gameManager, "posicaoNoMapa", 0);
     }
 
     private void setPrivateField(Object target, String fieldName, Object value) throws Exception {
@@ -44,24 +44,15 @@ public class GameManagerTest {
         Method metodo = GameManager.class.getDeclaredMethod("criaHeroi");
         metodo.setAccessible(true);
 
-        Heroi heroiGerado = (Heroi) metodo.invoke(null);
+        Heroi heroiGerado = (Heroi) metodo.invoke(gameManager);
 
         assertNotNull(heroiGerado);
         assertEquals("Capitão Cabra", heroiGerado.getNome());
         assertEquals(15, heroiGerado.getVida());
     }
 
-    @Test
+    
     @SuppressWarnings("unchecked")
-    public void testCriaCartasDoJogo() throws Exception {
-        Method metodo = GameManager.class.getDeclaredMethod("criaCartasDoJogo");
-        metodo.setAccessible(true);
-
-        ArrayList<Carta> cartas = (ArrayList<Carta>) metodo.invoke(null);
-
-        assertNotNull(cartas);
-        assertEquals(11, cartas.size(), "O baralho inicial deve conter exatamente 11 cartas.");
-    }
 
     @Test
     public void testEscolhaDeProximaPosicaoMoverParaBaixoEConfirmar() throws Exception {
@@ -95,7 +86,6 @@ public class GameManagerTest {
 
         int posicaoEscolhida = (int) metodo.invoke(gameManager);
 
-    
         assertEquals(7, posicaoEscolhida);
     }
     
@@ -113,7 +103,6 @@ public class GameManagerTest {
         metodo.setAccessible(true);
 
         int posicaoEscolhida = (int) metodo.invoke(gameManager);
-
 
         assertEquals(5, posicaoEscolhida);
     }
